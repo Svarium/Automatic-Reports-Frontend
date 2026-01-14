@@ -1,0 +1,109 @@
+.teacher-metrics-container {
+    margin: var(--spacing-lg) 0;
+}
+
+.teacher-summary {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.teacher-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.teacher-stat-card {
+    text-align: center;
+    padding: var(--spacing-md);
+    background-color: #f9f9f9;
+    border-radius: var(--border-radius);
+}
+
+.teacher-stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--chart-purple);
+    display: block;
+}
+
+.teacher-stat-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: var(--spacing-xs);
+}
+
+.teachers-list {
+    margin-top: var(--spacing-lg);
+}
+
+.teachers-list-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-color);
+}
+
+.teacher-card {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    transition: transform 0.2s ease;
+}
+
+.teacher-card:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+}
+
+.teacher-info {
+    flex: 1;
+}
+
+.teacher-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-color);
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--chart-blue), var(--chart-purple));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.teacher-progress-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: var(--spacing-xs);
+}
+
+.certified-badge {
+    background-color: var(--semaphore-green);
+    color: var(--white);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}

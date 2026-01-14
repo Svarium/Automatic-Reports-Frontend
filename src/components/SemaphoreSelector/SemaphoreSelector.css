@@ -1,0 +1,44 @@
+.semaphore-selector {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.semaphore-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.semaphore-button:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+.semaphore-button.selected {
+    border-color: var(--text-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.semaphore-button.green {
+    background-color: var(--semaphore-green);
+}
+
+.semaphore-button.yellow {
+    background-color: var(--semaphore-yellow);
+}
+
+.semaphore-button.red {
+    background-color: var(--semaphore-red);
+}
+
+.semaphore-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-right: var(--spacing-xs);
+}

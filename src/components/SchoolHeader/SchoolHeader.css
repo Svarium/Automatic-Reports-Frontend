@@ -1,0 +1,84 @@
+.school-header {
+    background-color: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+}
+
+.school-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-color);
+}
+
+.school-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--chart-blue);
+    display: block;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #666;
+    margin-top: var(--spacing-xs);
+}
+
+.general-semaphore-container {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid #eee;
+}
+
+.general-semaphore-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-color);
+}
+
+.general-semaphore {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.general-semaphore.green {
+    background-color: var(--semaphore-green);
+}
+
+.general-semaphore.yellow {
+    background-color: var(--semaphore-yellow);
+}
+
+.general-semaphore.red {
+    background-color: var(--semaphore-red);
+}
+
+.semaphore-status-text {
+    margin-top: var(--spacing-sm);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
