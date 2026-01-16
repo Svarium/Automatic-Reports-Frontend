@@ -70,11 +70,11 @@ const PDFTemplate = ({ contentRef }) => {
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', margin: '20px 0' }}>
                             <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3' }}>
-                                <div style={{ fontSize: '12px', color: '#555' }}>Vitalidad Digital (30d)</div>
+                                <div style={{ fontSize: '12px', color: '#555' }}>Vitalidad Digital (30 días)</div>
                                 <div style={{ fontSize: '20px', fontWeight: '700' }}>{students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
                             </div>
                             <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3' }}>
-                                <div style={{ fontSize: '12px', color: '#555' }}>Progreso Reciente (15d)</div>
+                                <div style={{ fontSize: '12px', color: '#555' }}>Progreso Reciente (15 días)</div>
                                 <div style={{ fontSize: '20px', fontWeight: '700' }}>{students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
                             </div>
                         </div>
@@ -98,9 +98,10 @@ const PDFTemplate = ({ contentRef }) => {
                                         <p style={{ fontWeight: '700', fontSize: '12px', margin: '0 0 5px 0', color: '#000000' }}>{group.route_name}</p>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px', fontSize: '10px', color: '#444' }}>
                                             <div>Alumnos: <strong style={{ color: '#000' }}>{group.students_count}</strong></div>
-                                            <div>Progreso: <strong style={{ color: '#000' }}>{group.metrics.avg_progress_percent.toFixed(1)}%</strong></div>
-                                            <div>Vitalidad: <strong style={{ color: '#000' }}>{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</strong></div>
-                                            <div>Completado: <strong style={{ color: '#000' }}>{group.metrics.courses_completion_percent.toFixed(1)}%</strong></div>
+                                            <div>Progreso Promedio: <strong style={{ color: '#000' }}>{group.metrics.avg_progress_percent.toFixed(1)}%</strong></div>
+                                            <div>Vitalidad Digital (30 días): <strong style={{ color: '#000' }}>{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</strong></div>
+                                            <div>Progreso Reciente (15 días): <strong style={{ color: '#000' }}>{group.metrics.recent_progress_15d_percent.toFixed(1)}%</strong></div>
+                                            <div style={{ gridColumn: 'span 2' }}>Cursos Completados: <strong style={{ color: '#000' }}>{group.metrics.courses_completion_percent.toFixed(1)}%</strong></div>
                                         </div>
                                     </div>
                                 );
