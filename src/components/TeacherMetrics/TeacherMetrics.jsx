@@ -41,8 +41,8 @@ const TeacherMetrics = () => {
                 />
             </div>
 
+            <h3 className="teachers-list-title">Listado de Docentes</h3>
             <div className="teachers-list">
-                <h3 className="teachers-list-title">Listado de Docentes</h3>
                 {teachers.map((teacher, index) => (
                     <TeacherCard key={index} teacher={teacher} />
                 ))}

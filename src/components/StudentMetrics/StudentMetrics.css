@@ -34,6 +34,9 @@
 
 .groups-container {
     margin-top: var(--spacing-lg);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--spacing-md);
 }
 
 .groups-title {
@@ -47,10 +50,10 @@
     background-color: var(--white);
     border-radius: var(--border-radius);
     padding: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
     box-shadow: var(--shadow-md);
     border-left: 6px solid var(--semaphore-green);
     transition: transform 0.2s ease;
+    height: 100%;
 }
 
 .student-group-card:hover {
@@ -72,10 +75,10 @@
 
 .group-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: flex-start;
-    margin-bottom: var(--spacing-md);
-    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    gap: var(--spacing-xs);
 }
 
 .group-info {
@@ -96,9 +99,9 @@
 
 .group-metrics {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-md);
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
 }
 
 .metric-item {

@@ -16,10 +16,16 @@
     padding: var(--spacing-sm);
     font-family: 'Montserrat', sans-serif;
     font-size: 1rem;
-    border: 2px solid #ddd;
+    border: 2px solid var(--observations-blue);
+    background-color: var(--observations-blue);
+    color: white;
     border-radius: var(--border-radius);
     resize: vertical;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.observations-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .observations-textarea:focus {

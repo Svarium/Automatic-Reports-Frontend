@@ -6,31 +6,32 @@
   --primary-bg: #ffdc76;
   --text-color: #000000;
   --white: #ffffff;
-  
+
   /* Semáforos */
-  --semaphore-green: #4caf50;
-  --semaphore-yellow: #ffc107;
-  --semaphore-red: #f44336;
-  
+  --semaphore-green: #00cc7eff;
+  --semaphore-yellow: #ffd148ff;
+  --semaphore-red: #ff8d7aff;
+  --observations-blue: #8383fdff;
+
   /* Colores para gráficos (contraste con #ffdc76) */
   --chart-blue: #2196F3;
   --chart-orange: #FF5722;
   --chart-purple: #9C27B0;
   --chart-green: #4CAF50;
   --chart-teal: #009688;
-  
+
   /* Sombras */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
   --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
-  
+
   /* Espaciado */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
-  
+
   /* Bordes */
   --border-radius: 8px;
   --border-radius-lg: 12px;
@@ -57,7 +58,12 @@ body {
 /* ========================================
    TIPOGRAFÍA
    ======================================== */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: var(--spacing-sm);
@@ -83,7 +89,7 @@ p {
    UTILIDADES GENERALES
    ======================================== */
 .container {
-  max-width: 1200px;
+  max-width: 80%;
   margin: 0 auto;
   padding: var(--spacing-lg);
 }

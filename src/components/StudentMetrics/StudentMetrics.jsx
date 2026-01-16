@@ -33,8 +33,8 @@ const StudentMetrics = () => {
                 </div>
             </div>
 
+            <h3 className="groups-title">Grupos por Ruta</h3>
             <div className="groups-container">
-                <h3 className="groups-title">Grupos por Ruta</h3>
                 {groups.map((group, index) => (
                     <StudentGroupCard key={index} group={group} />
                 ))}

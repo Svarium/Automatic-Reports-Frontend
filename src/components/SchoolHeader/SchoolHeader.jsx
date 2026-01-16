@@ -16,7 +16,7 @@ const SchoolHeader = () => {
             <div className="school-stats">
                 <div className="stat-item">
                     <span className="stat-value">{school.total_students}</span>
-                    <span className="stat-label">Alumnos</span>
+                    <span className="stat-label">Total de alumnos en Playground</span>
                 </div>
                 <div className="stat-item">
                     <span className="stat-value">{school.total_student_groups}</span>

@@ -6,6 +6,8 @@ import StudentMetrics from './components/StudentMetrics/StudentMetrics';
 import TeacherMetrics from './components/TeacherMetrics/TeacherMetrics';
 import ObservationsInput from './components/ObservationsInput/ObservationsInput';
 import PDFExport from './components/PDFExport/PDFExport';
+import BannerHeader from './components/Common/BannerHeader';
+import BannerFooter from './components/Common/BannerFooter';
 import './App.css';
 
 function App() {
@@ -47,6 +49,9 @@ function App() {
   return (
     <div className="app">
       <div className="container">
+        {/* Banner Header */}
+        <BannerHeader />
+
         {/* Encabezado con info del colegio y semáforo general */}
         <SchoolHeader />
 
@@ -75,6 +80,9 @@ function App() {
             📤 Subir otro reporte
           </button>
         </div>
+
+        {/* Banner Footer */}
+        <BannerFooter />
       </div>
     </div>
   );

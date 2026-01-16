@@ -41,13 +41,24 @@
     background-color: white;
     width: 210mm;
     /* A4 width */
-    padding: 20mm;
+    padding: 0;
+    /* Margin handled inside sections or by container */
     font-family: 'Montserrat', sans-serif;
 }
 
+.pdf-page {
+    width: 210mm;
+    height: 297mm;
+    /* A4 height */
+    padding: 5mm 5mm;
+    /* 0.5cm margin on X and Y */
+    box-sizing: border-box;
+    position: relative;
+    page-break-after: always;
+}
+
 .pdf-template .pdf-section {
-    margin-bottom: 30px;
-    page-break-inside: avoid;
+    margin-bottom: 20px;
 }
 
 .pdf-template .pdf-title {
