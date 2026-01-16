@@ -8,7 +8,7 @@ export const calculateGeneralSemaphore = (semaphores) => {
     const values = Object.values(semaphores);
 
     if (values.length === 0) {
-        return 'green'; // Default si no hay semáforos
+        return 'gray'; // Default if no semaphores
     }
 
     const counts = {
@@ -16,6 +16,12 @@ export const calculateGeneralSemaphore = (semaphores) => {
         yellow: values.filter(s => s === 'yellow').length,
         red: values.filter(s => s === 'red').length,
     };
+
+    const totalRated = counts.green + counts.yellow + counts.red;
+
+    if (totalRated === 0) {
+        return 'gray';
+    }
 
     // Retorna el color con mayor cantidad
     // En caso de empate, prioridad: green > yellow > red
@@ -38,8 +44,9 @@ export const getSemaphoreColor = (color) => {
         green: 'var(--semaphore-green)',
         yellow: 'var(--semaphore-yellow)',
         red: 'var(--semaphore-red)',
+        gray: '#9e9e9e',
     };
-    return colors[color] || colors.green;
+    return colors[color] || colors.gray;
 };
 
 /**
@@ -49,9 +56,10 @@ export const getSemaphoreColor = (color) => {
  */
 export const getSemaphoreLabel = (color) => {
     const labels = {
-        green: 'Bueno',
-        yellow: 'Regular',
+        green: 'A tiempo',
+        yellow: 'A fortalecer',
         red: 'Requiere atención',
+        gray: 'Pendiente de análisis',
     };
-    return labels[color] || labels.green;
+    return labels[color] || labels.gray;
 };

@@ -13,7 +13,7 @@ const TeacherMetrics = () => {
 
     return (
         <div className="teacher-metrics-container">
-            <h2 className="section-title">👩‍🏫 Métricas de Docentes PLD</h2>
+            <h2 className="section-title">👩‍🏫 Métricas de capacitación Docente</h2>
 
             <div className="teacher-summary">
                 <h3 className="summary-title">Resumen General</h3>

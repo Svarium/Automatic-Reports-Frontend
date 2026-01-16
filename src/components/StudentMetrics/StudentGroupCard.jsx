@@ -4,7 +4,7 @@ import './StudentMetrics.css';
 
 const StudentGroupCard = ({ group }) => {
     const { semaphores } = useReport();
-    const currentSemaphore = semaphores[group.route_name] || 'green';
+    const currentSemaphore = semaphores[group.route_name] || 'gray';
 
     return (
         <div className={`student-group-card semaphore-${currentSemaphore}`}>

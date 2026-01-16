@@ -31,7 +31,7 @@ const PDFTemplate = ({ contentRef }) => {
                             width: '80px',
                             height: '80px',
                             borderRadius: '50%',
-                            backgroundColor: generalSemaphore === 'green' ? '#00cc7e' : generalSemaphore === 'yellow' ? '#ffd148' : '#ff8d7a',
+                            backgroundColor: generalSemaphore === 'green' ? '#00cc7e' : generalSemaphore === 'yellow' ? '#ffd148' : generalSemaphore === 'red' ? '#ff8d7a' : '#9e9e9e',
                             margin: '0 auto 15px',
                             display: 'flex',
                             alignItems: 'center',
@@ -82,8 +82,8 @@ const PDFTemplate = ({ contentRef }) => {
                         <h3 className="pdf-subtitle" style={{ fontSize: '16px', marginBottom: '15px' }}>Detalle de Alumnos por Ruta</h3>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                             {students.groups.map((group, index) => {
-                                const semaphore = semaphores[group.route_name] || 'green';
-                                const semaphoreColor = semaphore === 'green' ? '#00cc7e' : semaphore === 'yellow' ? '#ffd148' : '#ff8d7a';
+                                const semaphore = semaphores[group.route_name] || 'gray';
+                                const semaphoreColor = semaphore === 'green' ? '#00cc7e' : semaphore === 'yellow' ? '#ffd148' : semaphore === 'red' ? '#ff8d7a' : '#9e9e9e';
 
                                 return (
                                     <div key={index} style={{
@@ -132,7 +132,7 @@ const PDFTemplate = ({ contentRef }) => {
             <div className="pdf-page-container">
                 <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
                     <div className="pdf-section" style={{ marginTop: '20px' }}>
-                        <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>👩‍🏫 Métricas de Docentes PLD</h2>
+                        <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>👩‍🏫 Métricas de capacitación Docente</h2>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', margin: '20px 0' }}>
                             <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px', textAlign: 'center', border: '1px solid #eee' }}>
@@ -169,22 +169,12 @@ const PDFTemplate = ({ contentRef }) => {
                                         pageBreakInside: 'avoid'
                                     }}>
                                         <svg width="70" height="70">
-                                            <circle cx="35" cy="35" r={radius} fill="white" stroke="#f0f0f0" strokeWidth="5" />
-                                            <circle
-                                                cx="35" cy="35" r={radius} fill="none"
-                                                stroke={teacher.certified ? '#00cc7e' : '#2196f3'}
-                                                strokeWidth="5"
-                                                strokeDasharray={circumference}
-                                                strokeDashoffset={offset}
-                                                strokeLinecap="round"
-                                                transform="rotate(-90 35 35)"
-                                            />
-                                            <text x="35" y="35" textAnchor="middle" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#000">
-                                                {progress.toFixed(0)}%
-                                            </text>
+                                            <circle cx="35" cy="35" r={radius} fill="white" stroke={teacher.certified ? '#00cc7e' : '#ff8d7a'} strokeWidth="5" />
                                         </svg>
                                         <p style={{ fontSize: '9px', fontWeight: '700', textAlign: 'center', margin: '8px 0 0 0', lineHeight: '1.2', color: '#333' }}>{teacher.name}</p>
-                                        {teacher.certified && <div style={{ fontSize: '8px', color: '#00cc7e', fontWeight: '800', marginTop: '2px' }}>✓</div>}
+                                        <div style={{ fontSize: '8px', color: teacher.certified ? '#00cc7e' : '#ff8d7a', fontWeight: '800', marginTop: '2px' }}>
+                                            {teacher.certified ? 'Certificado ✔' : 'No certificado ✕'}
+                                        </div>
                                     </div>
                                 );
                             })}

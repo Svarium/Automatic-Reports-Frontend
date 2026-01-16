@@ -20,7 +20,7 @@ export const ReportProvider = ({ children }) => {
 
     // Estado manual del mentor
     const [semaphores, setSemaphores] = useState({});
-    const [generalSemaphore, setGeneralSemaphore] = useState('green');
+    const [generalSemaphore, setGeneralSemaphore] = useState('gray');
     const [studentObservations, setStudentObservations] = useState('');
     const [teacherObservations, setTeacherObservations] = useState('');
 
@@ -47,7 +47,7 @@ export const ReportProvider = ({ children }) => {
             if (data.students && data.students.groups) {
                 const initialSemaphores = {};
                 data.students.groups.forEach(group => {
-                    initialSemaphores[group.route_name] = 'green';
+                    initialSemaphores[group.route_name] = 'gray';
                 });
                 setSemaphores(initialSemaphores);
             }
@@ -83,6 +83,41 @@ export const ReportProvider = ({ children }) => {
     };
 
     /**
+     * Alterna el estado de certificación de un docente
+     */
+    const toggleTeacherCertification = (teacherName) => {
+        setReportData(prevData => {
+            if (!prevData || !prevData.teachers_pld) return prevData;
+
+            const updatedTeachers = prevData.teachers_pld.teachers.map(t => {
+                if (t.name === teacherName) {
+                    const newCertified = !t.certified;
+                    return { ...t, certified: newCertified };
+                }
+                return t;
+            });
+
+            // Recalcular el resumen de docentes
+            const total = updatedTeachers.length;
+            const certifiedCount = updatedTeachers.filter(t => t.certified).length;
+            const rate = total > 0 ? (certifiedCount / total) * 100 : 0;
+
+            return {
+                ...prevData,
+                teachers_pld: {
+                    ...prevData.teachers_pld,
+                    teachers: updatedTeachers,
+                    summary: {
+                        ...prevData.teachers_pld.summary,
+                        certified_teachers: certifiedCount,
+                        certification_rate_percent: rate
+                    }
+                }
+            };
+        });
+    };
+
+    /**
      * Resetea todo el estado
      */
     const resetReport = () => {
@@ -90,7 +125,7 @@ export const ReportProvider = ({ children }) => {
         setLoading(false);
         setError(null);
         setSemaphores({});
-        setGeneralSemaphore('green');
+        setGeneralSemaphore('gray');
         setStudentObservations('');
         setTeacherObservations('');
     };
@@ -110,6 +145,7 @@ export const ReportProvider = ({ children }) => {
         setSemaphoreForRoute,
         updateStudentObservations,
         updateTeacherObservations,
+        toggleTeacherCertification,
         resetReport,
     };
 

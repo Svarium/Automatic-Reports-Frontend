@@ -57,19 +57,28 @@
 .teacher-card-circular {
     background-color: var(--white);
     border-radius: var(--border-radius-lg);
-    padding: var(--spacing-md);
-    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-lg);
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid #222;
     width: 100%;
 }
 
 .teacher-card-circular:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px) scale(1.02);
     box-shadow: var(--shadow-lg);
+    border-color: var(--chart-blue);
+}
+
+.teacher-card-circular.is-certified:hover {
+    border-color: #00cc7e;
+}
+
+.teacher-card-circular.not-certified:hover {
+    border-color: #ff8d7a;
 }
 
 .progress-circle-container {
@@ -96,26 +105,8 @@
     pointer-events: none;
 }
 
-.teacher-progress-percentage {
-    margin-top: var(--spacing-sm);
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: var(--chart-blue);
-}
-
 .certified-badge-mini {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: var(--semaphore-green);
-    color: var(--white);
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: var(--spacing-sm);
     font-size: 0.9rem;
-    font-weight: bold;
-    box-shadow: var(--shadow-sm);
+    text-align: center;
 }
