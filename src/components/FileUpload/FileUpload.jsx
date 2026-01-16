@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useReport } from '../../context/ReportContext';
+import landingIllustration from '../../assets/landing-illustration.png';
 import './FileUpload.css';
 
 const FileUpload = () => {
@@ -65,45 +66,62 @@ const FileUpload = () => {
     };
 
     return (
-        <div className="file-upload-container">
-            <h1 className="file-upload-title">Reporte Automático Educativo</h1>
-
-            <div
-                className={`file-upload-area ${dragOver ? 'drag-over' : ''} ${validationError ? 'has-error' : ''}`}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                onClick={handleClick}
-            >
-                <div className="upload-icon">📊</div>
-                <p className="upload-text">
-                    Arrastrá tu archivo o hacé click para seleccionar
-                </p>
-                <p className="upload-hint">
-                    Archivos soportados: CSV, Excel (.csv, .xlsx, .xls)
-                </p>
-
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    className="file-input"
-                    accept=".csv,.xlsx,.xls"
-                    onChange={handleInputChange}
-                />
+        <div className="landing-split-screen">
+            {/* Left side: Branding & Illustration */}
+            <div className="landing-left">
+                <div className="branding-container">
+                    <h2 className="branding-logo">DIGITAL<strong>HOUSE</strong></h2>
+                    <img src={landingIllustration} alt="DH Schools Reports Automation" className="landing-img" />
+                </div>
             </div>
 
-            {selectedFile && !validationError && (
-                <div className="selected-file">
-                    <span className="selected-file-icon">✓</span>
-                    <span>{selectedFile.name}</span>
-                </div>
-            )}
+            {/* Right side: Welcome & File Upload */}
+            <div className="landing-right">
+                <div className="login-form-box">
+                    <div className="welcome-header">
+                        <h1>Te damos la bienvenida</h1>
+                        <p>Subí el archivo para automatizar tus reportes.</p>
+                    </div>
 
-            {validationError && (
-                <div className="error-message">
-                    {validationError}
+                    <div className="app-title-badge">
+                        DH Schools Reports Automation 📊
+                    </div>
+
+                    <div
+                        className={`file-upload-area-premium ${dragOver ? 'drag-over' : ''} ${validationError ? 'has-error' : ''}`}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        onClick={handleClick}
+                    >
+                        <div className="upload-icon-premium">🤖</div>
+                        <p className="upload-text-premium">
+                            {selectedFile ? selectedFile.name : 'Arrastrá tu archivo o hacé click'}
+                        </p>
+                        <p className="upload-hint-premium">
+                            Formatos: CSV, Excel (.csv, .xlsx, .xls)
+                        </p>
+
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            className="file-input-hidden"
+                            accept=".csv,.xlsx,.xls"
+                            onChange={handleInputChange}
+                        />
+
+                        <button className="btn-upload-fake">
+                            {selectedFile ? 'Procesando...' : 'Seleccionar Archivo'}
+                        </button>
+                    </div>
+
+                    {validationError && (
+                        <div className="error-message-premium">
+                            {validationError}
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     );
 };

@@ -2,10 +2,11 @@
    VARIABLES GLOBALES
    ======================================== */
 :root {
-  /* Paleta de colores */
-  --primary-bg: #ffdc76;
-  --text-color: #000000;
-  --white: #ffffff;
+  /* Paleta de colores DARK MODE */
+  --primary-bg: #000000;
+  --text-color: #ffffff;
+  --white: #121212;
+  /* Color de las cards */
 
   /* Semáforos */
   --semaphore-green: #00cc7eff;
@@ -13,17 +14,17 @@
   --semaphore-red: #ff8d7aff;
   --observations-blue: #8383fdff;
 
-  /* Colores para gráficos (contraste con #ffdc76) */
+  /* Colores para gráficos */
   --chart-blue: #2196F3;
   --chart-orange: #FF5722;
   --chart-purple: #9C27B0;
-  --chart-green: #4CAF50;
+  --chart-green: #00cc7e;
   --chart-teal: #009688;
 
   /* Sombras */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.6);
 
   /* Espaciado */
   --spacing-xs: 0.5rem;
@@ -96,16 +97,17 @@ p {
 
 .card {
   background-color: var(--white);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-md);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
   box-shadow: var(--shadow-md);
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid #222;
 }
 
 .btn {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: 700;
+  padding: 0.8rem 1.5rem;
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
@@ -119,21 +121,20 @@ p {
 }
 
 .btn-primary {
-  background-color: var(--text-color);
-  color: var(--primary-bg);
+  background-color: #8383fd;
+  color: white;
 }
 
 .btn-primary:hover {
-  background-color: #333333;
+  background-color: #7171e0;
 }
 
 .btn-secondary {
-  background-color: var(--white);
-  color: var(--text-color);
-  border: 2px solid var(--text-color);
+  background-color: #1a1a1a;
+  color: white;
+  border: 1px solid #444;
 }
 
 .btn-secondary:hover {
-  background-color: var(--text-color);
-  color: var(--white);
+  background-color: #2a2a2a;
 }

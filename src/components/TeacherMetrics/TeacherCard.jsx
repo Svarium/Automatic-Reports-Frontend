@@ -16,8 +16,8 @@ const TeacherCard = ({ teacher }) => {
                         cx="70"
                         cy="70"
                         r={radius}
-                        fill="white"
-                        stroke="#e0e0e0"
+                        fill="var(--white)"
+                        stroke="#333"
                         strokeWidth={strokeWidth}
                     />
                     {/* Progress circle */}

@@ -94,7 +94,7 @@
 
 .group-student-count {
     font-size: 0.9rem;
-    color: #666;
+    color: #999;
 }
 
 .group-metrics {
@@ -105,14 +105,15 @@
 }
 
 .metric-item {
-    background-color: #f9f9f9;
+    background-color: #1a1a1a;
     padding: var(--spacing-sm);
     border-radius: var(--border-radius);
+    border: 1px solid #333;
 }
 
 .metric-label {
     font-size: 0.85rem;
-    color: #666;
+    color: #999;
     margin-bottom: var(--spacing-xs);
 }
 

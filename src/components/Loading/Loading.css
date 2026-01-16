@@ -15,8 +15,8 @@
 .loading-spinner {
     width: 60px;
     height: 60px;
-    border: 6px solid var(--white);
-    border-top: 6px solid var(--primary-bg);
+    border: 6px solid #1a1a1a;
+    border-top: 6px solid #8383fd;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

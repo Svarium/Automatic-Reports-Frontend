@@ -25,8 +25,8 @@ const DoughnutChart = ({ data, labels, title, colors }) => {
             {
                 data: data,
                 backgroundColor: colors || defaultColors,
-                borderColor: '#ffffff',
-                borderWidth: 2,
+                borderColor: 'transparent',
+                borderWidth: 0,
             },
         ],
     };
@@ -38,18 +38,27 @@ const DoughnutChart = ({ data, labels, title, colors }) => {
             legend: {
                 position: 'bottom',
                 labels: {
+                    color: '#ffffff', // Legend text color for dark mode
                     font: {
                         family: 'Montserrat',
                         size: 12,
+                        weight: '600',
                     },
-                    padding: 15,
+                    padding: 20,
+                    usePointStyle: true,
+                    pointStyle: 'circle',
                 },
             },
             tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                backgroundColor: '#1a1a1a',
+                borderColor: '#333',
+                borderWidth: 1,
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff',
                 titleFont: {
                     family: 'Montserrat',
                     size: 14,
+                    weight: '700',
                 },
                 bodyFont: {
                     family: 'Montserrat',
@@ -57,8 +66,10 @@ const DoughnutChart = ({ data, labels, title, colors }) => {
                 },
                 padding: 12,
                 cornerRadius: 8,
+                displayColors: true,
             },
         },
+        cutout: '70%', // Cleaner donut look
     };
 
     return (

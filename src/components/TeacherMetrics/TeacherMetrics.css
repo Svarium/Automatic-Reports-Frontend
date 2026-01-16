@@ -20,8 +20,9 @@
 .teacher-stat-card {
     text-align: center;
     padding: var(--spacing-md);
-    background-color: #f9f9f9;
+    background-color: #1a1a1a;
     border-radius: var(--border-radius);
+    border: 1px solid #333;
 }
 
 .teacher-stat-value {
@@ -33,7 +34,7 @@
 
 .teacher-stat-label {
     font-size: 0.9rem;
-    color: #666;
+    color: #999;
     margin-top: var(--spacing-xs);
 }
 

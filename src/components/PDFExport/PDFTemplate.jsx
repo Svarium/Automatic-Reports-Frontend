@@ -24,7 +24,7 @@ const PDFTemplate = ({ contentRef }) => {
                 <img src={bannerHeader} alt="Header" style={{ width: '100%', marginBottom: '40px' }} />
 
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-                    <h1 style={{ fontSize: '32px', marginBottom: '40px', fontWeight: '800' }}>{school.id}</h1>
+                    <h1 style={{ fontSize: '32px', marginBottom: '40px', fontWeight: '800', color: '#000000' }}>{school.id}</h1>
 
                     <div style={{ marginBottom: '40px' }}>
                         <div style={{
@@ -44,16 +44,16 @@ const PDFTemplate = ({ contentRef }) => {
                             {generalSemaphore === 'yellow' && '!'}
                             {generalSemaphore === 'red' && '✕'}
                         </div>
-                        <h2 style={{ fontSize: '24px', margin: '0' }}>Estado General: {getSemaphoreLabel(generalSemaphore)}</h2>
+                        <h2 style={{ fontSize: '24px', margin: '0', color: '#000000' }}>Estado General: {getSemaphoreLabel(generalSemaphore)}</h2>
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', maxWidth: '500px', width: '100%', marginTop: '20px' }}>
-                        <div style={{ padding: '20px', background: '#f8f8f8', borderRadius: '12px' }}>
-                            <div style={{ fontSize: '28px', fontWeight: '800' }}>{school.total_students}</div>
+                        <div style={{ padding: '20px', background: '#f8f8f8', borderRadius: '12px', border: '1px solid #eee' }}>
+                            <div style={{ fontSize: '28px', fontWeight: '800', color: '#000000' }}>{school.total_students}</div>
                             <div style={{ fontSize: '12px', color: '#666', fontWeight: '600' }}>Total de alumnos en Playground</div>
                         </div>
-                        <div style={{ padding: '20px', background: '#f8f8f8', borderRadius: '12px' }}>
-                            <div style={{ fontSize: '28px', fontWeight: '800' }}>{school.total_student_groups}</div>
+                        <div style={{ padding: '20px', background: '#f8f8f8', borderRadius: '12px', border: '1px solid #eee' }}>
+                            <div style={{ fontSize: '28px', fontWeight: '800', color: '#000000' }}>{school.total_student_groups}</div>
                             <div style={{ fontSize: '12px', color: '#666', fontWeight: '600' }}>Total de Grupos</div>
                         </div>
                     </div>
@@ -95,12 +95,12 @@ const PDFTemplate = ({ contentRef }) => {
                                         borderRadius: '4px',
                                         pageBreakInside: 'avoid'
                                     }}>
-                                        <p style={{ fontWeight: '700', fontSize: '12px', margin: '0 0 5px 0' }}>{group.route_name}</p>
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px', fontSize: '10px' }}>
-                                            <div>Alumnos: <strong>{group.students_count}</strong></div>
-                                            <div>Progreso: <strong>{group.metrics.avg_progress_percent.toFixed(1)}%</strong></div>
-                                            <div>Vitalidad: <strong>{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</strong></div>
-                                            <div>Completado: <strong>{group.metrics.courses_completion_percent.toFixed(1)}%</strong></div>
+                                        <p style={{ fontWeight: '700', fontSize: '12px', margin: '0 0 5px 0', color: '#000000' }}>{group.route_name}</p>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px', fontSize: '10px', color: '#444' }}>
+                                            <div>Alumnos: <strong style={{ color: '#000' }}>{group.students_count}</strong></div>
+                                            <div>Progreso: <strong style={{ color: '#000' }}>{group.metrics.avg_progress_percent.toFixed(1)}%</strong></div>
+                                            <div>Vitalidad: <strong style={{ color: '#000' }}>{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</strong></div>
+                                            <div>Completado: <strong style={{ color: '#000' }}>{group.metrics.courses_completion_percent.toFixed(1)}%</strong></div>
                                         </div>
                                     </div>
                                 );
@@ -135,15 +135,15 @@ const PDFTemplate = ({ contentRef }) => {
                         <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>👩‍🏫 Métricas de Docentes PLD</h2>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', margin: '20px 0' }}>
-                            <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px', textAlign: 'center' }}>
+                            <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px', textAlign: 'center', border: '1px solid #eee' }}>
                                 <div style={{ fontSize: '11px', color: '#666' }}>Total Docentes</div>
-                                <div style={{ fontSize: '20px', fontWeight: '800' }}>{teachers_pld.summary.total_teachers}</div>
+                                <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{teachers_pld.summary.total_teachers}</div>
                             </div>
-                            <div style={{ padding: '15px', backgroundColor: '#e8f5e9', borderRadius: '8px', textAlign: 'center' }}>
+                            <div style={{ padding: '15px', backgroundColor: '#e8f5e9', borderRadius: '8px', textAlign: 'center', border: '1px solid #d4edda' }}>
                                 <div style={{ fontSize: '11px', color: '#666' }}>Certificados</div>
                                 <div style={{ fontSize: '20px', fontWeight: '800', color: '#2e7d32' }}>{teachers_pld.summary.certified_teachers}</div>
                             </div>
-                            <div style={{ padding: '15px', backgroundColor: '#e3f2fd', borderRadius: '8px', textAlign: 'center' }}>
+                            <div style={{ padding: '15px', backgroundColor: '#e3f2fd', borderRadius: '8px', textAlign: 'center', border: '1px solid #cce5ff' }}>
                                 <div style={{ fontSize: '11px', color: '#666' }}>Tasa de Certificación</div>
                                 <div style={{ fontSize: '20px', fontWeight: '800', color: '#1565c0' }}>{teachers_pld.summary.certification_rate_percent.toFixed(0)}%</div>
                             </div>
@@ -179,11 +179,11 @@ const PDFTemplate = ({ contentRef }) => {
                                                 strokeLinecap="round"
                                                 transform="rotate(-90 35 35)"
                                             />
-                                            <text x="35" y="35" textAnchor="middle" dominantBaseline="central" fontSize="12" fontWeight="800">
+                                            <text x="35" y="35" textAnchor="middle" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#000">
                                                 {progress.toFixed(0)}%
                                             </text>
                                         </svg>
-                                        <p style={{ fontSize: '9px', fontWeight: '700', textAlign: 'center', margin: '8px 0 0 0', lineHeight: '1.2' }}>{teacher.name}</p>
+                                        <p style={{ fontSize: '9px', fontWeight: '700', textAlign: 'center', margin: '8px 0 0 0', lineHeight: '1.2', color: '#333' }}>{teacher.name}</p>
                                         {teacher.certified && <div style={{ fontSize: '8px', color: '#00cc7e', fontWeight: '800', marginTop: '2px' }}>✓</div>}
                                     </div>
                                 );
@@ -209,13 +209,14 @@ const PDFTemplate = ({ contentRef }) => {
                         </div>
                     )}
 
-                    <div style={{ marginTop: 'auto', paddingTop: '40px' }}>
-                        <div className="pdf-metadata" style={{ padding: '15px', borderTop: '1px solid #eee' }}>
-                            <p style={{ margin: '0' }}><strong>Generado por:</strong> Reporte Automático Playground</p>
-                            <p style={{ margin: '5px 0 0 0' }}><strong>Fecha:</strong> {new Date(metadata.generated_at).toLocaleString('es-AR')}</p>
-                        </div>
-                        <img src={bannerFooter} alt="Footer" style={{ width: '100%', marginTop: '20px' }} />
+                    <div className="pdf-metadata" style={{ marginTop: '30px', borderTop: '1px solid #eee', paddingTop: '10px' }}>
+                        <p style={{ margin: '0' }}><strong>Generado por:</strong> Reporte Automático Playground</p>
+                        <p style={{ margin: '5px 0 0 0' }}><strong>Fecha:</strong> {new Date(metadata.generated_at).toLocaleString('es-AR')}</p>
                     </div>
+                </div>
+
+                <div style={{ position: 'absolute', bottom: '5mm', left: '5mm', right: '5mm' }}>
+                    <img src={bannerFooter} alt="Footer" style={{ width: '100%' }} />
                 </div>
             </div>
         </div>

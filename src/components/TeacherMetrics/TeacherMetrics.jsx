@@ -37,7 +37,7 @@ const TeacherMetrics = () => {
                     title="Certificación Docente"
                     data={[summary.certified_teachers, summary.total_teachers - summary.certified_teachers]}
                     labels={['Certificados', 'No certificados']}
-                    colors={['var(--semaphore-green)', '#e0e0e0']}
+                    colors={['#00cc7e', '#ff8d7a']}
                 />
             </div>
 

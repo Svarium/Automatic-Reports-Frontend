@@ -22,13 +22,13 @@ const StudentMetrics = () => {
                         title="Vitalidad Digital (30 días)"
                         data={[summary.digital_vitality_30d_avg, 100 - summary.digital_vitality_30d_avg]}
                         labels={['Activos', 'Inactivos']}
-                        colors={['var(--chart-green)', '#e0e0e0']}
+                        colors={['#00cc7e', '#ff8d7a']}
                     />
                     <DoughnutChart
                         title="Progreso Reciente (15 días)"
                         data={[summary.recent_progress_15d_avg, 100 - summary.recent_progress_15d_avg]}
                         labels={['Con progreso', 'Sin progreso']}
-                        colors={['var(--chart-blue)', '#e0e0e0']}
+                        colors={['#00cc7e', '#ff8d7a']}
                     />
                 </div>
             </div>

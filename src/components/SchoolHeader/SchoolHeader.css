@@ -5,6 +5,7 @@
     margin-bottom: var(--spacing-lg);
     box-shadow: var(--shadow-lg);
     text-align: center;
+    border: 1px solid #222;
 }
 
 .school-name {
@@ -35,14 +36,14 @@
 
 .stat-label {
     font-size: 1rem;
-    color: #666;
+    color: #999;
     margin-top: var(--spacing-xs);
 }
 
 .general-semaphore-container {
     margin-top: var(--spacing-lg);
     padding-top: var(--spacing-lg);
-    border-top: 2px solid #eee;
+    border-top: 1px solid #333;
 }
 
 .general-semaphore-title {
