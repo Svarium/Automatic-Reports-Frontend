@@ -5,6 +5,7 @@ import SchoolHeader from './components/SchoolHeader/SchoolHeader';
 import StudentMetrics from './components/StudentMetrics/StudentMetrics';
 import TeacherMetrics from './components/TeacherMetrics/TeacherMetrics';
 import ObservationsInput from './components/ObservationsInput/ObservationsInput';
+import MentoringInput from './components/MentoringInput/MentoringInput';
 import PDFExport from './components/PDFExport/PDFExport';
 import BannerHeader from './components/Common/BannerHeader';
 import BannerFooter from './components/Common/BannerFooter';
@@ -60,6 +61,9 @@ function App() {
 
         {/* Observaciones de alumnos */}
         <ObservationsInput type="students" />
+
+        {/* Acompañamiento Pedagógico (Mentorías) */}
+        <MentoringInput />
 
         <div className="divider"></div>
 

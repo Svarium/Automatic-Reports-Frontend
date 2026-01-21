@@ -10,7 +10,9 @@ const PDFTemplate = ({ contentRef }) => {
         generalSemaphore,
         semaphores,
         studentObservations,
-        teacherObservations
+        teacherObservations,
+        scheduledMentorings,
+        completedMentorings
     } = useReport();
 
     if (!reportData) return null;
@@ -110,7 +112,7 @@ const PDFTemplate = ({ contentRef }) => {
                     </div>
 
                     {studentObservations && (
-                        <div className="pdf-section" style={{ marginTop: '30px', pageBreakInside: 'avoid' }}>
+                        <div className="pdf-section" style={{ marginTop: '20px', pageBreakInside: 'avoid' }}>
                             <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>Observaciones del Mentor - Alumnos</h3>
                             <div style={{
                                 padding: '15px',
@@ -123,6 +125,43 @@ const PDFTemplate = ({ contentRef }) => {
                                 border: '1px solid #7171e0'
                             }}>
                                 {studentObservations}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ACOMPAÑAMIENTO PEDAGÓGICO */}
+                    {(scheduledMentorings > 0 || completedMentorings > 0) && (
+                        <div className="pdf-section" style={{ marginTop: '20px', pageBreakInside: 'avoid' }}>
+                            <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>🤝 Acompañamiento Pedagógico</h3>
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 1fr 1fr',
+                                gap: '15px',
+                                padding: '20px',
+                                backgroundColor: '#f8f9fa',
+                                borderRadius: '12px',
+                                border: '1px solid #eee',
+                                textAlign: 'center'
+                            }}>
+                                <div>
+                                    <div style={{ fontSize: '11px', color: '#666', fontWeight: '600' }}>Agendadas</div>
+                                    <div style={{ fontSize: '24px', fontWeight: '800', color: '#000', marginTop: '5px' }}>{scheduledMentorings}</div>
+                                </div>
+                                <div>
+                                    <div style={{ fontSize: '11px', color: '#666', fontWeight: '600' }}>Concretadas</div>
+                                    <div style={{ fontSize: '24px', fontWeight: '800', color: '#00cc7e', marginTop: '5px' }}>{completedMentorings}</div>
+                                </div>
+                                <div>
+                                    <div style={{ fontSize: '11px', color: '#666', fontWeight: '600' }}>Cumplimiento</div>
+                                    <div style={{
+                                        fontSize: '24px',
+                                        fontWeight: '800',
+                                        color: scheduledMentorings > 0 && (completedMentorings / scheduledMentorings) >= 0.8 ? '#00cc7e' : '#ff8d7a',
+                                        marginTop: '5px'
+                                    }}>
+                                        {scheduledMentorings > 0 ? ((completedMentorings / scheduledMentorings) * 100).toFixed(0) : 0}%
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}

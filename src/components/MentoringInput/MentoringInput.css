@@ -1,0 +1,115 @@
+.mentoring-container {
+  background-color: var(--white);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-xl);
+}
+
+.mentoring-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.mentoring-controls {
+  display: flex;
+  gap: var(--spacing-xl);
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.mentoring-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-width: 200px;
+}
+
+.mentoring-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.counter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.btn-counter {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--text-color);
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-counter.btn-minus {
+  border-color: var(--semaphore-red);
+  color: var(--semaphore-red);
+}
+
+.btn-counter.btn-plus {
+  border-color: var(--semaphore-green);
+  color: var(--semaphore-green);
+}
+
+.btn-counter.btn-minus:hover {
+  background-color: var(--semaphore-red);
+  color: var(--white);
+}
+
+.btn-counter.btn-plus:hover {
+  background-color: var(--semaphore-green);
+  color: var(--white);
+}
+
+.btn-counter:active {
+  transform: scale(0.9);
+}
+
+.counter-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: 40px;
+  text-align: center;
+}
+
+.mentoring-summary {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+
+.mentoring-ratio {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.ratio-value {
+  color: var(--semaphore-green);
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .mentoring-controls {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+}

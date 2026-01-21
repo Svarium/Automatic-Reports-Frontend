@@ -23,6 +23,8 @@ export const ReportProvider = ({ children }) => {
     const [generalSemaphore, setGeneralSemaphore] = useState('gray');
     const [studentObservations, setStudentObservations] = useState('');
     const [teacherObservations, setTeacherObservations] = useState('');
+    const [scheduledMentorings, setScheduledMentorings] = useState(0);
+    const [completedMentorings, setCompletedMentorings] = useState(0);
 
     // Recalcular semáforo general cuando cambian los individuales
     useEffect(() => {
@@ -128,6 +130,8 @@ export const ReportProvider = ({ children }) => {
         setGeneralSemaphore('gray');
         setStudentObservations('');
         setTeacherObservations('');
+        setScheduledMentorings(0);
+        setCompletedMentorings(0);
     };
 
     const value = {
@@ -139,6 +143,8 @@ export const ReportProvider = ({ children }) => {
         generalSemaphore,
         studentObservations,
         teacherObservations,
+        scheduledMentorings,
+        completedMentorings,
 
         // Acciones
         uploadFile,
@@ -146,6 +152,8 @@ export const ReportProvider = ({ children }) => {
         updateStudentObservations,
         updateTeacherObservations,
         toggleTeacherCertification,
+        setScheduledMentorings,
+        setCompletedMentorings,
         resetReport,
     };
 
