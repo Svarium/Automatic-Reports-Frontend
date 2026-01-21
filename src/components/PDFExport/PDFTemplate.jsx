@@ -100,7 +100,7 @@ const PDFTemplate = ({ contentRef }) => {
                                         <p style={{ fontWeight: '700', fontSize: '12px', margin: '0 0 5px 0', color: '#000000' }}>{group.route_name}</p>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px', fontSize: '10px', color: '#444' }}>
                                             <div>Alumnos: <strong style={{ color: '#000' }}>{group.students_count}</strong></div>
-                                            <div>Progreso Promedio: <strong style={{ color: '#000' }}>{group.metrics.avg_progress_percent.toFixed(1)}%</strong></div>
+                                            <div>Clases Completadas: <strong style={{ color: '#000' }}>{group.metrics.classes_completion_percent.toFixed(1)}%</strong></div>
                                             <div>Vitalidad Digital (30 días): <strong style={{ color: '#000' }}>{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</strong></div>
                                             <div>Progreso Reciente (15 días): <strong style={{ color: '#000' }}>{group.metrics.recent_progress_15d_percent.toFixed(1)}%</strong></div>
                                             <div style={{ gridColumn: 'span 2' }}>Cursos Completados: <strong style={{ color: '#000' }}>{group.metrics.courses_completion_percent.toFixed(1)}%</strong></div>

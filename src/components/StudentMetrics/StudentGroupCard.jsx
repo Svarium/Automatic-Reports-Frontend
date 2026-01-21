@@ -23,8 +23,8 @@ const StudentGroupCard = ({ group }) => {
 
             <div className="group-metrics">
                 <div className="metric-item">
-                    <div className="metric-label">Progreso Promedio</div>
-                    <div className="metric-value">{group.metrics.avg_progress_percent.toFixed(1)}%</div>
+                    <div className="metric-label">Clases Completadas</div>
+                    <div className="metric-value">{group.metrics.classes_completion_percent.toFixed(1)}%</div>
                 </div>
                 <div className="metric-item">
                     <div className="metric-label">Vitalidad Digital (30 días)</div>
