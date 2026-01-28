@@ -77,17 +77,40 @@ const PDFTemplate = ({ contentRef }) => {
                         <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>📚 Métricas de Alumnos</h2>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', margin: '20px 0' }}>
-                            <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3' }}>
-                                <div style={{ fontSize: '12px', color: '#555' }}>Vitalidad Digital (30 días)</div>
-                                <div style={{ fontSize: '20px', fontWeight: '700' }}>{students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
+                            <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontSize: '12px', color: '#555', fontWeight: 'bold' }}>Vitalidad Digital (30 días)</div>
+                                    <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
+                                </div>
+                                <div style={{ flex: 1, fontSize: '9px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '10px' }}>
+                                    Porcentaje de frecuencia de acceso y actividad en la plataforma (últimos 30 días).
+                                </div>
                             </div>
-                            <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3' }}>
-                                <div style={{ fontSize: '12px', color: '#555' }}>Progreso Reciente (15 días)</div>
-                                <div style={{ fontSize: '20px', fontWeight: '700' }}>{students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
+                            <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontSize: '12px', color: '#555', fontWeight: 'bold' }}>Progreso Reciente (15 días)</div>
+                                    <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
+                                </div>
+                                <div style={{ flex: 1, fontSize: '9px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '10px' }}>
+                                    Porcentaje de avance real en contenidos y lecciones completadas (últimos 15 días).
+                                </div>
                             </div>
                         </div>
 
-                        <h3 className="pdf-subtitle" style={{ fontSize: '16px', marginBottom: '15px' }}>Detalle de Alumnos por Ruta</h3>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>
+                            <h3 className="pdf-subtitle" style={{ fontSize: '16px', margin: '0' }}>Detalle de Alumnos por Ruta</h3>
+                            <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '10px', color: '#444' }}>
+                                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#00cc7e', display: 'inline-block' }}></span> A tiempo
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '10px', color: '#444' }}>
+                                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ffd148', display: 'inline-block' }}></span> A fortalecer
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '10px', color: '#444' }}>
+                                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ff8d7a', display: 'inline-block' }}></span> Requiere atención
+                                </div>
+                            </div>
+                        </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                             {students.groups.map((group, index) => {
                                 const semaphore = semaphores[group.route_name] || 'gray';
