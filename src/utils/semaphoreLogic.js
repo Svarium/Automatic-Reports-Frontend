@@ -1,37 +1,47 @@
 /**
  * Calcula el semáforo general del colegio basado en los semáforos individuales
- * Lógica: por mayoría (el color con más ocurrencias gana)
- * @param {Object} semaphores - Objeto con semáforos por ruta { routeName: 'green'|'yellow'|'red' }
- * @returns {string} Color del semáforo general ('green', 'yellow', 'red')
+ * Lógica: Promedio ponderado (Rojo: 2, Amarillo: 1.5, Verde: 1)
+ * @param {Object} semaphores - Objeto con semáforos por ruta { routeName: 'green'|'yellow'|'red'|'gray' }
+ * @returns {string} Color del semáforo general ('green', 'yellow', 'red', 'gray')
  */
 export const calculateGeneralSemaphore = (semaphores) => {
     const values = Object.values(semaphores);
 
     if (values.length === 0) {
-        return 'gray'; // Default if no semaphores
-    }
-
-    const counts = {
-        green: values.filter(s => s === 'green').length,
-        yellow: values.filter(s => s === 'yellow').length,
-        red: values.filter(s => s === 'red').length,
-    };
-
-    const totalRated = counts.green + counts.yellow + counts.red;
-
-    if (totalRated === 0) {
         return 'gray';
     }
 
-    // Retorna el color con mayor cantidad
-    // En caso de empate, prioridad: green > yellow > red
-    if (counts.green >= counts.yellow && counts.green >= counts.red) {
-        return 'green';
+    // Si todos están en gris, el estado es pendiente
+    if (values.every(v => v === 'gray')) {
+        return 'gray';
     }
-    if (counts.yellow >= counts.red) {
-        return 'yellow';
-    }
-    return 'red';
+
+    // Solo calculamos el promedio de los que ya tienen un color asignado
+    const coloredValues = values.filter(v => v !== 'gray');
+
+    const weights = {
+        red: 2,
+        yellow: 1.5,
+        green: 1
+    };
+
+    const totalWeight = coloredValues.reduce((acc, curr) => acc + (weights[curr] || 1), 0);
+    const average = totalWeight / coloredValues.length;
+
+    // Umbrales ajustados para mayor precisión
+    // Permite al menos 1 rojo entre 4 verdes sin pasar a amarillo de inmediato (Promedio 1.2)
+    if (average >= 1.6) return 'red';
+    if (average >= 1.3) return 'yellow';
+    return 'green';
+};
+
+/**
+ * Verifica si existe al menos un grupo en rojo
+ * @param {Object} semaphores 
+ * @returns {boolean}
+ */
+export const hasRedSemaphore = (semaphores) => {
+    return Object.values(semaphores).some(s => s === 'red');
 };
 
 /**

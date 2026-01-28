@@ -12,7 +12,8 @@ const PDFTemplate = ({ contentRef }) => {
         studentObservations,
         teacherObservations,
         scheduledMentorings,
-        completedMentorings
+        completedMentorings,
+        hasRedWarning
     } = useReport();
 
     if (!reportData) return null;
@@ -47,6 +48,11 @@ const PDFTemplate = ({ contentRef }) => {
                             {generalSemaphore === 'red' && '✕'}
                         </div>
                         <h2 style={{ fontSize: '24px', margin: '0', color: '#000000' }}>Estado General: {getSemaphoreLabel(generalSemaphore)}</h2>
+                        {hasRedWarning && (
+                            <div style={{ color: '#ff8d7a', fontSize: '14px', fontWeight: '700', marginTop: '10px' }}>
+                                ⚠️ Hay grupos que requieren atención inmediata
+                            </div>
+                        )}
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', maxWidth: '500px', width: '100%', marginTop: '20px' }}>
@@ -64,7 +70,7 @@ const PDFTemplate = ({ contentRef }) => {
                 <img src={bannerPortadaFooter} alt="Cover Footer" style={{ width: '100%', marginTop: '40px' }} />
             </div>
 
-            {/* SECCION ALUMNOS - Puede ocupar varias paginas */}
+            {/* SECCION ALUMNOS */}
             <div className="pdf-page-container">
                 <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
                     <div className="pdf-section" style={{ marginTop: '20px' }}>
@@ -129,7 +135,6 @@ const PDFTemplate = ({ contentRef }) => {
                         </div>
                     )}
 
-                    {/* ACOMPAÑAMIENTO PEDAGÓGICO */}
                     {(scheduledMentorings > 0 || completedMentorings > 0) && (
                         <div className="pdf-section" style={{ marginTop: '20px', pageBreakInside: 'avoid' }}>
                             <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>🤝 Acompañamiento Pedagógico</h3>
@@ -168,7 +173,7 @@ const PDFTemplate = ({ contentRef }) => {
                 </div>
             </div>
 
-            {/* SECCION DOCENTES - Nueva pagina */}
+            {/* SECCION DOCENTES */}
             <div className="pdf-page-container">
                 <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
                     <div className="pdf-section" style={{ marginTop: '20px' }}>
@@ -243,10 +248,10 @@ const PDFTemplate = ({ contentRef }) => {
                         <p style={{ margin: '0' }}><strong>Generado por:</strong> Reporte Automático Playground</p>
                         <p style={{ margin: '5px 0 0 0' }}><strong>Fecha:</strong> {new Date(metadata.generated_at).toLocaleString('es-AR')}</p>
                     </div>
-                </div>
 
-                <div style={{ position: 'absolute', bottom: '5mm', left: '5mm', right: '5mm' }}>
-                    <img src={bannerFooter} alt="Footer" style={{ width: '100%' }} />
+                    <div style={{ position: 'absolute', bottom: '5mm', left: '5mm', right: '5mm' }}>
+                        <img src={bannerFooter} alt="Footer" style={{ width: '100%' }} />
+                    </div>
                 </div>
             </div>
         </div>
@@ -254,4 +259,3 @@ const PDFTemplate = ({ contentRef }) => {
 };
 
 export default PDFTemplate;
-

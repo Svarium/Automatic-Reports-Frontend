@@ -3,7 +3,7 @@ import { getSemaphoreLabel } from '../../utils/semaphoreLogic';
 import './SchoolHeader.css';
 
 const SchoolHeader = () => {
-    const { reportData, generalSemaphore } = useReport();
+    const { reportData, generalSemaphore, hasRedWarning } = useReport();
 
     if (!reportData || !reportData.school) return null;
 
@@ -34,6 +34,11 @@ const SchoolHeader = () => {
                 <p className="semaphore-status-text">
                     {getSemaphoreLabel(generalSemaphore)}
                 </p>
+                {hasRedWarning && (
+                    <p className="red-warning-legend">
+                        ⚠️ Hay al menos un grupo que requiere atención inmediata.
+                    </p>
+                )}
             </div>
         </div>
     );

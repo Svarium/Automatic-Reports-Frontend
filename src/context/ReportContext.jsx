@@ -25,12 +25,17 @@ export const ReportProvider = ({ children }) => {
     const [teacherObservations, setTeacherObservations] = useState('');
     const [scheduledMentorings, setScheduledMentorings] = useState(0);
     const [completedMentorings, setCompletedMentorings] = useState(0);
+    const [hasRedWarning, setHasRedWarning] = useState(false);
 
     // Recalcular semáforo general cuando cambian los individuales
     useEffect(() => {
         if (Object.keys(semaphores).length > 0) {
             const calculated = calculateGeneralSemaphore(semaphores);
             setGeneralSemaphore(calculated);
+
+            // Verificar si hay algún grupo en rojo
+            const hasRed = Object.values(semaphores).some(s => s === 'red');
+            setHasRedWarning(hasRed);
         }
     }, [semaphores]);
 
@@ -145,6 +150,7 @@ export const ReportProvider = ({ children }) => {
         teacherObservations,
         scheduledMentorings,
         completedMentorings,
+        hasRedWarning,
 
         // Acciones
         uploadFile,
