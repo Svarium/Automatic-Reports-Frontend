@@ -122,3 +122,61 @@
     font-weight: 700;
     color: var(--chart-blue);
 }
+
+/* Feedback Selector Styles */
+.group-feedback-selector {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.feedback-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.feedback-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: var(--spacing-xs);
+}
+
+.feedback-pill {
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-align: left;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.feedback-pill:hover {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+/* Colores para cuando la píldora está seleccionada */
+.student-group-card.semaphore-yellow .feedback-pill.selected {
+    background-color: var(--semaphore-yellow);
+    border-color: var(--semaphore-yellow);
+    color: #333;
+    font-weight: 600;
+}
+
+.student-group-card.semaphore-red .feedback-pill.selected {
+    background-color: var(--semaphore-red);
+    border-color: var(--semaphore-red);
+    color: white;
+    font-weight: 600;
+}

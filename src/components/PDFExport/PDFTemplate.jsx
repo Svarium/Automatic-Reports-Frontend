@@ -13,7 +13,8 @@ const PDFTemplate = ({ contentRef }) => {
         teacherObservations,
         scheduledMentorings,
         completedMentorings,
-        hasRedWarning
+        hasRedWarning,
+        groupFeedback
     } = useReport();
 
     if (!reportData) return null;
@@ -141,6 +142,31 @@ const PDFTemplate = ({ contentRef }) => {
                                                 <div>Progreso Reciente (15 días): <strong style={{ color: '#000' }}>{group.metrics.recent_progress_15d_percent.toFixed(1)}%</strong></div>
                                             </div>
                                         </div>
+
+                                        {(groupFeedback[group.route_name] && groupFeedback[group.route_name].length > 0) && (
+                                            <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px dashed #ddd' }}>
+                                                <div style={{ fontSize: '10px', fontWeight: '800', color: '#333', marginBottom: '6px' }}>Feedback:</div>
+                                                <div style={{
+                                                    display: 'grid',
+                                                    gridTemplateColumns: '1fr 1fr',
+                                                    gap: 'x: 10px, y: 4px',
+                                                    rowGap: '4px',
+                                                    columnGap: '15px'
+                                                }}>
+                                                    {groupFeedback[group.route_name].map((reason, rIndex) => (
+                                                        <div key={rIndex} style={{
+                                                            fontSize: '9px',
+                                                            color: '#555',
+                                                            paddingLeft: '6px',
+                                                            borderLeft: '2px solid #ddd',
+                                                            lineHeight: '1.2'
+                                                        }}>
+                                                            • {reason}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}

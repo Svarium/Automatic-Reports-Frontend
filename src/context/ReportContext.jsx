@@ -26,6 +26,7 @@ export const ReportProvider = ({ children }) => {
     const [scheduledMentorings, setScheduledMentorings] = useState(0);
     const [completedMentorings, setCompletedMentorings] = useState(0);
     const [hasRedWarning, setHasRedWarning] = useState(false);
+    const [groupFeedback, setGroupFeedback] = useState({}); // { routeName: [feedbacks] }
 
     // Recalcular semáforo general cuando cambian los individuales
     useEffect(() => {
@@ -53,10 +54,13 @@ export const ReportProvider = ({ children }) => {
             // Inicializar semáforos en verde para todas las rutas de alumnos
             if (data.students && data.students.groups) {
                 const initialSemaphores = {};
+                const initialFeedback = {};
                 data.students.groups.forEach(group => {
                     initialSemaphores[group.route_name] = 'gray';
+                    initialFeedback[group.route_name] = [];
                 });
                 setSemaphores(initialSemaphores);
+                setGroupFeedback(initialFeedback);
             }
         } catch (err) {
             setError(err.message);
@@ -72,6 +76,16 @@ export const ReportProvider = ({ children }) => {
         setSemaphores(prev => ({
             ...prev,
             [routeName]: color
+        }));
+    };
+
+    /**
+     * Actualiza el feedback de una ruta específica
+     */
+    const updateGroupFeedback = (routeName, feedbacks) => {
+        setGroupFeedback(prev => ({
+            ...prev,
+            [routeName]: feedbacks
         }));
     };
 
@@ -137,6 +151,7 @@ export const ReportProvider = ({ children }) => {
         setTeacherObservations('');
         setScheduledMentorings(0);
         setCompletedMentorings(0);
+        setGroupFeedback({});
     };
 
     const value = {
@@ -151,6 +166,7 @@ export const ReportProvider = ({ children }) => {
         scheduledMentorings,
         completedMentorings,
         hasRedWarning,
+        groupFeedback,
 
         // Acciones
         uploadFile,
@@ -160,6 +176,7 @@ export const ReportProvider = ({ children }) => {
         toggleTeacherCertification,
         setScheduledMentorings,
         setCompletedMentorings,
+        updateGroupFeedback,
         resetReport,
     };
 
