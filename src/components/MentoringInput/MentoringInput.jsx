@@ -20,7 +20,7 @@ const MentoringInput = () => {
 
     return (
         <div className="mentoring-container">
-            <h3 className="mentoring-title">🤝 Acompañamiento Pedagógico <span className='mentoring-subtitle'> (Desde el inició del presente ciclo lectivo 📅)</span></h3>
+            <h3 className="mentoring-title">🤝 Acompañamiento Pedagógico Sincrónico <span className='mentoring-subtitle'> (Desde el inicio del presente ciclo lectivo 📅)</span></h3>
 
             <div className="mentoring-controls">
                 {/* Mentorías Agendadas */}
@@ -70,7 +70,7 @@ const MentoringInput = () => {
 
             <div className="mentoring-summary">
                 <p className="mentoring-ratio">
-                    Tasa de cumplimiento: <span className="ratio-value">{ratio.toFixed(0)}%</span>
+                    Tasa de participación: <span className="ratio-value">{ratio.toFixed(0)}%</span>
                 </p>
             </div>
         </div>
