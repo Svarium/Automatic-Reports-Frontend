@@ -8,5 +8,5 @@ export const GROUP_FEEDBACK_OPTIONS = [
     "Poco tiempo dedicado a la certificación.",
     "Rotación docente.",
     "Curso vacío.",
-    "Ver Observaciones Generales"
+    "Ver Observaciones del Mentor"
 ];

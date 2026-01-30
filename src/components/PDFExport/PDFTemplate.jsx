@@ -84,7 +84,7 @@ const PDFTemplate = ({ contentRef }) => {
                                     <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
                                 </div>
                                 <div style={{ flex: 1, fontSize: '9px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '10px' }}>
-                                    Porcentaje de frecuencia de acceso y actividad en la plataforma (últimos 30 días).
+                                    Porcentaje de frecuencia de acceso a la plataforma (últimos 30 días).
                                 </div>
                             </div>
                             <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -93,7 +93,7 @@ const PDFTemplate = ({ contentRef }) => {
                                     <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
                                 </div>
                                 <div style={{ flex: 1, fontSize: '9px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '10px' }}>
-                                    Porcentaje de avance real en contenidos y lecciones completadas (últimos 15 días).
+                                    Porcentaje de avance en contenidos y lecciones completadas (últimos 15 días).
                                 </div>
                             </div>
                         </div>
