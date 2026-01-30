@@ -30,16 +30,16 @@ const PDFTemplate = ({ contentRef }) => {
 
     const { school, students, teachers_pld, metadata } = reportData;
 
-    // Lógica de Chunks para Alumnos (4 filas x 2 col = 8)
+    // Alumnos (4 filas x 2 col = 8)
     const groupChunks = chunkArray(students.groups, 8);
 
-    // Lógica de Chunks para Docentes (6 filas x 2 col = 12)
+    // Docentes (6 filas x 2 col = 12)
     const visibleTeachers = teachers_pld.teachers.filter(t => !teacherSettings[t.name]?.isDeleted);
     const teacherChunks = chunkArray(visibleTeachers, 12);
 
     return (
         <div ref={contentRef} className="pdf-template">
-            {/* PAGINA 1: PORTADA EXCLUSIVA */}
+            {/* PAGINA 1: PORTADA */}
             <div className="pdf-page" style={{ display: 'flex', flexDirection: 'column' }}>
                 <img src={bannerHeader} alt="Header" style={{ width: '100%', marginBottom: '40px' }} />
 
@@ -87,7 +87,7 @@ const PDFTemplate = ({ contentRef }) => {
                 <img src={bannerPortadaFooter} alt="Cover Footer" style={{ width: '100%', marginTop: '40px' }} />
             </div>
 
-            {/* SECCION ALUMNOS - PAGINADA (4 filas max) */}
+            {/* SECCION ALUMNOS */}
             {groupChunks.map((chunk, chunkIdx) => (
                 <div key={`students-page-${chunkIdx}`} className="pdf-page-container">
                     <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
@@ -95,7 +95,6 @@ const PDFTemplate = ({ contentRef }) => {
                             {chunkIdx === 0 && (
                                 <>
                                     <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>📚 Métricas de Alumnos</h2>
-
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', margin: '20px 0' }}>
                                         <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
                                             <div style={{ flex: 1 }}>
@@ -138,7 +137,6 @@ const PDFTemplate = ({ contentRef }) => {
                                 {chunk.map((group, index) => {
                                     const semaphore = semaphores[group.route_name] || 'gray';
                                     const semaphoreColor = semaphore === 'green' ? '#00cc7e' : semaphore === 'yellow' ? '#ffd148' : semaphore === 'red' ? '#ff8d7a' : '#9e9e9e';
-
                                     return (
                                         <div key={index} style={{
                                             padding: '12px',
@@ -148,7 +146,6 @@ const PDFTemplate = ({ contentRef }) => {
                                             borderLeftWidth: '5px',
                                             borderRadius: '8px',
                                             pageBreakInside: 'avoid',
-                                            breakInside: 'avoid',
                                             boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
                                         }}>
                                             <div style={{ marginBottom: '10px', borderBottom: '1px solid #f5f5f5', paddingBottom: '5px' }}>
@@ -165,16 +162,13 @@ const PDFTemplate = ({ contentRef }) => {
                                                     <div>Progreso Reciente (15 días): <strong style={{ color: '#000' }}>{group.metrics.recent_progress_15d_percent.toFixed(1)}%</strong></div>
                                                 </div>
                                             </div>
-
                                             {(groupFeedback[group.route_name] && groupFeedback[group.route_name].length > 0) && (
                                                 <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px dashed #ddd' }}>
                                                     <div style={{ fontSize: '10px', fontWeight: '800', color: '#333', marginBottom: '6px' }}>Feedback:</div>
                                                     <div style={{
                                                         display: 'grid',
                                                         gridTemplateColumns: '1fr 1fr',
-                                                        gap: 'x: 10px, y: 4px',
-                                                        rowGap: '4px',
-                                                        columnGap: '15px'
+                                                        gap: '4px 15px'
                                                     }}>
                                                         {groupFeedback[group.route_name].map((reason, rIndex) => (
                                                             <div key={rIndex} style={{
@@ -195,7 +189,6 @@ const PDFTemplate = ({ contentRef }) => {
                                 })}
                             </div>
 
-                            {/* Mostrar observaciones solo en el último chunk de alumnos si no hay docentes, o simplemente aquí */}
                             {chunkIdx === groupChunks.length - 1 && studentObservations && (
                                 <div className="pdf-section" style={{ marginTop: '20px', pageBreakInside: 'avoid' }}>
                                     <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>Observaciones del Mentor - Alumnos</h3>
@@ -218,7 +211,7 @@ const PDFTemplate = ({ contentRef }) => {
                 </div>
             ))}
 
-            {/* SECCION DOCENTES - PAGINADA (6 filas max = 12 docentes) - INICIA EN HOJA NUEVA */}
+            {/* SECCION DOCENTES */}
             {teacherChunks.map((chunk, chunkIdx) => (
                 <div key={`teachers-page-${chunkIdx}`} className="pdf-page-container" style={{ pageBreakBefore: 'always' }}>
                     <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
@@ -226,7 +219,6 @@ const PDFTemplate = ({ contentRef }) => {
                             {chunkIdx === 0 && (
                                 <>
                                     <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>👩‍🏫 Métricas de capacitación Docente</h2>
-
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', margin: '20px 0' }}>
                                         <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px', textAlign: 'center', border: '1px solid #eee' }}>
                                             <div style={{ fontSize: '11px', color: '#666' }}>Total Docentes</div>
@@ -245,15 +237,10 @@ const PDFTemplate = ({ contentRef }) => {
                             )}
 
                             <h3 className="pdf-subtitle" style={{ fontSize: '16px', marginBottom: '15px' }}>Listado de Docentes {teacherChunks.length > 1 ? `(Parte ${chunkIdx + 1})` : ''}</h3>
-                            <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: '1fr 1fr',
-                                gap: '10px'
-                            }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                                 {chunk.map((teacher, index) => {
                                     const settings = teacherSettings[teacher.name] || { teaching: true, communication: 'Fluida', deletedPlds: [] };
                                     const activePlds = teacher.plds.filter(p => !settings.deletedPlds.includes(p.certification_name));
-
                                     return (
                                         <div key={index} style={{
                                             padding: '12px',
@@ -261,7 +248,6 @@ const PDFTemplate = ({ contentRef }) => {
                                             border: '1px solid #efefef',
                                             borderRadius: '8px',
                                             pageBreakInside: 'avoid',
-                                            breakInside: 'avoid',
                                             marginBottom: '5px'
                                         }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
@@ -294,7 +280,6 @@ const PDFTemplate = ({ contentRef }) => {
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '8px', borderLeft: '2px solid #eee' }}>
                                                 {activePlds.map((pld, idx) => (
                                                     <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -315,85 +300,85 @@ const PDFTemplate = ({ contentRef }) => {
                                     );
                                 })}
                             </div>
-
-                            {/* Mostrar estadísticas y observaciones finales solo en el último chunk de docentes */}
-                            {chunkIdx === teacherChunks.length - 1 && (
-                                <>
-                                    {(scheduledMentorings > 0 || completedMentorings > 0) ? (
-                                        <div className="pdf-section" style={{ marginTop: '20px', pageBreakBefore: 'always' }}>
-                                            <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>🤝 Acompañamiento Pedagógico Sincrónico<span style={{ fontSize: '10px', fontWeight: '300' }}> (Desde el inicio del presente ciclo lectivo 📅)</span></h3>
-                                            <div style={{
-                                                display: 'grid',
-                                                gridTemplateColumns: '1fr 1fr 1fr',
-                                                gap: '15px',
-                                                padding: '20px',
-                                                backgroundColor: '#f8f9fa',
-                                                borderRadius: '12px',
-                                                border: '1px solid #eee',
-                                                textAlign: 'center'
-                                            }}>
-                                                <div>
-                                                    <div style={{ fontSize: '11px', color: '#666', fontWeight: '600' }}>Agendadas</div>
-                                                    <div style={{ fontSize: '24px', fontWeight: '800', color: '#000', marginTop: '5px' }}>{scheduledMentorings}</div>
-                                                </div>
-                                                <div>
-                                                    <div style={{ fontSize: '11px', color: '#666', fontWeight: '600' }}>Concretadas</div>
-                                                    <div style={{ fontSize: '24px', fontWeight: '800', color: '#00cc7e', marginTop: '5px' }}>{completedMentorings}</div>
-                                                </div>
-                                                <div>
-                                                    <div style={{ fontSize: '11px', color: '#666', fontWeight: '600' }}>Participación</div>
-                                                    <div style={{
-                                                        fontSize: '24px',
-                                                        fontWeight: '800',
-                                                        color: scheduledMentorings > 0 && (completedMentorings / scheduledMentorings) >= 0.8 ? '#00cc7e' : '#ff8d7a',
-                                                        marginTop: '5px'
-                                                    }}>
-                                                        {scheduledMentorings > 0 ? ((completedMentorings / scheduledMentorings) * 100).toFixed(0) : 0}%
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div style={{ marginTop: '20px' }}>
-                                            <h4 className="pdf-subtitle" style={{ fontSize: '13px', marginBottom: '15px', color: '#666' }}>No se registran encuentros sincrónicos de acompañamiento pedagógico realizados 📆</h4>
-                                        </div>
-                                    )}
-
-                                    {teacherObservations && (
-                                        <div className="pdf-section" style={{ marginTop: '30px', pageBreakInside: 'avoid' }}>
-                                            <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>Observaciones del Mentor - Docentes</h3>
-                                            <div style={{
-                                                padding: '15px',
-                                                backgroundColor: '#8383fd',
-                                                color: 'white',
-                                                borderRadius: '8px',
-                                                whiteSpace: 'pre-wrap',
-                                                fontSize: '12px',
-                                                lineHeight: '1.5',
-                                                border: '1px solid #7171e0'
-                                            }}>
-                                                {teacherObservations}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    <div className="pdf-metadata" style={{ marginTop: '30px', borderTop: '1px solid #eee', paddingTop: '10px' }}>
-                                        <p style={{ margin: '0' }}><strong>Generado por:</strong> Reporte Automático Playground</p>
-                                        <p style={{ margin: '5px 0 0 0' }}><strong>Fecha:</strong> {new Date(metadata.generated_at).toLocaleString('es-AR')}</p>
-                                    </div>
-                                </>
-                            )}
                         </div>
-
-                        {/* Banner de Footer solo en la última página del documento */}
-                        {chunkIdx === teacherChunks.length - 1 && (
-                            <div style={{ position: 'absolute', bottom: '5mm', left: '5mm', right: '5mm' }}>
-                                <img src={bannerFooter} alt="Footer" style={{ width: '100%' }} />
-                            </div>
-                        )}
                     </div>
                 </div>
             ))}
+
+            {/* PAGINA FINAL: ACOMPAÑAMIENTO Y OBSERVACIONES */}
+            <div className="pdf-page-container" style={{ pageBreakBefore: 'always' }}>
+                <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', position: 'relative', padding: '15mm', backgroundColor: 'white', boxSizing: 'border-box' }}>
+                    <div className="pdf-content">
+                        {(scheduledMentorings > 0 || completedMentorings > 0) ? (
+                            <div className="pdf-section" style={{ marginTop: '20px' }}>
+                                <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>🤝 Acompañamiento Pedagógico Sincrónico<span style={{ fontSize: '10px', fontWeight: '300' }}> (Desde el inicio del presente ciclo lectivo 📅)</span></h3>
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '1fr 1fr 1fr',
+                                    gap: '15px',
+                                    padding: '20px',
+                                    backgroundColor: '#f8f9fa',
+                                    borderRadius: '12px',
+                                    border: '1px solid #eee',
+                                    textAlign: 'center'
+                                }}>
+                                    <div>
+                                        <div style={{ fontSize: '11px', color: '#666', fontWeight: '600' }}>Agendadas</div>
+                                        <div style={{ fontSize: '24px', fontWeight: '800', color: '#000', marginTop: '5px' }}>{scheduledMentorings}</div>
+                                    </div>
+                                    <div>
+                                        <div style={{ fontSize: '11px', color: '#666', fontWeight: '600' }}>Concretadas</div>
+                                        <div style={{ fontSize: '24px', fontWeight: '800', color: '#00cc7e', marginTop: '5px' }}>{completedMentorings}</div>
+                                    </div>
+                                    <div>
+                                        <div style={{ fontSize: '11px', color: '#666', fontWeight: '600' }}>Participación</div>
+                                        <div style={{
+                                            fontSize: '24px',
+                                            fontWeight: '800',
+                                            color: scheduledMentorings > 0 && (completedMentorings / scheduledMentorings) >= 0.8 ? '#00cc7e' : '#ff8d7a',
+                                            marginTop: '5px'
+                                        }}>
+                                            {scheduledMentorings > 0 ? ((completedMentorings / scheduledMentorings) * 100).toFixed(0) : 0}%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div style={{ marginTop: '20px' }}>
+                                <h4 className="pdf-subtitle" style={{ fontSize: '13px', marginBottom: '15px', color: '#666' }}>No se registran encuentros sincrónicos de acompañamiento pedagógico realizados 📆</h4>
+                            </div>
+                        )}
+
+                        {teacherObservations && (
+                            <div className="pdf-section" style={{ marginTop: '30px' }}>
+                                <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>Observaciones del Mentor - Docentes</h3>
+                                <div style={{
+                                    padding: '15px',
+                                    backgroundColor: '#8383fd',
+                                    color: 'white',
+                                    borderRadius: '8px',
+                                    whiteSpace: 'pre-wrap',
+                                    fontSize: '12px',
+                                    lineHeight: '1.5',
+                                    border: '1px solid #7171e0'
+                                }}>
+                                    {teacherObservations}
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="pdf-metadata" style={{ marginTop: '40px', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+                            <p style={{ margin: '0' }}><strong>Generado por:</strong> Reporte Automático Playground</p>
+                            <p style={{ margin: '5px 0 0 0' }}><strong>Fecha:</strong> {new Date(metadata.generated_at).toLocaleString('es-AR')}</p>
+                        </div>
+                    </div>
+
+                    {/* Banner de Footer fijo al final de esta última hoja */}
+                    <div style={{ position: 'absolute', bottom: '5mm', left: '5mm', right: '5mm' }}>
+                        <img src={bannerFooter} alt="Footer" style={{ width: '100%' }} />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
