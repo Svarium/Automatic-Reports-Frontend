@@ -4,12 +4,15 @@ import TeacherCard from './TeacherCard';
 import './TeacherMetrics.css';
 
 const TeacherMetrics = () => {
-    const { reportData } = useReport();
+    const { reportData, teacherSettings } = useReport();
 
     if (!reportData || !reportData.teachers_pld) return null;
 
     const { teachers_pld } = reportData;
     const { summary, teachers } = teachers_pld;
+
+    // Filtrar docentes eliminados
+    const visibleTeachers = teachers.filter(t => !teacherSettings[t.name]?.isDeleted);
 
     return (
         <div className="teacher-metrics-container">
@@ -43,7 +46,7 @@ const TeacherMetrics = () => {
 
             <h3 className="teachers-list-title">Listado de Docentes</h3>
             <div className="teachers-list">
-                {teachers.map((teacher, index) => (
+                {visibleTeachers.map((teacher, index) => (
                     <TeacherCard key={index} teacher={teacher} />
                 ))}
             </div>

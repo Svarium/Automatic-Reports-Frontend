@@ -28,6 +28,10 @@ export const ReportProvider = ({ children }) => {
     const [hasRedWarning, setHasRedWarning] = useState(false);
     const [groupFeedback, setGroupFeedback] = useState({}); // { routeName: [feedbacks] }
 
+    // Estado de configuración de docentes (eliminados, da clases, comunicación, PLDs eliminados)
+    const [teacherSettings, setTeacherSettings] = useState({});
+    // { [teacherName]: { teaching: bool, communication: string, deletedPlds: string[], isDeleted: bool } }
+
     // Recalcular semáforo general cuando cambian los individuales
     useEffect(() => {
         if (Object.keys(semaphores).length > 0) {
@@ -61,6 +65,20 @@ export const ReportProvider = ({ children }) => {
                 });
                 setSemaphores(initialSemaphores);
                 setGroupFeedback(initialFeedback);
+
+                // Inicializar settings de docentes
+                if (data.teachers_pld && data.teachers_pld.teachers) {
+                    const initialSettings = {};
+                    data.teachers_pld.teachers.forEach(t => {
+                        initialSettings[t.name] = {
+                            teaching: true,
+                            communication: 'Fluida',
+                            deletedPlds: [],
+                            isDeleted: false
+                        };
+                    });
+                    setTeacherSettings(initialSettings);
+                }
             }
         } catch (err) {
             setError(err.message);
@@ -104,24 +122,70 @@ export const ReportProvider = ({ children }) => {
     };
 
     /**
-     * Alterna el estado de certificación de un docente
+     * Actualiza la configuración de un docente (da clases, comunicación, plds borrados, etc)
      */
-    const toggleTeacherCertification = (teacherName) => {
+    const updateTeacherSettings = (teacherName, updates) => {
+        setTeacherSettings(prev => {
+            const current = prev[teacherName] || {
+                teaching: true,
+                communication: 'Fluida',
+                deletedPlds: [],
+                isDeleted: false
+            };
+            return {
+                ...prev,
+                [teacherName]: {
+                    ...current,
+                    ...updates
+                }
+            };
+        });
+    };
+
+    /**
+     * Marca un docente como eliminado para el reporte
+     */
+    const deleteTeacher = (teacherName) => {
+        updateTeacherSettings(teacherName, { isDeleted: true });
+    };
+
+    /**
+     * Marca un PLD de un docente como eliminado para el reporte
+     */
+    const deletePld = (teacherName, pldName) => {
+        const currentDeleted = teacherSettings[teacherName]?.deletedPlds || [];
+        if (!currentDeleted.includes(pldName)) {
+            updateTeacherSettings(teacherName, {
+                deletedPlds: [...currentDeleted, pldName]
+            });
+        }
+    };
+
+    /**
+     * Alterna el estado de certificación de un docente para un PLD específico
+     */
+    const togglePldCertification = (teacherName, pldName) => {
         setReportData(prevData => {
             if (!prevData || !prevData.teachers_pld) return prevData;
 
             const updatedTeachers = prevData.teachers_pld.teachers.map(t => {
                 if (t.name === teacherName) {
-                    const newCertified = !t.certified;
-                    return { ...t, certified: newCertified };
+                    const updatedPlds = t.plds.map(p => {
+                        if (p.certification_name === pldName) {
+                            return { ...p, certified: !p.certified };
+                        }
+                        return p;
+                    });
+                    return { ...t, plds: updatedPlds };
                 }
                 return t;
             });
 
-            // Recalcular el resumen de docentes
-            const total = updatedTeachers.length;
-            const certifiedCount = updatedTeachers.filter(t => t.certified).length;
-            const rate = total > 0 ? (certifiedCount / total) * 100 : 0;
+            // Recalcular el resumen de docentes basado en los plds certificados
+            const totalTeachers = updatedTeachers.length;
+            const anyCertified = (teacher) => teacher.plds.some(p => p.certified);
+            const certifiedCount = updatedTeachers.filter(anyCertified).length;
+            const rate = totalTeachers > 0 ? (certifiedCount / totalTeachers) * 100 : 0;
 
             return {
                 ...prevData,
@@ -152,6 +216,7 @@ export const ReportProvider = ({ children }) => {
         setScheduledMentorings(0);
         setCompletedMentorings(0);
         setGroupFeedback({});
+        setTeacherSettings({});
     };
 
     const value = {
@@ -167,13 +232,17 @@ export const ReportProvider = ({ children }) => {
         completedMentorings,
         hasRedWarning,
         groupFeedback,
+        teacherSettings,
 
         // Acciones
         uploadFile,
         setSemaphoreForRoute,
         updateStudentObservations,
         updateTeacherObservations,
-        toggleTeacherCertification,
+        updateTeacherSettings,
+        deleteTeacher,
+        deletePld,
+        togglePldCertification,
         setScheduledMentorings,
         setCompletedMentorings,
         updateGroupFeedback,

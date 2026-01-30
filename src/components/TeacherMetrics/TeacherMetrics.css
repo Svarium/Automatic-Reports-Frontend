@@ -41,72 +41,242 @@
 .teachers-list {
     margin-top: var(--spacing-lg);
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: var(--spacing-lg);
-    justify-items: center;
-}
-
-.teachers-list-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: var(--spacing-md);
-    color: var(--text-color);
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    gap: var(--spacing-md);
     width: 100%;
 }
 
-.teacher-card-circular {
+.teacher-list-item {
     background-color: var(--white);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md) var(--spacing-lg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.teacher-list-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e0;
+    transform: translateY(-2px);
+}
+
+.teacher-list-item.not-teaching {
+    opacity: 0.85;
+    background-color: #f1f5f9;
+    border-color: #cbd5e0;
+}
+
+.teacher-list-item.not-teaching .teacher-name-list,
+.teacher-list-item.not-teaching .pld-name,
+.teacher-list-item.not-teaching .footer-label,
+.teacher-list-item.not-teaching .pld-percentage,
+.teacher-list-item.not-teaching .pld-certified-check {
+    color: #1a202c !important;
+    /* Asegurar contraste en modo inactivo */
+}
+
+.teacher-list-item.not-teaching .pld-progress-bar-container {
+    background-color: #cbd5e0;
+}
+
+.teacher-item-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    box-shadow: var(--shadow-md);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid #222;
-    width: 100%;
 }
 
-.teacher-card-circular:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--chart-blue);
-}
-
-.teacher-card-circular.is-certified:hover {
-    border-color: #00cc7e;
-}
-
-.teacher-card-circular.not-certified:hover {
-    border-color: #ff8d7a;
-}
-
-.progress-circle-container {
-    position: relative;
-    width: 140px;
-    height: 140px;
+.teacher-main-info {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: var(--spacing-md);
 }
 
-.teacher-name-centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90px;
-    text-align: center;
+.teacher-name-list {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.teaching-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.teaching-badge.active {
+    background-color: #e6fffa;
+    color: #008672;
+    border: 1px solid #b2f5ea;
+}
+
+.teaching-badge.inactive {
+    background-color: #edf2f7;
+    color: #4a5568;
+    border: 1px solid #e2e8f0;
+}
+
+.delete-teacher-btn {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.delete-teacher-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.teacher-plds-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-left: 10px;
+    border-left: 2px solid #edf2f7;
+}
+
+.pld-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.pld-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.pld-info:hover {
+    background-color: #f8fafc;
+}
+
+.pld-name {
+    font-size: 0.85rem;
+    color: #2d3748;
+    /* Oscurecido para mejor contraste */
+    min-width: 150px;
+    font-weight: 600;
+}
+
+.pld-progress-bar-container {
+    flex: 1;
+    height: 6px;
+    background-color: #edf2f7;
+    border-radius: 3px;
+    overflow: hidden;
+    max-width: 150px;
+}
+
+.pld-progress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.pld-percentage {
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--text-color);
-    line-height: 1.2;
-    z-index: 2;
-    pointer-events: none;
+    width: 35px;
 }
 
-.certified-badge-mini {
-    margin-top: var(--spacing-sm);
+.pld-certified-check {
+    color: #00cc7e;
+    font-weight: bold;
     font-size: 0.9rem;
-    text-align: center;
+}
+
+.delete-pld-btn {
+    background: none;
+    border: none;
+    color: #cbd5e0;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.delete-pld-btn:hover {
+    color: #fc8181;
+}
+
+.teacher-controls-footer {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid #f7fafc;
+}
+
+.footer-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #4a5568;
+    /* Oscurecido para mejor contraste */
+}
+
+.comm-options {
+    display: flex;
+    gap: 8px;
+}
+
+.comm-chip {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #4a5568;
+    /* Oscurecido para mejor contraste */
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.comm-chip:hover {
+    background-color: #edf2f7;
+}
+
+.comm-chip.selected[data-status="Fluida"] {
+    background-color: #e6fffa;
+    color: #008672;
+    border-color: #00cc7e;
+}
+
+.comm-chip.selected[data-status="A reforzar"] {
+    background-color: #fffaf0;
+    color: #9c6e10;
+    border-color: #ffd148;
+}
+
+.comm-chip.selected[data-status="Con Dificultades"] {
+    background-color: #fff5f5;
+    color: #c53030;
+    border-color: #ff8d7a;
+}
+
+.comm-chip.selected[data-status="Sin comunicación"] {
+    background-color: #f3e8ff;
+    color: #6b46c1;
+    border-color: #d8b4fe;
+}
+
+.comm-chip[data-status="Sin comunicación"]:hover {
+    background-color: #faf5ff;
 }
