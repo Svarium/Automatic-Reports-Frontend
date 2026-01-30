@@ -62,13 +62,14 @@ function App() {
         {/* Observaciones de alumnos */}
         <ObservationsInput type="students" />
 
-        {/* Acompañamiento Pedagógico (Mentorías) */}
-        <MentoringInput />
 
         <div className="divider"></div>
 
         {/* Métricas de docentes PLD */}
         <TeacherMetrics />
+
+        {/* Acompañamiento Pedagógico (Mentorías) */}
+        <MentoringInput />
 
         {/* Observaciones de docentes */}
         <ObservationsInput type="teachers" />

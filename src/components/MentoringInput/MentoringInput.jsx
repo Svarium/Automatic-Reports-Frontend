@@ -20,7 +20,7 @@ const MentoringInput = () => {
 
     return (
         <div className="mentoring-container">
-            <h3 className="mentoring-title">🤝 Acompañamiento Pedagógico</h3>
+            <h3 className="mentoring-title">🤝 Acompañamiento Pedagógico <span className='mentoring-subtitle'> (Desde el inició del presente ciclo lectivo 📅)</span></h3>
 
             <div className="mentoring-controls">
                 {/* Mentorías Agendadas */}

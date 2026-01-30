@@ -16,6 +16,11 @@
   gap: var(--spacing-sm);
 }
 
+.mentoring-subtitle{
+  font-size: 1rem;
+  font-weight: 300; 
+}
+
 .mentoring-controls {
   display: flex;
   gap: var(--spacing-xl);
