@@ -23,7 +23,9 @@ const PDFTemplate = ({ contentRef }) => {
         completedMentorings,
         hasRedWarning,
         groupFeedback,
-        teacherSettings
+
+        teacherSettings,
+        mentorName
     } = useReport();
 
     if (!reportData) return null;
@@ -368,6 +370,9 @@ const PDFTemplate = ({ contentRef }) => {
                         )}
 
                         <div className="pdf-metadata" style={{ marginTop: '40px', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+                            {mentorName && (
+                                <p style={{ margin: '0 0 5px 0' }}><strong>Mentor Responsable:</strong> {mentorName}</p>
+                            )}
                             <p style={{ margin: '0' }}><strong>Generado por:</strong> Reporte Automático Playground</p>
                             <p style={{ margin: '5px 0 0 0' }}><strong>Fecha:</strong> {new Date(metadata.generated_at).toLocaleString('es-AR')}</p>
                         </div>

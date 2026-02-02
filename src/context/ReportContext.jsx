@@ -27,6 +27,7 @@ export const ReportProvider = ({ children }) => {
     const [completedMentorings, setCompletedMentorings] = useState(0);
     const [hasRedWarning, setHasRedWarning] = useState(false);
     const [groupFeedback, setGroupFeedback] = useState({}); // { routeName: [feedbacks] }
+    const [mentorName, setMentorName] = useState(''); // Nuevo estado para nombre del mentor
 
     // Estado de configuración de docentes (eliminados, da clases, comunicación, PLDs eliminados)
     const [teacherSettings, setTeacherSettings] = useState({});
@@ -217,8 +218,67 @@ export const ReportProvider = ({ children }) => {
         setCompletedMentorings(0);
         setGroupFeedback({});
         setTeacherSettings({});
+        setMentorName('');
     };
 
+    /**
+     * Actualiza el nombre del colegio
+     */
+    const setSchoolName = (name) => {
+        if (reportData && reportData.school) {
+            setReportData(prev => ({
+                ...prev,
+                school: { ...prev.school, id: name }
+            }));
+        }
+    };
+
+    /**
+     * Valida que toda la información necesaria para el reporte esté completa
+     * @returns {Object} { valid: boolean, errors: string[] }
+     */
+    const validateReport = () => {
+        const errors = [];
+
+        // 1. Validar Semáforos
+        if (reportData?.students?.groups) {
+            const groups = reportData.students.groups;
+            const groupsWithoutSemaphore = groups.filter(g =>
+                !semaphores[g.route_name] || semaphores[g.route_name] === 'gray'
+            );
+
+            if (groupsWithoutSemaphore.length > 0) {
+                errors.push(`Faltan definir semáforos para ${groupsWithoutSemaphore.length} grupos.`);
+            }
+
+            // 2. Validar Feedback (solo para amarillo/rojo)
+            groups.forEach(g => {
+                const color = semaphores[g.route_name];
+                if (color === 'yellow' || color === 'red') {
+                    const feedbacks = groupFeedback[g.route_name] || [];
+                    if (feedbacks.length === 0) {
+                        errors.push(`El grupo "${g.route_name}" tiene alerta pero no tiene motivos seleccionados.`);
+                    }
+                }
+            });
+        }
+
+        // 3. Validar Observaciones
+        if (!studentObservations || studentObservations.trim().length === 0) {
+            errors.push('Las observaciones generales de alumnos son obligatorias.');
+        }
+
+        if (!teacherObservations || teacherObservations.trim().length === 0) {
+            errors.push('Las observaciones generales de docentes son obligatorias.');
+        }
+
+        return {
+            valid: errors.length === 0,
+            errors
+        };
+    };
+
+    // Agregar nuevos estados y función al value
     const value = {
         // Estado
         reportData,
@@ -233,6 +293,8 @@ export const ReportProvider = ({ children }) => {
         hasRedWarning,
         groupFeedback,
         teacherSettings,
+        mentorName,
+        schoolName: reportData?.school?.id || '',
 
         // Acciones
         uploadFile,
@@ -247,6 +309,9 @@ export const ReportProvider = ({ children }) => {
         setCompletedMentorings,
         updateGroupFeedback,
         resetReport,
+        setMentorName,
+        setSchoolName,
+        validateReport,
     };
 
     return (
