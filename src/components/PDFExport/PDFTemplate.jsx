@@ -25,6 +25,7 @@ const PDFTemplate = ({ contentRef }) => {
         groupFeedback,
 
         teacherSettings,
+        teacherMetrics,
         mentorName
     } = useReport();
 
@@ -224,15 +225,15 @@ const PDFTemplate = ({ contentRef }) => {
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', margin: '20px 0' }}>
                                         <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px', textAlign: 'center', border: '1px solid #eee' }}>
                                             <div style={{ fontSize: '11px', color: '#666' }}>Total Docentes</div>
-                                            <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{teachers_pld.summary.total_teachers}</div>
+                                            <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{teacherMetrics.totalTeachers}</div>
                                         </div>
                                         <div style={{ padding: '15px', backgroundColor: '#e8f5e9', borderRadius: '8px', textAlign: 'center', border: '1px solid #d4edda' }}>
-                                            <div style={{ fontSize: '11px', color: '#666' }}>Certificados</div>
-                                            <div style={{ fontSize: '20px', fontWeight: '800', color: '#2e7d32' }}>{teachers_pld.summary.certified_teachers}</div>
+                                            <div style={{ fontSize: '11px', color: '#666' }}>Certificaciones finalizadas</div>
+                                            <div style={{ fontSize: '20px', fontWeight: '800', color: '#2e7d32' }}>{teacherMetrics.finishedCertifications}</div>
                                         </div>
                                         <div style={{ padding: '15px', backgroundColor: '#e3f2fd', borderRadius: '8px', textAlign: 'center', border: '1px solid #cce5ff' }}>
                                             <div style={{ fontSize: '11px', color: '#666' }}>Tasa de Certificación</div>
-                                            <div style={{ fontSize: '20px', fontWeight: '800', color: '#1565c0' }}>{teachers_pld.summary.certification_rate_percent.toFixed(0)}%</div>
+                                            <div style={{ fontSize: '20px', fontWeight: '800', color: '#1565c0' }}>{teacherMetrics.certificationRate.toFixed(0)}%</div>
                                         </div>
                                     </div>
                                 </>

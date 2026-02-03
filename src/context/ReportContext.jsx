@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { uploadReport as uploadReportAPI } from '../services/api';
 import { calculateGeneralSemaphore } from '../utils/semaphoreLogic';
 
@@ -44,6 +44,50 @@ export const ReportProvider = ({ children }) => {
             setHasRedWarning(hasRed);
         }
     }, [semaphores]);
+
+    // Calcular métricas de docentes dinámicamente
+    const teacherMetrics = useMemo(() => {
+        if (!reportData || !reportData.teachers_pld) {
+            return {
+                totalTeachers: 0,
+                totalActivePLDs: 0,
+                finishedCertifications: 0,
+                certificationRate: 0
+            };
+        }
+
+        const visibleTeachers = reportData.teachers_pld.teachers.filter(
+            t => !teacherSettings[t.name]?.isDeleted
+        );
+
+        let totalActivePLDs = 0;
+        let finishedCertifications = 0;
+
+        visibleTeachers.forEach(teacher => {
+            const settings = teacherSettings[teacher.name] || {};
+            const deletedPlds = settings.deletedPlds || [];
+            
+            teacher.plds.forEach(pld => {
+                if (!deletedPlds.includes(pld.certification_name)) {
+                    totalActivePLDs++;
+                    if (pld.certified) {
+                        finishedCertifications++;
+                    }
+                }
+            });
+        });
+
+        const certificationRate = totalActivePLDs > 0 
+            ? (finishedCertifications / totalActivePLDs) * 100 
+            : 0;
+
+        return {
+            totalTeachers: visibleTeachers.length,
+            totalActivePLDs,
+            finishedCertifications,
+            certificationRate
+        };
+    }, [reportData, teacherSettings]);
 
     /**
      * Sube un archivo y obtiene el análisis del backend
@@ -293,6 +337,7 @@ export const ReportProvider = ({ children }) => {
         hasRedWarning,
         groupFeedback,
         teacherSettings,
+        teacherMetrics,
         mentorName,
         schoolName: reportData?.school?.id || '',
 
