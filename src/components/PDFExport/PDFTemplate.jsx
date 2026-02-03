@@ -154,6 +154,7 @@ const PDFTemplate = ({ contentRef }) => {
                                             <div style={{ marginBottom: '10px', borderBottom: '1px solid #f5f5f5', paddingBottom: '5px' }}>
                                                 <p style={{ fontWeight: '800', fontSize: '12px', margin: '0', color: '#000000' }}>{group.route_name}</p>
                                                 <p style={{ fontSize: '10px', color: '#888', margin: '2px 0 0 0' }}>{group.students_count} {group.students_count === 1 ? 'alumno' : 'alumnos'}</p>
+                                                <small style={{ fontSize: '7px', color: '#888', margin: '2px 0 0 0' }}>* Los % de avance corresponden al 100% de la certificación.</small>
                                             </div>
                                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '10px', color: '#444' }}>
                                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
