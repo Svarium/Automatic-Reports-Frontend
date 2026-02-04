@@ -33,8 +33,8 @@ const PDFTemplate = ({ contentRef }) => {
 
     const { school, students, teachers_pld, metadata } = reportData;
 
-    // Alumnos (4 filas x 2 col = 8)
-    const groupChunks = chunkArray(students.groups, 8);
+    // Alumnos (3 filas x 2 col = 6) - Ajustado para evitar cortes con mucho feedback
+    const groupChunks = chunkArray(students.groups, 6);
 
     // Docentes (6 filas x 2 col = 12)
     const visibleTeachers = teachers_pld.teachers.filter(t => !teacherSettings[t.name]?.isDeleted);
