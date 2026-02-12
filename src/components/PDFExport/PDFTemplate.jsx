@@ -6,6 +6,7 @@ import bannerPortadaFooter from '../../assets/banner-portada-footer.png';
 
 const chunkArray = (array, size) => {
     const result = [];
+    if (!array) return result;
     for (let i = 0; i < array.length; i += size) {
         result.push(array.slice(i, i + size));
     }
@@ -26,18 +27,20 @@ const PDFTemplate = ({ contentRef }) => {
 
         teacherSettings,
         teacherMetrics,
-        mentorName
+        mentorName,
+        includeStudents,
+        includeTeachers
     } = useReport();
 
     if (!reportData) return null;
 
     const { school, students, teachers_pld, metadata } = reportData;
 
-    // Alumnos (3 filas x 2 col = 6) - Ajustado para evitar cortes con mucho feedback
-    const groupChunks = chunkArray(students.groups, 6);
+    // Alumnos (3 filas x 2 col = 6)
+    const groupChunks = includeStudents ? chunkArray(students?.groups, 6) : [];
 
     // Docentes (6 filas x 2 col = 12)
-    const visibleTeachers = teachers_pld.teachers.filter(t => !teacherSettings[t.name]?.isDeleted);
+    const visibleTeachers = includeTeachers ? (teachers_pld?.teachers?.filter(t => !teacherSettings[t.name]?.isDeleted) || []) : [];
     const teacherChunks = chunkArray(visibleTeachers, 12);
 
     return (
@@ -91,7 +94,7 @@ const PDFTemplate = ({ contentRef }) => {
             </div>
 
             {/* SECCION ALUMNOS */}
-            {groupChunks.map((chunk, chunkIdx) => (
+            {includeStudents && groupChunks.map((chunk, chunkIdx) => (
                 <div key={`students-page-${chunkIdx}`} className="pdf-page-container">
                     <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
                         <div className="pdf-section" style={{ marginTop: '20px' }}>
@@ -216,8 +219,8 @@ const PDFTemplate = ({ contentRef }) => {
             ))}
 
             {/* SECCION DOCENTES */}
-            {teacherChunks.map((chunk, chunkIdx) => (
-                <div key={`teachers-page-${chunkIdx}`} className="pdf-page-container" style={{ pageBreakBefore: 'always' }}>
+            {includeTeachers && teacherChunks.map((chunk, chunkIdx) => (
+                <div key={`teachers-page-${chunkIdx}`} className="pdf-page-container" style={{ pageBreakBefore: (includeStudents || chunkIdx > 0) ? 'always' : 'auto' }}>
                     <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
                         <div className="pdf-section" style={{ marginTop: '20px' }}>
                             {chunkIdx === 0 && (
@@ -313,7 +316,7 @@ const PDFTemplate = ({ contentRef }) => {
             <div className="pdf-page-container" style={{ pageBreakBefore: 'always' }}>
                 <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', position: 'relative', padding: '15mm', backgroundColor: 'white', boxSizing: 'border-box' }}>
                     <div className="pdf-content">
-                        {(scheduledMentorings > 0 || completedMentorings > 0) ? (
+                        {includeTeachers && ((scheduledMentorings > 0 || completedMentorings > 0) ? (
                             <div className="pdf-section" style={{ marginTop: '20px' }}>
                                 <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>🤝 Acompañamiento Pedagógico Sincrónico<span style={{ fontSize: '10px', fontWeight: '300' }}> (Desde el inicio del presente ciclo lectivo 📅)</span></h3>
                                 <div style={{
@@ -351,9 +354,9 @@ const PDFTemplate = ({ contentRef }) => {
                             <div style={{ marginTop: '20px' }}>
                                 <h4 className="pdf-subtitle" style={{ fontSize: '13px', marginBottom: '15px', color: '#666' }}>No se registran encuentros sincrónicos de acompañamiento pedagógico realizados 📆</h4>
                             </div>
-                        )}
+                        ))}
 
-                        {teacherObservations && (
+                        {includeTeachers && teacherObservations && (
                             <div className="pdf-section" style={{ marginTop: '30px' }}>
                                 <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>Observaciones del Mentor - Docentes</h3>
                                 <div style={{
@@ -380,7 +383,6 @@ const PDFTemplate = ({ contentRef }) => {
                         </div>
                     </div>
 
-                    {/* Banner de Footer fijo al final de esta última hoja */}
                     <div style={{ position: 'absolute', bottom: '5mm', left: '5mm', right: '5mm' }}>
                         <img src={bannerFooter} alt="Footer" style={{ width: '100%' }} />
                     </div>

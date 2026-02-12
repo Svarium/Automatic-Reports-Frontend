@@ -75,9 +75,12 @@ const FileUpload = () => {
                     <p>Esta herramienta automatiza la creación de reportes ejecutivos a partir de los datos crudos.</p>
                     
                     <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">1. Carga de Datos 📂</h4>
-                    <p style="margin: 0;">Subí tu archivo <strong>.csv</strong> o <strong>.xlsx</strong>. El sistema procesará las métricas automáticamente.</p>
+                    <p style="margin: 0;">Subí tu archivo <strong>.csv</strong> o <strong>.xlsx</strong>. El sistema procesará las métricas automáticamente y detectará si hay información de alumnos, docentes o ambos.</p>
 
-                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">2. Análisis y Semáforos 🚦</h4>
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">2. Configuración del Reporte ⚙️</h4>
+                    <p style="margin: 0;">Usá el nuevo panel de <strong>Configuración del Reporte</strong> para elegir qué secciones incluir. Si el archivo no contiene datos de alguna sección, esta se deshabilitará automáticamente.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">3. Análisis y Semáforos 🚦</h4>
                     <p style="margin: 0;">Revisá los grupos y asignales un estado:</p>
                     <ul style="margin: 5px 0 10px 20px; padding: 0;">
                         <li><span style="color: #00cc7e; font-weight: bold;">Verde:</span> Todo en orden.</li>
@@ -86,11 +89,11 @@ const FileUpload = () => {
                     </ul>
                     <p style="font-size: 0.9em; font-style: italic;">⚠️ Si marcás Amarillo o Rojo, <strong>es obligatorio</strong> seleccionar los motivos (feedback).</p>
 
-                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">3. Observaciones 📝</h4>
-                    <p style="margin: 0;">Completá los campos de texto libre para <strong>Alumnos</strong> y <strong>Docentes</strong>. ¡Son obligatorios para dar contexto al reporte!</p>
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">4. Observaciones 📝</h4>
+                    <p style="margin: 0;">Completá los campos de texto para las secciones activas. ¡Son fundamentales para dar contexto al reporte!</p>
 
-                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">4. Exportación 📄</h4>
-                    <p style="margin: 0;">Al finalizar, hacé clic en generar PDF. Podrás editar el nombre del colegio y firmar el reporte con tu nombre.</p>
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">5. Exportación 📄</h4>
+                    <p style="margin: 0;">Al finalizar, generá el PDF. El documento se adaptará automáticamente para mostrar solo las secciones que hayas seleccionado.</p>
                 </div>
             `,
             showCloseButton: true,

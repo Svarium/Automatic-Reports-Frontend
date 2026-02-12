@@ -7,12 +7,20 @@ import TeacherMetrics from './components/TeacherMetrics/TeacherMetrics';
 import ObservationsInput from './components/ObservationsInput/ObservationsInput';
 import MentoringInput from './components/MentoringInput/MentoringInput';
 import PDFExport from './components/PDFExport/PDFExport';
+import SectionSelector from './components/SectionSelector/SectionSelector';
 import BannerHeader from './components/Common/BannerHeader';
 import BannerFooter from './components/Common/BannerFooter';
 import './App.css';
 
 function App() {
-  const { reportData, loading, error, resetReport } = useReport();
+  const {
+    reportData,
+    loading,
+    error,
+    resetReport,
+    includeStudents,
+    includeTeachers
+  } = useReport();
 
   // Estado de carga
   if (loading) {
@@ -56,23 +64,27 @@ function App() {
         {/* Encabezado con info del colegio y semáforo general */}
         <SchoolHeader />
 
+        {/* Selector de Secciones */}
+        <SectionSelector />
+
         {/* Métricas de alumnos */}
-        <StudentMetrics />
+        {includeStudents && (
+          <>
+            <StudentMetrics />
+            <ObservationsInput type="students" />
+          </>
+        )}
 
-        {/* Observaciones de alumnos */}
-        <ObservationsInput type="students" />
-
-
-        <div className="divider"></div>
+        {includeStudents && includeTeachers && <div className="divider"></div>}
 
         {/* Métricas de docentes PLD */}
-        <TeacherMetrics />
-
-        {/* Acompañamiento Pedagógico (Mentorías) */}
-        <MentoringInput />
-
-        {/* Observaciones de docentes */}
-        <ObservationsInput type="teachers" />
+        {includeTeachers && (
+          <>
+            <TeacherMetrics />
+            <MentoringInput />
+            <ObservationsInput type="teachers" />
+          </>
+        )}
 
         <div className="divider"></div>
 
