@@ -43,6 +43,119 @@ const PDFTemplate = ({ contentRef }) => {
     const visibleTeachers = includeTeachers ? (teachers_pld?.teachers?.filter(t => !teacherSettings[t.name]?.isDeleted) || []) : [];
     const teacherChunks = chunkArray(visibleTeachers, 12);
 
+    // Helpers para renderizar bloques (evitar duplicación al manejar saltos condicionales)
+    const renderStudentObservationsBlock = () => (
+        <div className="pdf-section" style={{ marginTop: '20px' }}>
+            <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>Observaciones del Mentor - Alumnos</h3>
+            <div className="observations-container">
+                {studentObservations.split('\n').filter(p => p.trim() !== '').map((para, pIdx) => (
+                    <div key={pIdx} style={{
+                        padding: '12px 15px',
+                        backgroundColor: '#8383fd',
+                        color: 'white',
+                        borderRadius: '8px',
+                        fontSize: '12px',
+                        lineHeight: '1.5',
+                        border: '1px solid #7171e0',
+                        marginBottom: '8px',
+                        pageBreakInside: 'avoid'
+                    }}>
+                        {para}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
+    const renderTeacherSummary = () => (
+        <>
+            <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>👩‍🏫 Métricas de capacitación Docente</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', margin: '20px 0' }}>
+                <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px', textAlign: 'center', border: '1px solid #eee' }}>
+                    <div style={{ fontSize: '11px', color: '#666' }}>Total Docentes</div>
+                    <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{teacherMetrics.totalTeachers}</div>
+                </div>
+                <div style={{ padding: '15px', backgroundColor: '#e8f5e9', borderRadius: '8px', textAlign: 'center', border: '1px solid #d4edda' }}>
+                    <div style={{ fontSize: '11px', color: '#666' }}>Certificaciones finalizadas</div>
+                    <div style={{ fontSize: '20px', fontWeight: '800', color: '#2e7d32' }}>{teacherMetrics.finishedCertifications}</div>
+                </div>
+                <div style={{ padding: '15px', backgroundColor: '#e3f2fd', borderRadius: '8px', textAlign: 'center', border: '1px solid #cce5ff' }}>
+                    <div style={{ fontSize: '11px', color: '#666' }}>Tasa de Certificación</div>
+                    <div style={{ fontSize: '20px', fontWeight: '800', color: '#1565c0' }}>{teacherMetrics.certificationRate.toFixed(0)}%</div>
+                </div>
+            </div>
+        </>
+    );
+
+    const renderTeacherListChunk = (chunk, chunkIdx) => (
+        <>
+            <h3 className="pdf-subtitle" style={{ fontSize: '16px', marginBottom: '15px' }}>Listado de Docentes {teacherChunks.length > 1 ? `(Parte ${chunkIdx + 1})` : ''}</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                {chunk.map((teacher, index) => {
+                    const settings = teacherSettings[teacher.name] || { teaching: true, communication: 'Fluida', deletedPlds: [] };
+                    const activePlds = teacher.plds.filter(p => !settings.deletedPlds.includes(p.certification_name));
+                    return (
+                        <div key={index} style={{
+                            padding: '12px',
+                            backgroundColor: '#fdfdfd',
+                            border: '1px solid #efefef',
+                            borderRadius: '8px',
+                            pageBreakInside: 'avoid',
+                            marginBottom: '5px'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                    <span style={{ fontSize: '11px', fontWeight: '800', color: '#000' }}>{teacher.name}</span>
+                                    <span style={{
+                                        fontSize: '7px',
+                                        padding: '1px 6px',
+                                        borderRadius: '8px',
+                                        backgroundColor: settings.teaching ? '#e6fffa' : '#edf2f7',
+                                        color: settings.teaching ? '#008672' : '#4a5568',
+                                        fontWeight: '700',
+                                        border: `1px solid ${settings.teaching ? '#b2f5ea' : '#e2e8f0'}`,
+                                        alignSelf: 'flex-start'
+                                    }}>
+                                        {settings.teaching ? 'Da clases' : 'No da clases'}
+                                    </span>
+                                </div>
+                                <div style={{ textAlign: 'right' }}>
+                                    <div style={{ fontSize: '8px', color: '#666', fontWeight: '600' }}>Comunicación:</div>
+                                    <div style={{
+                                        fontSize: '9px',
+                                        fontWeight: '800',
+                                        color: settings.communication === 'Fluida' ? '#00cc7e' :
+                                            settings.communication === 'A reforzar' ? '#ffd148' :
+                                                settings.communication === 'Con Dificultades' ? '#ff8d7a' :
+                                                    settings.communication === 'Sin comunicación' ? '#6b46c1' : '#666'
+                                    }}>
+                                        {settings.communication}
+                                    </div>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '8px', borderLeft: '2px solid #eee' }}>
+                                {activePlds.map((pld, idx) => (
+                                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <span style={{ fontSize: '8px', color: '#444', flex: 1, lineHeight: '1.1' }}>{pld.certification_name}</span>
+                                        <div style={{ width: '40px', height: '3px', backgroundColor: '#eee', borderRadius: '2px', overflow: 'hidden' }}>
+                                            <div style={{
+                                                width: `${pld.progress_percent}%`,
+                                                height: '100%',
+                                                backgroundColor: pld.certified ? '#00cc7e' : '#ff8d7a'
+                                            }} />
+                                        </div>
+                                        <span style={{ fontSize: '8px', fontWeight: '700', color: '#000', width: '22px' }}>{pld.progress_percent.toFixed(0)}%</span>
+                                        {pld.certified && <span style={{ color: '#00cc7e', fontSize: '8px', fontWeight: 'bold' }}>✔</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </>
+    );
+
     return (
         <div ref={contentRef} className="pdf-template">
             {/* PAGINA 1: PORTADA */}
@@ -196,21 +309,10 @@ const PDFTemplate = ({ contentRef }) => {
                                 })}
                             </div>
 
-                            {chunkIdx === groupChunks.length - 1 && studentObservations && (
-                                <div className="pdf-section" style={{ marginTop: '20px', pageBreakInside: 'avoid' }}>
-                                    <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>Observaciones del Mentor - Alumnos</h3>
-                                    <div style={{
-                                        padding: '15px',
-                                        backgroundColor: '#8383fd',
-                                        color: 'white',
-                                        borderRadius: '8px',
-                                        whiteSpace: 'pre-wrap',
-                                        fontSize: '12px',
-                                        lineHeight: '1.5',
-                                        border: '1px solid #7171e0'
-                                    }}>
-                                        {studentObservations}
-                                    </div>
+                            {/* Observaciones Cortas (<= 700): quedan junto a los grupos */}
+                            {chunkIdx === groupChunks.length - 1 && studentObservations && studentObservations.length <= 700 && (
+                                <div style={{ marginTop: '20px' }}>
+                                    {renderStudentObservationsBlock()}
                                 </div>
                             )}
                         </div>
@@ -218,95 +320,24 @@ const PDFTemplate = ({ contentRef }) => {
                 </div>
             ))}
 
-            {/* SECCION DOCENTES */}
-            {includeTeachers && teacherChunks.map((chunk, chunkIdx) => (
-                <div key={`teachers-page-${chunkIdx}`} className="pdf-page-container" style={{ pageBreakBefore: (includeStudents || chunkIdx > 0) ? 'always' : 'auto' }}>
+            {/* SECCIÓN INDEPENDIENTE: OBSERVACIONES ALUMNOS LARGAS (> 700) */}
+            {includeStudents && studentObservations && studentObservations.length > 700 && (
+                <div className="pdf-page-container" style={{ pageBreakBefore: 'always' }}>
                     <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
                         <div className="pdf-section" style={{ marginTop: '20px' }}>
-                            {chunkIdx === 0 && (
-                                <>
-                                    <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>👩‍🏫 Métricas de capacitación Docente</h2>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', margin: '20px 0' }}>
-                                        <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px', textAlign: 'center', border: '1px solid #eee' }}>
-                                            <div style={{ fontSize: '11px', color: '#666' }}>Total Docentes</div>
-                                            <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{teacherMetrics.totalTeachers}</div>
-                                        </div>
-                                        <div style={{ padding: '15px', backgroundColor: '#e8f5e9', borderRadius: '8px', textAlign: 'center', border: '1px solid #d4edda' }}>
-                                            <div style={{ fontSize: '11px', color: '#666' }}>Certificaciones finalizadas</div>
-                                            <div style={{ fontSize: '20px', fontWeight: '800', color: '#2e7d32' }}>{teacherMetrics.finishedCertifications}</div>
-                                        </div>
-                                        <div style={{ padding: '15px', backgroundColor: '#e3f2fd', borderRadius: '8px', textAlign: 'center', border: '1px solid #cce5ff' }}>
-                                            <div style={{ fontSize: '11px', color: '#666' }}>Tasa de Certificación</div>
-                                            <div style={{ fontSize: '20px', fontWeight: '800', color: '#1565c0' }}>{teacherMetrics.certificationRate.toFixed(0)}%</div>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
+                            {renderStudentObservationsBlock()}
+                        </div>
+                    </div>
+                </div>
+            )}
 
-                            <h3 className="pdf-subtitle" style={{ fontSize: '16px', marginBottom: '15px' }}>Listado de Docentes {teacherChunks.length > 1 ? `(Parte ${chunkIdx + 1})` : ''}</h3>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                                {chunk.map((teacher, index) => {
-                                    const settings = teacherSettings[teacher.name] || { teaching: true, communication: 'Fluida', deletedPlds: [] };
-                                    const activePlds = teacher.plds.filter(p => !settings.deletedPlds.includes(p.certification_name));
-                                    return (
-                                        <div key={index} style={{
-                                            padding: '12px',
-                                            backgroundColor: '#fdfdfd',
-                                            border: '1px solid #efefef',
-                                            borderRadius: '8px',
-                                            pageBreakInside: 'avoid',
-                                            marginBottom: '5px'
-                                        }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                                    <span style={{ fontSize: '11px', fontWeight: '800', color: '#000' }}>{teacher.name}</span>
-                                                    <span style={{
-                                                        fontSize: '7px',
-                                                        padding: '1px 6px',
-                                                        borderRadius: '8px',
-                                                        backgroundColor: settings.teaching ? '#e6fffa' : '#edf2f7',
-                                                        color: settings.teaching ? '#008672' : '#4a5568',
-                                                        fontWeight: '700',
-                                                        border: `1px solid ${settings.teaching ? '#b2f5ea' : '#e2e8f0'}`,
-                                                        alignSelf: 'flex-start'
-                                                    }}>
-                                                        {settings.teaching ? 'Da clases' : 'No da clases'}
-                                                    </span>
-                                                </div>
-                                                <div style={{ textAlign: 'right' }}>
-                                                    <div style={{ fontSize: '8px', color: '#666', fontWeight: '600' }}>Comunicación:</div>
-                                                    <div style={{
-                                                        fontSize: '9px',
-                                                        fontWeight: '800',
-                                                        color: settings.communication === 'Fluida' ? '#00cc7e' :
-                                                            settings.communication === 'A reforzar' ? '#ffd148' :
-                                                                settings.communication === 'Con Dificultades' ? '#ff8d7a' :
-                                                                    settings.communication === 'Sin comunicación' ? '#6b46c1' : '#666'
-                                                    }}>
-                                                        {settings.communication}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '8px', borderLeft: '2px solid #eee' }}>
-                                                {activePlds.map((pld, idx) => (
-                                                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                        <span style={{ fontSize: '8px', color: '#444', flex: 1, lineHeight: '1.1' }}>{pld.certification_name}</span>
-                                                        <div style={{ width: '40px', height: '3px', backgroundColor: '#eee', borderRadius: '2px', overflow: 'hidden' }}>
-                                                            <div style={{
-                                                                width: `${pld.progress_percent}%`,
-                                                                height: '100%',
-                                                                backgroundColor: pld.certified ? '#00cc7e' : '#ff8d7a'
-                                                            }} />
-                                                        </div>
-                                                        <span style={{ fontSize: '8px', fontWeight: '700', color: '#000', width: '22px' }}>{pld.progress_percent.toFixed(0)}%</span>
-                                                        {pld.certified && <span style={{ color: '#00cc7e', fontSize: '8px', fontWeight: 'bold' }}>✔</span>}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+            {/* SECCION DOCENTES: SIEMPRE INICIA EN PAGINA NUEVA */}
+            {includeTeachers && teacherChunks.map((chunk, chunkIdx) => (
+                <div key={`teachers-page-${chunkIdx}`} className="pdf-page-container" style={{ pageBreakBefore: 'always' }}>
+                    <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
+                        <div className="pdf-section" style={{ marginTop: '20px' }}>
+                            {chunkIdx === 0 && renderTeacherSummary()}
+                            {renderTeacherListChunk(chunk, chunkIdx)}
                         </div>
                     </div>
                 </div>
@@ -359,17 +390,22 @@ const PDFTemplate = ({ contentRef }) => {
                         {includeTeachers && teacherObservations && (
                             <div className="pdf-section" style={{ marginTop: '30px' }}>
                                 <h3 className="pdf-subtitle" style={{ fontSize: '16px' }}>Observaciones del Mentor - Docentes</h3>
-                                <div style={{
-                                    padding: '15px',
-                                    backgroundColor: '#8383fd',
-                                    color: 'white',
-                                    borderRadius: '8px',
-                                    whiteSpace: 'pre-wrap',
-                                    fontSize: '12px',
-                                    lineHeight: '1.5',
-                                    border: '1px solid #7171e0'
-                                }}>
-                                    {teacherObservations}
+                                <div className="observations-container">
+                                    {teacherObservations.split('\n').filter(p => p.trim() !== '').map((para, pIdx) => (
+                                        <div key={pIdx} style={{
+                                            padding: '12px 15px',
+                                            backgroundColor: '#8383fd',
+                                            color: 'white',
+                                            borderRadius: '8px',
+                                            fontSize: '12px',
+                                            lineHeight: '1.5',
+                                            border: '1px solid #7171e0',
+                                            marginBottom: '8px',
+                                            pageBreakInside: 'avoid'
+                                        }}>
+                                            {para}
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         )}
