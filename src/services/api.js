@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:8000';
+const API_URL = 'https://automatic-report-backend.onrender.com';
 
 /**
  * Sube un archivo de reporte al backend y obtiene el análisis
