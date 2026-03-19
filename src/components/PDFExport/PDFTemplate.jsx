@@ -218,19 +218,19 @@ const PDFTemplate = ({ contentRef }) => {
                                         <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
                                             <div style={{ flex: 1 }}>
                                                 <div style={{ fontSize: '12px', color: '#555', fontWeight: 'bold' }}>Vitalidad Digital (30 días)</div>
-                                                <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
+                                                <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.digital_vitality_30d_avg === 100 ? '100' : students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
                                             </div>
                                             <div style={{ flex: 1, fontSize: '9px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '10px' }}>
-                                                Porcentaje de frecuencia de acceso a la plataforma (últimos 30 días).
+                                               Porcentaje de estudiantes que ingresaron a la plataforma durante los últimos 30 días.
                                             </div>
                                         </div>
                                         <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
                                             <div style={{ flex: 1 }}>
                                                 <div style={{ fontSize: '12px', color: '#555', fontWeight: 'bold' }}>Progreso Reciente (15 días)</div>
-                                                <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
+                                                <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.recent_progress_15d_avg === 100 ? '100' : students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
                                             </div>
                                             <div style={{ flex: 1, fontSize: '9px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '10px' }}>
-                                                Porcentaje de avance en contenidos y lecciones completadas (últimos 15 días).
+                                                Porcentaje de estudiante que avanzaron en sus actividades y lecciones en los últimos 15 días.
                                             </div>
                                         </div>
                                     </div>
@@ -265,7 +265,7 @@ const PDFTemplate = ({ contentRef }) => {
                                     const label = secondPart[1];
 
                                     return (
-                                        <span style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             <strong style={{ color: '#000', fontSize: '13px' }}>{current}</strong>
                                             <span style={{ color: '#888', fontSize: '9px' }}>de {total}</span>
                                         </span>
@@ -291,16 +291,24 @@ const PDFTemplate = ({ contentRef }) => {
                                                     <div style={{ marginBottom: '10px', borderBottom: '1px solid #f5f5f5', paddingBottom: '5px' }}>
                                                         <p style={{ fontWeight: '800', fontSize: '12px', margin: '0', color: '#000000' }}>{group.route_name}</p>
                                                         <p style={{ fontSize: '10px', color: '#888', margin: '2px 0 0 0' }}>{group.students_count} {group.students_count === 1 ? 'alumno' : 'alumnos'}</p>
-                                                        <small style={{ fontSize: '7px', color: '#888', margin: '2px 0 0 0' }}>* Las clases y cursos completados corresponden al 100% de la certificación.</small>
+                                                        <small style={{ fontSize: '7px', color: '#888', margin: '4px 0 0 0', lineHeight: '1.2', display: 'block' }}>* Clases y cursos completados refleja el promedio de avance de los estudiantes sobre el total de clases disponibles (obligatorias y complementarias)</small>
                                                     </div>
-                                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '10px', color: '#444' }}>
-                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>Clases completadas: {renderPdfStylizedMetric(group.metrics.classes_completion_percent)}</div>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>Cursos completados: {renderPdfStylizedMetric(group.metrics.courses_completion_percent)}</div>
+                                                    <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 1fr', gap: '6px', fontSize: '8.8px', color: '#444' }}>
+                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '3px', height: '18px', whiteSpace: 'nowrap' }}>
+                                                                Clases completadas: {renderPdfStylizedMetric(group.metrics.classes_completion_percent)}
+                                                            </div>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '3px', height: '18px', whiteSpace: 'nowrap' }}>
+                                                                Cursos completados: {renderPdfStylizedMetric(group.metrics.courses_completion_percent)}
+                                                            </div>
                                                         </div>
-                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                                            <div>Vitalidad Digital (30 días): <strong style={{ color: '#000' }}>{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</strong></div>
-                                                            <div>Progreso reciente (15 días): <strong style={{ color: '#000' }}>{group.metrics.recent_progress_15d_percent.toFixed(1)}%</strong></div>
+                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '3px', height: '18px', whiteSpace: 'nowrap' }}>
+                                                                Vitalidad Digital (30 días): <strong style={{ color: '#000' }}>{group.metrics.digital_vitality_30d_percent === 100 ? '100' : group.metrics.digital_vitality_30d_percent.toFixed(1)}%</strong>
+                                                            </div>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '3px', height: '18px', whiteSpace: 'nowrap' }}>
+                                                                Progreso reciente (15 días): <strong style={{ color: '#000' }}>{group.metrics.recent_progress_15d_percent === 100 ? '100' : group.metrics.recent_progress_15d_percent.toFixed(1)}%</strong>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     {(groupFeedback[group.route_name] && groupFeedback[group.route_name].length > 0) && (

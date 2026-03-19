@@ -31,7 +31,9 @@ const TeacherMetrics = () => {
                         <span className="teacher-stat-label">Certificaciones finalizadas</span>
                     </div>
                     <div className="teacher-stat-card">
-                        <span className="teacher-stat-value">{teacherMetrics.certificationRate.toFixed(1)}%</span>
+                        <span className="teacher-stat-value">
+                            {teacherMetrics.certificationRate === 100 ? '100' : teacherMetrics.certificationRate.toFixed(1)}%
+                        </span>
                         <span className="teacher-stat-label">Tasa de Certificación</span>
                     </div>
                 </div>

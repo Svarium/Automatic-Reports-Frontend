@@ -57,7 +57,9 @@ const StudentGroupCard = ({ group }) => {
                 </div>
                 <div className="metric-item">
                     <div className="metric-label">Vitalidad Digital (30 días)</div>
-                    <div className="metric-value">{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</div>
+                    <div className="metric-value">
+                        {group.metrics.digital_vitality_30d_percent === 100 ? '100' : group.metrics.digital_vitality_30d_percent.toFixed(1)}%
+                    </div>
                 </div>
                 <div className="metric-item">
                     <div className="metric-label">Cursos completados</div>
@@ -65,7 +67,9 @@ const StudentGroupCard = ({ group }) => {
                 </div>
                 <div className="metric-item">
                     <div className="metric-label">Progreso Reciente (15 días)</div>
-                    <div className="metric-value">{group.metrics.recent_progress_15d_percent.toFixed(1)}%</div>
+                    <div className="metric-value">
+                        {group.metrics.recent_progress_15d_percent === 100 ? '100' : group.metrics.recent_progress_15d_percent.toFixed(1)}%
+                    </div>
                 </div>
             </div>
 
