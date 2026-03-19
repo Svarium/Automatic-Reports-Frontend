@@ -252,62 +252,85 @@ const PDFTemplate = ({ contentRef }) => {
                                 </div>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                                {chunk.map((group, index) => {
-                                    const semaphore = semaphores[group.route_name] || 'gray';
-                                    const semaphoreColor = semaphore === 'green' ? '#00cc7e' : semaphore === 'yellow' ? '#ffd148' : semaphore === 'red' ? '#ff8d7a' : '#9e9e9e';
+                            {/* Helper para renderizar métrica estilizada en el PDF */}
+                            {(() => {
+                                const renderPdfStylizedMetric = (value) => {
+                                    if (typeof value !== 'string' || !value.includes(' de ')) {
+                                        return <strong style={{ color: '#000' }}>{value}</strong>;
+                                    }
+                                    const parts = value.split(' de ');
+                                    const current = parts[0];
+                                    const secondPart = parts[1].split(' ');
+                                    const total = secondPart[0];
+                                    const label = secondPart[1];
+
                                     return (
-                                        <div key={index} style={{
-                                            padding: '12px',
-                                            borderLeft: `5px solid ${semaphoreColor}`,
-                                            backgroundColor: '#fdfdfd',
-                                            border: '1px solid #efefef',
-                                            borderLeftWidth: '5px',
-                                            borderRadius: '8px',
-                                            pageBreakInside: 'avoid',
-                                            boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
-                                        }}>
-                                            <div style={{ marginBottom: '10px', borderBottom: '1px solid #f5f5f5', paddingBottom: '5px' }}>
-                                                <p style={{ fontWeight: '800', fontSize: '12px', margin: '0', color: '#000000' }}>{group.route_name}</p>
-                                                <p style={{ fontSize: '10px', color: '#888', margin: '2px 0 0 0' }}>{group.students_count} {group.students_count === 1 ? 'alumno' : 'alumnos'}</p>
-                                                <small style={{ fontSize: '7px', color: '#888', margin: '2px 0 0 0' }}>* Los % de avance corresponden al 100% de la certificación.</small>
-                                            </div>
-                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '10px', color: '#444' }}>
-                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                                    <div>Clases Completadas: <strong style={{ color: '#000' }}>{group.metrics.classes_completion_percent.toFixed(1)}%</strong></div>
-                                                    <div>Cursos Completados: <strong style={{ color: '#000' }}>{group.metrics.courses_completion_percent.toFixed(1)}%</strong></div>
-                                                </div>
-                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                                    <div>Vitalidad Digital (30 días): <strong style={{ color: '#000' }}>{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</strong></div>
-                                                    <div>Progreso Reciente (15 días): <strong style={{ color: '#000' }}>{group.metrics.recent_progress_15d_percent.toFixed(1)}%</strong></div>
-                                                </div>
-                                            </div>
-                                            {(groupFeedback[group.route_name] && groupFeedback[group.route_name].length > 0) && (
-                                                <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px dashed #ddd' }}>
-                                                    <div style={{ fontSize: '10px', fontWeight: '800', color: '#333', marginBottom: '6px' }}>Feedback:</div>
-                                                    <div style={{
-                                                        display: 'grid',
-                                                        gridTemplateColumns: '1fr 1fr',
-                                                        gap: '4px 15px'
-                                                    }}>
-                                                        {groupFeedback[group.route_name].map((reason, rIndex) => (
-                                                            <div key={rIndex} style={{
-                                                                fontSize: '9px',
-                                                                color: '#555',
-                                                                paddingLeft: '6px',
-                                                                borderLeft: '2px solid #ddd',
-                                                                lineHeight: '1.2'
-                                                            }}>
-                                                                • {reason}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
+                                        <span style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                                            <strong style={{ color: '#000', fontSize: '13px' }}>{current}</strong>
+                                            <span style={{ color: '#888', fontSize: '9px' }}>de {total}</span>
+                                        </span>
                                     );
-                                })}
-                            </div>
+                                };
+
+                                return (
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                                        {chunk.map((group, index) => {
+                                            const semaphore = semaphores[group.route_name] || 'gray';
+                                            const semaphoreColor = semaphore === 'green' ? '#00cc7e' : semaphore === 'yellow' ? '#ffd148' : semaphore === 'red' ? '#ff8d7a' : '#9e9e9e';
+                                            return (
+                                                <div key={index} style={{
+                                                    padding: '12px',
+                                                    borderLeft: `5px solid ${semaphoreColor}`,
+                                                    backgroundColor: '#fdfdfd',
+                                                    border: '1px solid #efefef',
+                                                    borderLeftWidth: '5px',
+                                                    borderRadius: '8px',
+                                                    pageBreakInside: 'avoid',
+                                                    boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
+                                                }}>
+                                                    <div style={{ marginBottom: '10px', borderBottom: '1px solid #f5f5f5', paddingBottom: '5px' }}>
+                                                        <p style={{ fontWeight: '800', fontSize: '12px', margin: '0', color: '#000000' }}>{group.route_name}</p>
+                                                        <p style={{ fontSize: '10px', color: '#888', margin: '2px 0 0 0' }}>{group.students_count} {group.students_count === 1 ? 'alumno' : 'alumnos'}</p>
+                                                        <small style={{ fontSize: '7px', color: '#888', margin: '2px 0 0 0' }}>* Las clases y cursos completados corresponden al 100% de la certificación.</small>
+                                                    </div>
+                                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '10px', color: '#444' }}>
+                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>Clases completadas: {renderPdfStylizedMetric(group.metrics.classes_completion_percent)}</div>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>Cursos completados: {renderPdfStylizedMetric(group.metrics.courses_completion_percent)}</div>
+                                                        </div>
+                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                            <div>Vitalidad Digital (30 días): <strong style={{ color: '#000' }}>{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</strong></div>
+                                                            <div>Progreso reciente (15 días): <strong style={{ color: '#000' }}>{group.metrics.recent_progress_15d_percent.toFixed(1)}%</strong></div>
+                                                        </div>
+                                                    </div>
+                                                    {(groupFeedback[group.route_name] && groupFeedback[group.route_name].length > 0) && (
+                                                        <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px dashed #ddd' }}>
+                                                            <div style={{ fontSize: '10px', fontWeight: '800', color: '#333', marginBottom: '6px' }}>Feedback:</div>
+                                                            <div style={{
+                                                                display: 'grid',
+                                                                gridTemplateColumns: '1fr 1fr',
+                                                                gap: '4px 15px'
+                                                            }}>
+                                                                {groupFeedback[group.route_name].map((reason, rIndex) => (
+                                                                    <div key={rIndex} style={{
+                                                                        fontSize: '9px',
+                                                                        color: '#555',
+                                                                        paddingLeft: '6px',
+                                                                        borderLeft: '2px solid #ddd',
+                                                                        lineHeight: '1.2'
+                                                                    }}>
+                                                                        • {reason}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                );
+                            })()}
 
                             {/* Observaciones Cortas (<= 700): quedan junto a los grupos */}
                             {chunkIdx === groupChunks.length - 1 && studentObservations && studentObservations.length <= 700 && (
