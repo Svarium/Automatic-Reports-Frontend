@@ -123,6 +123,25 @@
     color: var(--chart-blue);
 }
 
+.stylized-metric {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.metric-current {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--chart-blue);
+}
+
+.metric-suffix {
+    font-size: 0.95rem;
+    color: #888;
+    font-weight: 500;
+    margin-left: 6px;
+}
+
 /* Feedback Selector Styles */
 .group-feedback-selector {
     margin-top: var(--spacing-md);

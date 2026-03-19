@@ -8,6 +8,7 @@ const StudentGroupCard = ({ group }) => {
     const currentSemaphore = semaphores[group.route_name] || 'gray';
     const currentFeedback = groupFeedback[group.route_name] || [];
 
+    const isAlert = currentSemaphore === 'yellow' || currentSemaphore === 'red';
     const toggleFeedback = (option) => {
         const newFeedback = currentFeedback.includes(option)
             ? currentFeedback.filter(f => f !== option)
@@ -15,7 +16,24 @@ const StudentGroupCard = ({ group }) => {
         updateGroupFeedback(group.route_name, newFeedback);
     };
 
-    const isAlert = currentSemaphore === 'yellow' || currentSemaphore === 'red';
+    const renderStylizedMetric = (value) => {
+        if (typeof value !== 'string' || !value.includes(' de ')) {
+            return <span>{value}</span>;
+        }
+
+        const parts = value.split(' de ');
+        const current = parts[0];
+        const secondPart = parts[1].split(' ');
+        const total = secondPart[0];
+        const label = secondPart[1]; // "clases" o "cursos"
+
+        return (
+            <div className="stylized-metric">
+                <span className="metric-current">{current}</span>
+                <span className="metric-suffix">de {total}</span>
+            </div>
+        );
+    };
 
     return (
         <div className={`student-group-card semaphore-${currentSemaphore}`}>
@@ -34,16 +52,16 @@ const StudentGroupCard = ({ group }) => {
 
             <div className="group-metrics">
                 <div className="metric-item">
-                    <div className="metric-label">Clases Completadas</div>
-                    <div className="metric-value">{group.metrics.classes_completion_percent.toFixed(1)}%</div>
+                    <div className="metric-label">Clases completadas</div>
+                    <div className="metric-value">{renderStylizedMetric(group.metrics.classes_completion_percent)}</div>
                 </div>
                 <div className="metric-item">
                     <div className="metric-label">Vitalidad Digital (30 días)</div>
                     <div className="metric-value">{group.metrics.digital_vitality_30d_percent.toFixed(1)}%</div>
                 </div>
                 <div className="metric-item">
-                    <div className="metric-label">Cursos Completados</div>
-                    <div className="metric-value">{group.metrics.courses_completion_percent.toFixed(1)}%</div>
+                    <div className="metric-label">Cursos completados</div>
+                    <div className="metric-value">{renderStylizedMetric(group.metrics.courses_completion_percent)}</div>
                 </div>
                 <div className="metric-item">
                     <div className="metric-label">Progreso Reciente (15 días)</div>
