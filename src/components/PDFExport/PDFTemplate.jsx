@@ -254,7 +254,7 @@ const PDFTemplate = ({ contentRef }) => {
 
                             {/* Helper para renderizar métrica estilizada en el PDF */}
                             {(() => {
-                                const renderPdfStylizedMetric = (value) => {
+                                const renderPdfStylizedMetric = (value, showPercent = false) => {
                                     if (typeof value !== 'string' || !value.includes(' de ')) {
                                         return <strong style={{ color: '#000' }}>{value}</strong>;
                                     }
@@ -266,8 +266,8 @@ const PDFTemplate = ({ contentRef }) => {
 
                                     return (
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                            <strong style={{ color: '#000', fontSize: '13px' }}>{current}</strong>
-                                            <span style={{ color: '#888', fontSize: '9px' }}>de {total}</span>
+                                            <strong style={{ color: '#000', fontSize: '12px' }}>{current}{showPercent ? '%' : ''}</strong>
+                                            <span style={{ color: '#888', fontSize: '8.5px' }}>{showPercent ? `en ${total} curs.` : `de ${total}`}</span>
                                         </span>
                                     );
                                 };
@@ -299,7 +299,7 @@ const PDFTemplate = ({ contentRef }) => {
                                                                 Clases completadas: {renderPdfStylizedMetric(group.metrics.classes_completion_percent)}
                                                             </div>
                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '3px', height: '18px', whiteSpace: 'nowrap' }}>
-                                                                Cursos completados: {renderPdfStylizedMetric(group.metrics.courses_completion_percent)}
+                                                                Cursos completados: {renderPdfStylizedMetric(group.metrics.courses_completion_percent, true)}
                                                             </div>
                                                         </div>
                                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>

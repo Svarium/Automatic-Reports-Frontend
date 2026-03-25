@@ -16,7 +16,7 @@ const StudentGroupCard = ({ group }) => {
         updateGroupFeedback(group.route_name, newFeedback);
     };
 
-    const renderStylizedMetric = (value) => {
+    const renderStylizedMetric = (value, showPercent = false) => {
         if (typeof value !== 'string' || !value.includes(' de ')) {
             return <span>{value}</span>;
         }
@@ -29,8 +29,10 @@ const StudentGroupCard = ({ group }) => {
 
         return (
             <div className="stylized-metric">
-                <span className="metric-current">{current}</span>
-                <span className="metric-suffix">de {total}</span>
+                <span className="metric-current">{current}{showPercent ? '%' : ''}</span>
+                <span className="metric-suffix">
+                    {showPercent ? `en ${total} cursos` : `de ${total}`}
+                </span>
             </div>
         );
     };
@@ -63,7 +65,7 @@ const StudentGroupCard = ({ group }) => {
                 </div>
                 <div className="metric-item">
                     <div className="metric-label">Cursos completados</div>
-                    <div className="metric-value">{renderStylizedMetric(group.metrics.courses_completion_percent)}</div>
+                    <div className="metric-value">{renderStylizedMetric(group.metrics.courses_completion_percent, true)}</div>
                 </div>
                 <div className="metric-item">
                     <div className="metric-label">Progreso Reciente (15 días)</div>
