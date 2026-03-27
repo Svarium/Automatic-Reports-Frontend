@@ -1,0 +1,141 @@
+.student-table-container {
+    width: 100%;
+    overflow-x: auto;
+    background-color: var(--white);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid #1a1a1a;
+    box-shadow: var(--shadow-md);
+    margin-top: var(--spacing-md);
+}
+
+.student-groups-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.student-groups-table thead tr {
+    background-color: #1a1a1a;
+    border-bottom: 2px solid #333;
+}
+
+.student-groups-table th {
+    padding: 15px 12px;
+    font-weight: 700;
+    color: #888;
+    text-transform: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+}
+
+.student-groups-table td {
+    padding: 20px;
+    border-bottom: 1px solid #1a1a1a;
+    vertical-align: middle;
+}
+
+.table-row {
+    transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+    background-color: #1a1a1a;
+}
+
+/* Colores de semáforo en el borde izquierdo de la fila */
+.table-row.semaphore-green { border-left: 5px solid var(--semaphore-green); }
+.table-row.semaphore-yellow { border-left: 5px solid var(--semaphore-yellow); }
+.table-row.semaphore-red { border-left: 5px solid var(--semaphore-red); }
+.table-row.semaphore-gray { border-left: 5px solid #444; }
+
+.td-group {
+    min-width: 300px;
+}
+
+.name-main {
+    font-weight: 700;
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.name-sub {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.td-semaphore {
+    width: 100px;
+    text-align: center;
+}
+
+.td-metric {
+    min-width: 110px;
+    text-align: center;
+    padding: 15px 10px;
+}
+
+.table-stylized-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.table-metric-current {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--chart-blue);
+}
+
+.table-metric-total {
+    font-size: 0.75rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.table-simple-metric {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--chart-blue);
+}
+
+/* Feedback Pills in Table */
+.table-feedback-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.table-feedback-pill {
+    background: transparent;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 0.7rem;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.table-row.semaphore-yellow .table-feedback-pill.selected {
+    background-color: var(--semaphore-yellow);
+    border-color: var(--semaphore-yellow);
+    color: #000;
+    font-weight: 700;
+}
+
+.table-row.semaphore-red .table-feedback-pill.selected {
+    background-color: var(--semaphore-red);
+    border-color: var(--semaphore-red);
+    color: #fff;
+    font-weight: 700;
+}
+
+.table-feedback-pill:hover:not(.selected) {
+    background-color: #333;
+    color: #fff;
+}
