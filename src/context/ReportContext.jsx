@@ -35,7 +35,7 @@ export const ReportProvider = ({ children }) => {
     // Filtros de sección (Alumnos / Docentes)
     const [includeStudents, setIncludeStudents] = useState(true);
     const [includeTeachers, setIncludeTeachers] = useState(true);
-    
+
     // Configuración de vista (Cards / Tabla)
     const [studentViewMode, setStudentViewMode] = useState('cards');
     // { [teacherName]: { teaching: bool, communication: string, deletedPlds: string[], isDeleted: bool } }
