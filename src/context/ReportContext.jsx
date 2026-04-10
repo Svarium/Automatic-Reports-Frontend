@@ -288,6 +288,7 @@ export const ReportProvider = ({ children }) => {
         setMentorName('');
         setIncludeStudents(true);
         setIncludeTeachers(true);
+        setStudentViewMode('cards');
     };
 
     /**
@@ -387,6 +388,8 @@ export const ReportProvider = ({ children }) => {
         validateReport,
         setIncludeStudents,
         setIncludeTeachers,
+        studentViewMode,
+        setStudentViewMode,
     };
 
     return (

@@ -1,10 +1,11 @@
 import { useReport } from '../../context/ReportContext';
 import DoughnutChart from '../Charts/DoughnutChart';
 import StudentGroupCard from './StudentGroupCard';
+import StudentGroupTable from './StudentGroupTable';
 import './StudentMetrics.css';
 
 const StudentMetrics = () => {
-    const { reportData } = useReport();
+    const { reportData, studentViewMode, setStudentViewMode } = useReport();
 
     if (!reportData || !reportData.students) return null;
 
@@ -33,12 +34,33 @@ const StudentMetrics = () => {
                 </div>
             </div>
 
-            <h3 className="groups-title">Grupos por Ruta</h3>
-            <div className="groups-container">
-                {groups.map((group, index) => (
-                    <StudentGroupCard key={index} group={group} />
-                ))}
+            <div className="groups-header-row">
+                <h3 className="groups-title">Grupos por Ruta</h3>
+                <div className="view-toggle">
+                    <button 
+                        className={`toggle-btn ${studentViewMode === 'cards' ? 'active' : ''}`}
+                        onClick={() => setStudentViewMode('cards')}
+                    >
+                        🎴 Cards
+                    </button>
+                    <button 
+                        className={`toggle-btn ${studentViewMode === 'table' ? 'active' : ''}`}
+                        onClick={() => setStudentViewMode('table')}
+                    >
+                        📊 Tabla
+                    </button>
+                </div>
             </div>
+
+            {studentViewMode === 'cards' ? (
+                <div className="groups-container">
+                    {groups.map((group, index) => (
+                        <StudentGroupCard key={index} group={group} />
+                    ))}
+                </div>
+            ) : (
+                <StudentGroupTable groups={groups} />
+            )}
         </div>
     );
 };

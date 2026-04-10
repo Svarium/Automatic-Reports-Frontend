@@ -81,7 +81,7 @@ const FileUpload = () => {
                     <p style="margin: 0;">Usá el nuevo panel de <strong>Configuración del Reporte</strong> para elegir qué secciones incluir. Si el archivo no contiene datos de alguna sección, esta se deshabilitará automáticamente.</p>
 
                     <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">3. Análisis y Semáforos 🚦</h4>
-                    <p style="margin: 0;">Revisá los grupos y asignales un estado:</p>
+                    <p style="margin: 0;">Revisá los grupos y asignales un estado. Podés alternar entre la vista de <strong>Cards</strong> o de <strong>Tabla</strong> para trabajar más cómodamente:</p>
                     <ul style="margin: 5px 0 10px 20px; padding: 0;">
                         <li><span style="color: #00cc7e; font-weight: bold;">Verde:</span> Todo en orden.</li>
                         <li><span style="color: #ffd148; font-weight: bold;">Amarillo:</span> Requiere seguimiento.</li>
@@ -90,10 +90,10 @@ const FileUpload = () => {
                     <p style="font-size: 0.9em; font-style: italic;">⚠️ Si marcás Amarillo o Rojo, <strong>es obligatorio</strong> seleccionar los motivos (feedback).</p>
 
                     <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">4. Observaciones 📝</h4>
-                    <p style="margin: 0;">Completá los campos de texto para las secciones activas. ¡Son fundamentales para dar contexto al reporte!</p>
+                    <p style="margin: 0;">Completá los campos de texto. ¡Son fundamentales para dar contexto! El sistema usará una <strong>paginación inteligente</strong> para que nunca se corten tus párrafos en el PDF.</p>
 
                     <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">5. Exportación 📄</h4>
-                    <p style="margin: 0;">Al finalizar, generá el PDF. El documento se adaptará automáticamente para mostrar solo las secciones que hayas seleccionado.</p>
+                    <p style="margin: 0;">Al finalizar, generá el PDF. El documento se adaptará automáticamente a la vista que hayas seleccionado (Cards o Tabla) para un diseño profesional y limpio.</p>
                 </div>
             `,
             showCloseButton: true,

@@ -20,20 +20,22 @@ El objetivo principal es agilizar la comunicación entre los mentores y los dire
 1.  **Carga de Datos (Input):** El usuario sube un archivo CSV o Excel exportado de la plataforma educativa.
 2.  **Análisis Automático:** El sistema envía el archivo al backend (FastAPI), el cual procesa los datos y devuelve un JSON con métricas de alumnos y docentes.
 3.  **Visualización y Edición (Preview):** 
+    - **Alternancia de Vistas:** Permite elegir entre formato **Cards** (visual) o **Tabla** (ejecutivo y compacto) según la cantidad de datos.
     - **Semáforos Individuales:** El mentor asigna un estado (Verde/Amarillo/Rojo) a cada grupo de alumnos.
-    - **Feedback de Alerta:** Si un grupo está en **Amarillo** o **Rojo**, se despliega un selector de **píldoras interactivas** para marcar motivos predefinidos (incidencias, rotación docente, etc.).
+    - **Feedback de Alerta:** Si un grupo está en **Amarillo** o **Rojo**, se despliega un selector de **píldoras interactivas** para marcar motivos predefinidos.
     - **Semáforo General:** El sistema calcula el estado del colegio basado en los semáforos de los grupos.
     - **Métricas Docentes:** Seguimiento de capacitación y certificación, con posibilidad de alternar el estado manual de cada docente.
     - **Mentorías:** Registro de acompañamiento pedagógico (agendadas vs. concretadas).
     - **Observaciones:** Espacios de texto libre para análisis cualitativo profundo.
-4.  **Generación de Reporte (Output):** Exportación a PDF que integra métricas, gráficos, semáforos y el feedback de grupos en un layout optimizado.
+4.  **Generación de Reporte (Output):** Exportación a PDF que integra métricas, gráficos y feedback en un layout adaptativo.
 
 ---
 
 ## ✨ Características Principales
 
 ### 📈 Métricas de Alumnos
-- Visualización de **Clases Completadas**, **Vitalidad Digital** y **Progreso Reciente**.
+- **Vista Dual:** Switch instantáneo entre modo Tarjetas y modo Tabla.
+- **KPIs Pulidos:** Visualización de **Clases Completadas**, **Vitalidad Digital** y **Progreso Reciente** con precisión (indicadores 100% reales y porcentajes de avance).
 - **Sistema de Justificación:** Píldoras interactivas para indicar por qué un grupo requiere atención, visibles solo en estados de alerta.
 - Gráficos comparativos de resumen general.
 
@@ -42,9 +44,9 @@ El objetivo principal es agilizar la comunicación entre los mentores y los dire
 - **Interactividad:** Posibilidad de corregir manualmente el estado de certificación de cada docente.
 
 ### 📄 Exportación Profesional a PDF
-- **Layout Inteligente:** Los motivos de feedback de los grupos se organizan en **dos columnas** para optimizar el espacio.
-- **Banners Institucionales:** Encabezados y pies de página profesionales.
-- **Sin cortes de contenido:** Lógica de saltos de página para evitar divisiones de contenido críticas.
+- **Layout Adaptativo:** El documento final refleja la vista seleccionada (Cards o Tabla), optimizando el espacio disponible.
+- **Paginación Inteligente:** Lógica avanzada de saltos de página que organiza las observaciones del mentor para evitar cortes de texto feos.
+- **Banners Institucionales:** Encabezados y pies de página profesionales de Digital House.
 
 ---
 
