@@ -25,7 +25,9 @@ const StudentMetrics = () => {
         setStudentViewMode, 
         reorderStudentGroups,
         showMandatoryCourseMetric,
-        setShowMandatoryCourseMetric
+        setShowMandatoryCourseMetric,
+        showGroupMandatoryCourses,
+        setShowGroupMandatoryCourses
     } = useReport();
 
     const sensors = useSensors(
@@ -99,7 +101,20 @@ const StudentMetrics = () => {
             </div>
 
             <div className="groups-header-row">
-                <h3 className="groups-title">Grupos por Ruta</h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <h3 className="groups-title" style={{ margin: 0 }}>Grupos por Ruta</h3>
+                    <label className="metric-toggle" style={{ margin: 0 }}>
+                        <span className="toggle-label" style={{ fontSize: '0.85rem' }}>Incluir detalle de cursos obligatorios</span>
+                        <div className={`switch ${showGroupMandatoryCourses ? 'on' : 'off'}`}>
+                            <input 
+                                type="checkbox" 
+                                checked={showGroupMandatoryCourses} 
+                                onChange={(e) => setShowGroupMandatoryCourses(e.target.checked)}
+                            />
+                            <span className="slider"></span>
+                        </div>
+                    </label>
+                </div>
                 <div className="view-toggle">
                     <button 
                         className={`toggle-btn ${studentViewMode === 'cards' ? 'active' : ''}`}

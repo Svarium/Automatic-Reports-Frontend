@@ -205,9 +205,10 @@
 
 .group-metrics {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-sm);
     margin-top: var(--spacing-sm);
+    margin-bottom: calc(var(--spacing-md) + 10px);
 }
 
 .metric-item {
@@ -221,13 +222,14 @@
 }
 
 .metric-label {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #999;
     margin-bottom: var(--spacing-xs);
+    line-height: 1.2;
 }
 
 .metric-value {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--chart-blue);
 }
@@ -239,7 +241,7 @@
 }
 
 .metric-current {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 800;
     color: var(--chart-blue);
 }
@@ -350,4 +352,62 @@
     color: white;
     text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     pointer-events: none;
+}
+
+.course-progress-section {
+    padding: var(--spacing-md);
+    background-color: #fafafa;
+    border-top: 1px solid #eee;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    margin-top: auto;
+}
+
+.dual-progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.progress-track {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.track-label {
+    width: 75px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.progress-bar-container {
+    flex: 1;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.green-fill {
+    background-color: var(--semaphore-green);
+}
+
+.blue-fill {
+    background-color: #2196F3;
+}
+
+.track-value {
+    min-width: 35px;
+    white-space: nowrap;
+    text-align: right;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #333;
 }

@@ -42,6 +42,9 @@ export const ReportProvider = ({ children }) => {
 
     // Opciones de visualización de métricas
     const [showMandatoryCourseMetric, setShowMandatoryCourseMetric] = useState(true);
+    const [showGroupMandatoryCourses, setShowGroupMandatoryCourses] = useState(true);
+    const [vitalityTimeWindow, setVitalityTimeWindow] = useState('30d');
+    const [progressTimeWindow, setProgressTimeWindow] = useState('15d');
 
     // Recalcular semáforo general cuando cambian los individuales
     useEffect(() => {
@@ -418,6 +421,12 @@ export const ReportProvider = ({ children }) => {
         setStudentViewMode,
         showMandatoryCourseMetric,
         setShowMandatoryCourseMetric,
+        showGroupMandatoryCourses,
+        setShowGroupMandatoryCourses,
+        vitalityTimeWindow,
+        setVitalityTimeWindow,
+        progressTimeWindow,
+        setProgressTimeWindow,
     };
 
     return (

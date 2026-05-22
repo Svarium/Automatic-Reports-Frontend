@@ -4,7 +4,16 @@ import { GROUP_FEEDBACK_OPTIONS } from '../../utils/constants';
 import './StudentMetrics.css';
 
 const StudentGroupCard = ({ group }) => {
-    const { semaphores, groupFeedback, updateGroupFeedback } = useReport();
+    const { 
+        semaphores, 
+        groupFeedback, 
+        updateGroupFeedback, 
+        showGroupMandatoryCourses,
+        vitalityTimeWindow,
+        setVitalityTimeWindow,
+        progressTimeWindow,
+        setProgressTimeWindow
+    } = useReport();
     const currentSemaphore = semaphores[group.route_name] || 'gray';
     const currentFeedback = groupFeedback[group.route_name] || [];
 
@@ -25,7 +34,6 @@ const StudentGroupCard = ({ group }) => {
         const current = parts[0];
         const secondPart = parts[1].split(' ');
         const total = secondPart[0];
-        const label = secondPart[1]; // "clases" o "cursos"
 
         return (
             <div className="stylized-metric">
@@ -37,6 +45,24 @@ const StudentGroupCard = ({ group }) => {
         );
     };
 
+    const parseCoursesStr = (str) => {
+        if (!str || typeof str !== 'string') return { current: 0, total: 1, percent: 0, label: '0% de 0 cursos' };
+        const parts = str.split(' de ');
+        if (parts.length < 2) return { current: 0, total: 1, percent: 0, label: str };
+        const current = parseFloat(parts[0]) || 0;
+        const totalPart = parts[1].split(' ')[0];
+        const total = parseFloat(totalPart) || 1;
+        const percent = Math.min(100, Math.max(0, current));
+        return { current, total, percent, label: `${current}% de ${total} cursos` };
+    };
+
+    const parsedTotalCourses = parseCoursesStr(group.metrics.courses_completion_percent);
+    const parsedMandatoryCourses = group.metrics.mandatory_courses_completion_percent !== null 
+        ? parseCoursesStr(group.metrics.mandatory_courses_completion_percent) 
+        : null;
+
+    const vitalityValue = group.metrics[`digital_vitality_${vitalityTimeWindow}_percent`];
+    const progressValue = group.metrics[`recent_progress_${progressTimeWindow}_percent`];
     return (
         <div className={`student-group-card semaphore-${currentSemaphore}`}>
             <div className="group-header">
@@ -58,34 +84,72 @@ const StudentGroupCard = ({ group }) => {
                     <div className="metric-value">{renderStylizedMetric(group.metrics.classes_completion_percent)}</div>
                 </div>
                 <div className="metric-item">
-                    <div className="metric-label">Vitalidad Digital (30 días)</div>
+                    <div className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        Vitalidad Digital ({vitalityTimeWindow === '30d' ? '30' : '15'} días)
+                        <span 
+                            style={{ cursor: 'pointer', fontSize: '12px' }} 
+                            onClick={() => setVitalityTimeWindow(prev => prev === '30d' ? '15d' : '30d')}
+                            title={`Cambiar a ${vitalityTimeWindow === '30d' ? '15' : '30'} días`}
+                        >
+                            📅
+                        </span>
+                    </div>
                     <div className="metric-value">
-                        {group.metrics.digital_vitality_30d_percent === 100 ? '100' : group.metrics.digital_vitality_30d_percent.toFixed(1)}%
+                        {vitalityValue === 100 ? '100' : vitalityValue?.toFixed(1)}%
                     </div>
                 </div>
                 <div className="metric-item">
-                    <div className="metric-label">Cursos completados</div>
-                    <div className="metric-value">{renderStylizedMetric(group.metrics.courses_completion_percent, true)}</div>
-                </div>
-                <div className="metric-item">
-                    <div className="metric-label">Progreso Reciente (15 días)</div>
+                    <div className="metric-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        Progreso Reciente ({progressTimeWindow === '15d' ? '15' : '30'} días)
+                        <span 
+                            style={{ cursor: 'pointer', fontSize: '12px' }} 
+                            onClick={() => setProgressTimeWindow(prev => prev === '15d' ? '30d' : '15d')}
+                            title={`Cambiar a ${progressTimeWindow === '15d' ? '30' : '15'} días`}
+                        >
+                            📅
+                        </span>
+                    </div>
                     <div className="metric-value">
-                        {group.metrics.recent_progress_15d_percent === 100 ? '100' : group.metrics.recent_progress_15d_percent.toFixed(1)}%
+                        {progressValue === 100 ? '100' : progressValue?.toFixed(1)}%
                     </div>
                 </div>
             </div>
 
-            {group.metrics.mandatory_courses_completion_percent !== null && (
-                <div className="mandatory-progress-section">
-                    <div className="metric-label">Cursos obligatorios completados</div>
-                    <div className="progress-bar-container">
-                        <div 
-                            className="progress-bar-fill" 
-                            style={{ width: `${group.metrics.mandatory_courses_completion_percent}%` }}
-                        ></div>
-                        <span className="progress-bar-text">
-                            {group.metrics.mandatory_courses_completion_percent.toFixed(1)}%
-                        </span>
+            {parsedMandatoryCourses !== null && (
+                <div className="course-progress-section">
+                    <div className="metric-label" style={{ marginBottom: '8px', borderBottom: '1px solid #333', paddingBottom: '4px' }}>Progreso en Cursos</div>
+                    
+                    <div className="dual-progress-container">
+                        {showGroupMandatoryCourses && (
+                            <div className="progress-track">
+                                <span className="track-label">Obligatorios</span>
+                                <div className="progress-bar-container">
+                                    <div 
+                                        className="progress-bar-fill green-fill" 
+                                        style={{ width: `${parsedMandatoryCourses.percent}%` }}
+                                    ></div>
+                                </div>
+                                <span className="track-value">
+                                    {parsedMandatoryCourses.label}
+                                </span>
+                            </div>
+                        )}
+                        
+                        <div className="progress-track">
+                            <span className="track-label" style={{ width: showGroupMandatoryCourses ? '75px' : '90px' }}>Total de cursos</span>
+                            <div className="progress-bar-container">
+                                <div 
+                                    className="progress-bar-fill blue-fill" 
+                                    style={{ width: `${parsedTotalCourses.percent}%` }}
+                                ></div>
+                            </div>
+                            <span className="track-value">
+                                {parsedTotalCourses.label}
+                            </span>
+                        </div>
+                    </div>
+                    <div style={{ marginTop: '8px', fontSize: '0.65rem', color: '#999', textAlign: 'left' }}>
+                        * El total de cursos incluye obligatorios + complementarios
                     </div>
                 </div>
             )}

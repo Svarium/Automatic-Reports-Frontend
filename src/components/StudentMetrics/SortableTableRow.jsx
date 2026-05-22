@@ -3,7 +3,7 @@ import { CSS } from '@dnd-kit/utilities';
 import SemaphoreSelector from '../SemaphoreSelector/SemaphoreSelector';
 import { GROUP_FEEDBACK_OPTIONS } from '../../utils/constants';
 
-const SortableTableRow = ({ group, currentSemaphore, currentFeedback, isAlert, toggleFeedback, renderStylizedMetric }) => {
+const SortableTableRow = ({ group, currentSemaphore, currentFeedback, isAlert, toggleFeedback, renderStylizedMetric, showGroupMandatoryCourses, vitalityTimeWindow, progressTimeWindow }) => {
     const {
         attributes,
         listeners,
@@ -21,6 +21,26 @@ const SortableTableRow = ({ group, currentSemaphore, currentFeedback, isAlert, t
         zIndex: isDragging ? 1 : 0,
         backgroundColor: isDragging ? '#2a2a2a' : undefined,
     };
+
+    const parseCoursesStr = (str) => {
+        if (!str || typeof str !== 'string') return { current: 0, total: 1, percent: 0, label: '0% de 0 cursos' };
+        const parts = str.split(' de ');
+        if (parts.length < 2) return { current: 0, total: 1, percent: 0, label: str };
+        const current = parseFloat(parts[0]) || 0;
+        const totalPart = parts[1].split(' ')[0];
+        const total = parseFloat(totalPart) || 1;
+        const percent = Math.min(100, Math.max(0, current));
+        return { current, total, percent, label: `${current}% de ${total} cursos` };
+    };
+
+    const parsedTotalCourses = parseCoursesStr(group.metrics.courses_completion_percent);
+    const parsedMandatoryCourses = group.metrics.mandatory_courses_completion_percent !== null 
+        ? parseCoursesStr(group.metrics.mandatory_courses_completion_percent) 
+        : null;
+
+    const vitalityValue = group.metrics[`digital_vitality_${vitalityTimeWindow}_percent`];
+    const progressValue = group.metrics[`recent_progress_${progressTimeWindow}_percent`];
+
 
     return (
         <tr ref={setNodeRef} style={style} className={`table-row semaphore-${currentSemaphore}`}>
@@ -78,32 +98,50 @@ const SortableTableRow = ({ group, currentSemaphore, currentFeedback, isAlert, t
             <td className="td-metric">
                 {renderStylizedMetric(group.metrics.classes_completion_percent)}
             </td>
-            <td className="td-metric">
-                {renderStylizedMetric(group.metrics.courses_completion_percent, true)}
-            </td>
-            <td className="td-metric">
+            <td className="td-metric" style={{ minWidth: '180px' }}>
                 {group.metrics.mandatory_courses_completion_percent !== null && (
-                    <div className="table-mandatory-cell">
-                        <div style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '4px', color: 'var(--chart-blue)' }}>
-                            {group.metrics.mandatory_courses_completion_percent.toFixed(1)}%
+                    <div className="table-dual-progress">
+                        {showGroupMandatoryCourses && parsedMandatoryCourses && (
+                            <div className="table-progress-track">
+                                <div className="table-track-header">
+                                    <span className="table-track-label">Obligatorios</span>
+                                    <span className="table-track-value">{parsedMandatoryCourses.label}</span>
+                                </div>
+                                <div className="table-progress-bar-container">
+                                    <div 
+                                        className="table-progress-bar-fill green-fill" 
+                                        style={{ width: `${parsedMandatoryCourses.percent}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+                        )}
+                        
+                        <div className="table-progress-track">
+                            <div className="table-track-header">
+                                <span className="table-track-label">Total de cursos</span>
+                                <span className="table-track-value" style={{ fontSize: '0.75rem' }}>{parsedTotalCourses.label}</span>
+                            </div>
+                            <div className="table-progress-bar-container">
+                                <div 
+                                    className="table-progress-bar-fill blue-fill" 
+                                    style={{ width: `${parsedTotalCourses.percent}%` }}
+                                ></div>
+                            </div>
                         </div>
-                        <div className="progress-bar-container" style={{ height: '8px', borderRadius: '4px' }}>
-                            <div 
-                                className="progress-bar-fill" 
-                                style={{ width: `${group.metrics.mandatory_courses_completion_percent}%`, borderRadius: '4px' }}
-                            ></div>
+                        <div style={{ marginTop: '4px', fontSize: '0.65rem', color: '#999', textAlign: 'left' }}>
+                            * El total de cursos incluye obligatorios + complementarios
                         </div>
                     </div>
                 )}
             </td>
             <td className="td-metric">
                 <span className="table-simple-metric">
-                    {group.metrics.digital_vitality_30d_percent === 100 ? '100' : group.metrics.digital_vitality_30d_percent.toFixed(1)}%
+                    {vitalityValue === 100 ? '100' : vitalityValue?.toFixed(1)}%
                 </span>
             </td>
             <td className="td-metric">
                 <span className="table-simple-metric">
-                    {group.metrics.recent_progress_15d_percent === 100 ? '100' : group.metrics.recent_progress_15d_percent.toFixed(1)}%
+                    {progressValue === 100 ? '100' : progressValue?.toFixed(1)}%
                 </span>
             </td>
         </tr>
