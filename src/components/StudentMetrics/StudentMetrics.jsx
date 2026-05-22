@@ -19,7 +19,14 @@ import {
 import SortableGroupCard from './SortableGroupCard';
 
 const StudentMetrics = () => {
-    const { reportData, studentViewMode, setStudentViewMode, reorderStudentGroups } = useReport();
+    const { 
+        reportData, 
+        studentViewMode, 
+        setStudentViewMode, 
+        reorderStudentGroups,
+        showMandatoryCourseMetric,
+        setShowMandatoryCourseMetric
+    } = useReport();
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -53,14 +60,29 @@ const StudentMetrics = () => {
             <h2 className="section-title">📚 Métricas de Alumnos</h2>
 
             <div className="metrics-summary">
-                <h3 className="summary-title">Resumen General</h3>
-                <div className="charts-grid">
-                    <DoughnutChart
-                        title="Tasa de alumnos certificados en cursos obligatorios"
-                        data={[summary.mandatory_courses_full_completion_percent || 0, 100 - (summary.mandatory_courses_full_completion_percent || 0)]}
-                        labels={['Certificables', 'En proceso']}
-                        colors={['#00cc7e', '#333']}
-                    />
+                <div className="summary-header">
+                    <h3 className="summary-title" style={{ margin: 0 }}>Resumen General</h3>
+                    <label className="metric-toggle">
+                        <span className="toggle-label">Mostrar Tasa de Cursos Obligatorios</span>
+                        <div className={`switch ${showMandatoryCourseMetric ? 'on' : 'off'}`}>
+                            <input 
+                                type="checkbox" 
+                                checked={showMandatoryCourseMetric} 
+                                onChange={(e) => setShowMandatoryCourseMetric(e.target.checked)}
+                            />
+                            <span className="slider"></span>
+                        </div>
+                    </label>
+                </div>
+                <div className={`charts-grid ${!showMandatoryCourseMetric ? 'two-columns' : ''}`}>
+                    {showMandatoryCourseMetric && (
+                        <DoughnutChart
+                            title="Tasa de alumnos certificados en cursos obligatorios"
+                            data={[summary.mandatory_courses_full_completion_percent || 0, 100 - (summary.mandatory_courses_full_completion_percent || 0)]}
+                            labels={['Certificables', 'En proceso']}
+                            colors={['#00cc7e', '#333']}
+                        />
+                    )}
                     <DoughnutChart
                         title="Vitalidad Digital (30 días)"
                         data={[summary.digital_vitality_30d_avg, 100 - summary.digital_vitality_30d_avg]}

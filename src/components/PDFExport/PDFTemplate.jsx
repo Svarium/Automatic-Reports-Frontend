@@ -30,7 +30,8 @@ const PDFTemplate = ({ contentRef }) => {
         mentorName,
         includeStudents,
         includeTeachers,
-        studentViewMode
+        studentViewMode,
+        showMandatoryCourseMetric
     } = useReport();
 
     if (!reportData) return null;
@@ -39,7 +40,6 @@ const PDFTemplate = ({ contentRef }) => {
 
     // Alumnos (Cards: 6 por página | Tabla: ~12 por página)
     const studentsPerPage = studentViewMode === 'cards' ? 6 : 12;
-    const totalGroups = students?.groups?.length || 0;
     const groupChunks = includeStudents ? chunkArray(students?.groups, studentsPerPage) : [];
 
     // Lógica para ubicación de observaciones Alumnos
@@ -222,16 +222,18 @@ const PDFTemplate = ({ contentRef }) => {
                             {chunkIdx === 0 && (
                                 <>
                                     <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>📚 Métricas de Alumnos</h2>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', margin: '20px 0' }}>
-                                        <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #00cc7e', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                            <div style={{ flex: 1 }}>
-                                                <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>Tasa de alumnos certificados en cursos obligatorios</div>
-                                                <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{(students.summary.mandatory_courses_full_completion_percent || 0).toFixed(1)}%</div>
+                                    <div style={{ display: 'grid', gridTemplateColumns: showMandatoryCourseMetric ? '1fr 1fr 1fr' : '1fr 1fr', gap: '15px', margin: '20px 0' }}>
+                                        {showMandatoryCourseMetric && (
+                                            <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #00cc7e', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                                <div style={{ flex: 1 }}>
+                                                    <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>Tasa de alumnos certificados en cursos obligatorios</div>
+                                                    <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{(students.summary.mandatory_courses_full_completion_percent || 0).toFixed(1)}%</div>
+                                                </div>
+                                                <div style={{ flex: 1, fontSize: '8px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '8px' }}>
+                                                    Porcentaje de estudiantes que completaron la totalidad de los cursos obligatorios.
+                                                </div>
                                             </div>
-                                            <div style={{ flex: 1, fontSize: '8px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '8px' }}>
-                                                Porcentaje de estudiantes que completaron la totalidad de los cursos obligatorios.
-                                            </div>
-                                        </div>
+                                        )}
                                         <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
                                             <div style={{ flex: 1 }}>
                                                 <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>Vitalidad Digital (30 días)</div>

@@ -25,11 +25,72 @@
     text-align: center;
 }
 
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid #333;
+}
+
+.metric-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.toggle-label {
+    font-size: 0.85rem;
+    color: #aaa;
+    font-weight: 500;
+}
+
+.switch {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    background-color: #333;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+}
+
+.switch.on {
+    background-color: var(--semaphore-green);
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.switch.on .slider {
+    transform: translateX(20px);
+}
+
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-lg);
     margin-top: var(--spacing-md);
+}
+
+.charts-grid.two-columns {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    justify-content: center;
 }
 
 .groups-container {

@@ -40,6 +40,9 @@ export const ReportProvider = ({ children }) => {
     const [studentViewMode, setStudentViewMode] = useState('cards');
     // { [teacherName]: { teaching: bool, communication: string, deletedPlds: string[], isDeleted: bool } }
 
+    // Opciones de visualización de métricas
+    const [showMandatoryCourseMetric, setShowMandatoryCourseMetric] = useState(true);
+
     // Recalcular semáforo general cuando cambian los individuales
     useEffect(() => {
         if (Object.keys(semaphores).length > 0) {
@@ -310,6 +313,7 @@ export const ReportProvider = ({ children }) => {
         setIncludeStudents(true);
         setIncludeTeachers(true);
         setStudentViewMode('cards');
+        setShowMandatoryCourseMetric(true);
     };
 
     /**
@@ -412,6 +416,8 @@ export const ReportProvider = ({ children }) => {
         setIncludeTeachers,
         studentViewMode,
         setStudentViewMode,
+        showMandatoryCourseMetric,
+        setShowMandatoryCourseMetric,
     };
 
     return (
