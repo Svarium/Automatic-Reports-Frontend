@@ -271,6 +271,27 @@ export const ReportProvider = ({ children }) => {
     };
 
     /**
+     * Reordena los grupos de alumnos
+     */
+    const reorderStudentGroups = (startIndex, endIndex) => {
+        setReportData(prevData => {
+            if (!prevData || !prevData.students || !prevData.students.groups) return prevData;
+            
+            const newGroups = Array.from(prevData.students.groups);
+            const [removed] = newGroups.splice(startIndex, 1);
+            newGroups.splice(endIndex, 0, removed);
+            
+            return {
+                ...prevData,
+                students: {
+                    ...prevData.students,
+                    groups: newGroups
+                }
+            };
+        });
+    };
+
+    /**
      * Resetea todo el estado
      */
     const resetReport = () => {
@@ -383,6 +404,7 @@ export const ReportProvider = ({ children }) => {
         setCompletedMentorings,
         updateGroupFeedback,
         resetReport,
+        reorderStudentGroups,
         setMentorName,
         setSchoolName,
         validateReport,

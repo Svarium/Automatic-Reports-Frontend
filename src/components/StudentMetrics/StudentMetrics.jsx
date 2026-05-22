@@ -3,14 +3,50 @@ import DoughnutChart from '../Charts/DoughnutChart';
 import StudentGroupCard from './StudentGroupCard';
 import StudentGroupTable from './StudentGroupTable';
 import './StudentMetrics.css';
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core';
+import {
+    SortableContext,
+    sortableKeyboardCoordinates,
+    rectSortingStrategy,
+} from '@dnd-kit/sortable';
+import SortableGroupCard from './SortableGroupCard';
 
 const StudentMetrics = () => {
-    const { reportData, studentViewMode, setStudentViewMode } = useReport();
+    const { reportData, studentViewMode, setStudentViewMode, reorderStudentGroups } = useReport();
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 5,
+            },
+        }),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
     if (!reportData || !reportData.students) return null;
 
     const { students } = reportData;
     const { summary, groups } = students;
+
+    const handleDragEnd = (event) => {
+        const { active, over } = event;
+
+        if (active.id !== over.id) {
+            const oldIndex = groups.findIndex((item) => item.route_name === active.id);
+            const newIndex = groups.findIndex((item) => item.route_name === over.id);
+            reorderStudentGroups(oldIndex, newIndex);
+        }
+    };
+
 
     return (
         <div className="student-metrics-container">
@@ -20,16 +56,22 @@ const StudentMetrics = () => {
                 <h3 className="summary-title">Resumen General</h3>
                 <div className="charts-grid">
                     <DoughnutChart
+                        title="Tasa de alumnos certificados en cursos obligatorios"
+                        data={[summary.mandatory_courses_full_completion_percent || 0, 100 - (summary.mandatory_courses_full_completion_percent || 0)]}
+                        labels={['Certificables', 'En proceso']}
+                        colors={['#00cc7e', '#333']}
+                    />
+                    <DoughnutChart
                         title="Vitalidad Digital (30 días)"
                         data={[summary.digital_vitality_30d_avg, 100 - summary.digital_vitality_30d_avg]}
                         labels={['Activos', 'Inactivos']}
-                        colors={['#00cc7e', '#ff8d7a']}
+                        colors={['#2196F3', '#ff8d7a']}
                     />
                     <DoughnutChart
                         title="Progreso Reciente (15 días)"
                         data={[summary.recent_progress_15d_avg, 100 - summary.recent_progress_15d_avg]}
                         labels={['Con progreso', 'Sin progreso']}
-                        colors={['#00cc7e', '#ff8d7a']}
+                        colors={['#8383fd', '#ff8d7a']}
                     />
                 </div>
             </div>
@@ -52,15 +94,26 @@ const StudentMetrics = () => {
                 </div>
             </div>
 
-            {studentViewMode === 'cards' ? (
-                <div className="groups-container">
-                    {groups.map((group, index) => (
-                        <StudentGroupCard key={index} group={group} />
-                    ))}
-                </div>
-            ) : (
-                <StudentGroupTable groups={groups} />
-            )}
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+            >
+                <SortableContext
+                    items={groups.map((g) => g.route_name)}
+                    strategy={rectSortingStrategy}
+                >
+                    {studentViewMode === 'cards' ? (
+                        <div className="groups-container">
+                            {groups.map((group) => (
+                                <SortableGroupCard key={group.route_name} group={group} />
+                            ))}
+                        </div>
+                    ) : (
+                        <StudentGroupTable groups={groups} />
+                    )}
+                </SortableContext>
+            </DndContext>
         </div>
     );
 };

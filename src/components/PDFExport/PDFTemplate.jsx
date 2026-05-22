@@ -222,23 +222,32 @@ const PDFTemplate = ({ contentRef }) => {
                             {chunkIdx === 0 && (
                                 <>
                                     <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>📚 Métricas de Alumnos</h2>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', margin: '20px 0' }}>
-                                        <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', margin: '20px 0' }}>
+                                        <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #00cc7e', display: 'flex', alignItems: 'center', gap: '15px' }}>
                                             <div style={{ flex: 1 }}>
-                                                <div style={{ fontSize: '12px', color: '#555', fontWeight: 'bold' }}>Vitalidad Digital (30 días)</div>
-                                                <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
+                                                <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>Tasa de alumnos certificados en cursos obligatorios</div>
+                                                <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{(students.summary.mandatory_courses_full_completion_percent || 0).toFixed(1)}%</div>
                                             </div>
-                                            <div style={{ flex: 1, fontSize: '9px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '10px' }}>
-                                                Porcentaje de estudiantes que ingresaron a la plataforma durante los últimos 30 días.
+                                            <div style={{ flex: 1, fontSize: '8px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '8px' }}>
+                                                Porcentaje de estudiantes que completaron la totalidad de los cursos obligatorios.
                                             </div>
                                         </div>
                                         <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
                                             <div style={{ flex: 1 }}>
-                                                <div style={{ fontSize: '12px', color: '#555', fontWeight: 'bold' }}>Progreso Reciente (15 días)</div>
-                                                <div style={{ fontSize: '24px', fontWeight: '800', color: '#000' }}>{students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
+                                                <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>Vitalidad Digital (30 días)</div>
+                                                <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
                                             </div>
-                                            <div style={{ flex: 1, fontSize: '9px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '10px' }}>
-                                                Porcentaje de estudiante que avanzaron en sus actividades y lecciones en los últimos 15 días.
+                                            <div style={{ flex: 1, fontSize: '8px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '8px' }}>
+                                                Ingresos a la plataforma durante los últimos 30 días.
+                                            </div>
+                                        </div>
+                                        <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #8383fd', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                            <div style={{ flex: 1 }}>
+                                                <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>Progreso Reciente (15 días)</div>
+                                                <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
+                                            </div>
+                                            <div style={{ flex: 1, fontSize: '8px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '8px' }}>
+                                                Avance en actividades y lecciones en los últimos 15 días.
                                             </div>
                                         </div>
                                     </div>
@@ -342,6 +351,22 @@ const PDFTemplate = ({ contentRef }) => {
                                                                 </div>
                                                             </div>
                                                         )}
+                                                        {group.metrics.mandatory_courses_completion_percent !== null && (
+                                                            <div style={{ marginTop: '8px', borderTop: '1px solid #f0f0f0', paddingTop: '6px' }}>
+                                                                <div style={{ fontSize: '8px', color: '#666', marginBottom: '3px' }}>Cursos obligatorios completados:</div>
+                                                                <div style={{ width: '100%', height: '10px', backgroundColor: '#eee', borderRadius: '5px', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+                                                                    <div style={{ 
+                                                                        width: `${group.metrics.mandatory_courses_completion_percent}%`, 
+                                                                        height: '100%', 
+                                                                        backgroundColor: '#00cc7e',
+                                                                        borderRadius: '5px' 
+                                                                    }}></div>
+                                                                    <span style={{ position: 'absolute', width: '100%', textAlign: 'center', fontSize: '7px', fontWeight: '700', color: '#333' }}>
+                                                                        {group.metrics.mandatory_courses_completion_percent.toFixed(1)}%
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 );
                                             })}
@@ -356,10 +381,11 @@ const PDFTemplate = ({ contentRef }) => {
                                             <tr style={{ backgroundColor: '#f8f9fa', borderBottom: '2px solid #eee' }}>
                                                 <th style={{ padding: '6px 4px', textAlign: 'left', fontWeight: '800', width: '30%' }}>Grupo / Ruta</th>
                                                 <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '8%' }}>Estado</th>
-                                                <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '15%', whiteSpace: 'normal' }}>Clases Completadas</th>
-                                                <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '15%', whiteSpace: 'normal' }}>Cursos Completados</th>
-                                                <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '16%', whiteSpace: 'normal' }}>Vitalidad Digital (30 días)</th>
-                                                <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '16%', whiteSpace: 'normal' }}>Progreso reciente (15 días)</th>
+                                                <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '12%', whiteSpace: 'normal' }}>Clases Completadas</th>
+                                                <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '12%', whiteSpace: 'normal' }}>Cursos Completados</th>
+                                                <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '15%', whiteSpace: 'normal' }}>Cursos Obligatorios</th>
+                                                <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '11%', whiteSpace: 'normal' }}>Vitalidad Digital (30 días)</th>
+                                                <th style={{ padding: '6px 2px', textAlign: 'center', fontWeight: '800', width: '11%', whiteSpace: 'normal' }}>Progreso reciente (15 días)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -393,6 +419,23 @@ const PDFTemplate = ({ contentRef }) => {
                                                         </td>
                                                         <td style={{ padding: '8px', textAlign: 'center' }}>
                                                             {renderPdfStylizedMetric(group.metrics.courses_completion_percent, true)}
+                                                        </td>
+                                                        <td style={{ padding: '8px', textAlign: 'center' }}>
+                                                            {group.metrics.mandatory_courses_completion_percent !== null && (
+                                                                <div>
+                                                                    <div style={{ fontSize: '8px', fontWeight: '700', marginBottom: '3px', color: '#000' }}>
+                                                                        {group.metrics.mandatory_courses_completion_percent.toFixed(1)}%
+                                                                    </div>
+                                                                    <div style={{ width: '100%', height: '8px', backgroundColor: '#eee', borderRadius: '4px', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+                                                                        <div style={{ 
+                                                                            width: `${group.metrics.mandatory_courses_completion_percent}%`, 
+                                                                            height: '100%', 
+                                                                            backgroundColor: '#00cc7e',
+                                                                            borderRadius: '4px' 
+                                                                        }}></div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
                                                         </td>
                                                         <td style={{ padding: '8px', textAlign: 'center', fontWeight: '700' }}>
                                                             {group.metrics.digital_vitality_30d_percent === 100 ? '100' : group.metrics.digital_vitality_30d_percent.toFixed(1)}%

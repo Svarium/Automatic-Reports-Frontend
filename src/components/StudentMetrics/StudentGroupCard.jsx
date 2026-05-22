@@ -75,6 +75,21 @@ const StudentGroupCard = ({ group }) => {
                 </div>
             </div>
 
+            {group.metrics.mandatory_courses_completion_percent !== null && (
+                <div className="mandatory-progress-section">
+                    <div className="metric-label">Cursos obligatorios completados</div>
+                    <div className="progress-bar-container">
+                        <div 
+                            className="progress-bar-fill" 
+                            style={{ width: `${group.metrics.mandatory_courses_completion_percent}%` }}
+                        ></div>
+                        <span className="progress-bar-text">
+                            {group.metrics.mandatory_courses_completion_percent.toFixed(1)}%
+                        </span>
+                    </div>
+                </div>
+            )}
+
             {isAlert && (
                 <div className="group-feedback-selector">
                     <label className="feedback-label">Feedback del estado:</label>
