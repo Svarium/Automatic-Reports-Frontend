@@ -6,7 +6,8 @@ const MentoringInput = () => {
         scheduledMentorings,
         setScheduledMentorings,
         completedMentorings,
-        setCompletedMentorings
+        setCompletedMentorings,
+        t,
     } = useReport();
 
     const handleIncrementScheduled = () => setScheduledMentorings(prev => prev + 1);
@@ -20,17 +21,18 @@ const MentoringInput = () => {
 
     return (
         <div className="mentoring-container">
-            <h3 className="mentoring-title">🤝 Acompañamiento Pedagógico Sincrónico <span className='mentoring-subtitle'> (Desde el inicio del presente ciclo lectivo 📅)</span></h3>
+            <h3 className="mentoring-title">
+                {t('mentoring.title')} <span className="mentoring-subtitle">{t('mentoring.subtitle')}</span>
+            </h3>
 
             <div className="mentoring-controls">
-                {/* Mentorías Agendadas */}
                 <div className="mentoring-item">
-                    <span className="mentoring-label">Mentorías Agendadas</span>
+                    <span className="mentoring-label">{t('mentoring.scheduled')}</span>
                     <div className="counter-group">
                         <button
                             className="btn-counter btn-minus"
                             onClick={handleDecrementScheduled}
-                            aria-label="Disminuir agendadas"
+                            aria-label={t('mentoring.decrementScheduled')}
                         >
                             -
                         </button>
@@ -38,21 +40,20 @@ const MentoringInput = () => {
                         <button
                             className="btn-counter btn-plus"
                             onClick={handleIncrementScheduled}
-                            aria-label="Aumentar agendadas"
+                            aria-label={t('mentoring.incrementScheduled')}
                         >
                             +
                         </button>
                     </div>
                 </div>
 
-                {/* Mentorías Concretadas */}
                 <div className="mentoring-item">
-                    <span className="mentoring-label">Mentorías Concretadas</span>
+                    <span className="mentoring-label">{t('mentoring.completed')}</span>
                     <div className="counter-group">
                         <button
                             className="btn-counter btn-minus"
                             onClick={handleDecrementCompleted}
-                            aria-label="Disminuir concretadas"
+                            aria-label={t('mentoring.decrementCompleted')}
                         >
                             -
                         </button>
@@ -60,7 +61,7 @@ const MentoringInput = () => {
                         <button
                             className="btn-counter btn-plus"
                             onClick={handleIncrementCompleted}
-                            aria-label="Aumentar concretadas"
+                            aria-label={t('mentoring.incrementCompleted')}
                         >
                             +
                         </button>
@@ -70,7 +71,7 @@ const MentoringInput = () => {
 
             <div className="mentoring-summary">
                 <p className="mentoring-ratio">
-                    Tasa de participación: <span className="ratio-value">{ratio.toFixed(0)}%</span>
+                    {t('mentoring.participationRate')} <span className="ratio-value">{ratio.toFixed(0)}%</span>
                 </p>
             </div>
         </div>

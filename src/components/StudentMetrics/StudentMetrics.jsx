@@ -1,6 +1,5 @@
 import { useReport } from '../../context/ReportContext';
 import DoughnutChart from '../Charts/DoughnutChart';
-import StudentGroupCard from './StudentGroupCard';
 import StudentGroupTable from './StudentGroupTable';
 import './StudentMetrics.css';
 import {
@@ -19,15 +18,16 @@ import {
 import SortableGroupCard from './SortableGroupCard';
 
 const StudentMetrics = () => {
-    const { 
-        reportData, 
-        studentViewMode, 
-        setStudentViewMode, 
+    const {
+        reportData,
+        studentViewMode,
+        setStudentViewMode,
         reorderStudentGroups,
         showMandatoryCourseMetric,
         setShowMandatoryCourseMetric,
         showGroupMandatoryCourses,
-        setShowGroupMandatoryCourses
+        setShowGroupMandatoryCourses,
+        t,
     } = useReport();
 
     const sensors = useSensors(
@@ -48,28 +48,26 @@ const StudentMetrics = () => {
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
+        if (!over || active.id === over.id) return;
 
-        if (active.id !== over.id) {
-            const oldIndex = groups.findIndex((item) => item.route_name === active.id);
-            const newIndex = groups.findIndex((item) => item.route_name === over.id);
-            reorderStudentGroups(oldIndex, newIndex);
-        }
+        const oldIndex = groups.findIndex((item) => item.route_name === active.id);
+        const newIndex = groups.findIndex((item) => item.route_name === over.id);
+        reorderStudentGroups(oldIndex, newIndex);
     };
-
 
     return (
         <div className="student-metrics-container">
-            <h2 className="section-title">📚 Métricas de Alumnos</h2>
+            <h2 className="section-title">{t('students.title')}</h2>
 
             <div className="metrics-summary">
                 <div className="summary-header">
-                    <h3 className="summary-title" style={{ margin: 0 }}>Resumen General</h3>
+                    <h3 className="summary-title" style={{ margin: 0 }}>{t('students.summary')}</h3>
                     <label className="metric-toggle">
-                        <span className="toggle-label">Mostrar Tasa de Cursos Obligatorios</span>
+                        <span className="toggle-label">{t('students.showMandatoryRate')}</span>
                         <div className={`switch ${showMandatoryCourseMetric ? 'on' : 'off'}`}>
-                            <input 
-                                type="checkbox" 
-                                checked={showMandatoryCourseMetric} 
+                            <input
+                                type="checkbox"
+                                checked={showMandatoryCourseMetric}
                                 onChange={(e) => setShowMandatoryCourseMetric(e.target.checked)}
                             />
                             <span className="slider"></span>
@@ -79,22 +77,22 @@ const StudentMetrics = () => {
                 <div className={`charts-grid ${!showMandatoryCourseMetric ? 'two-columns' : ''}`}>
                     {showMandatoryCourseMetric && (
                         <DoughnutChart
-                            title="Tasa de alumnos certificados en cursos obligatorios"
+                            title={t('students.mandatoryRateTitle')}
                             data={[summary.mandatory_courses_full_completion_percent || 0, 100 - (summary.mandatory_courses_full_completion_percent || 0)]}
-                            labels={['Certificables', 'En proceso']}
+                            labels={[t('students.certified'), t('students.inProgress')]}
                             colors={['#00cc7e', '#333']}
                         />
                     )}
                     <DoughnutChart
-                        title="Vitalidad Digital (30 días)"
+                        title={`${t('students.vitalityTitle')} (30 ${t('common.days', { count: 30 })})`}
                         data={[summary.digital_vitality_30d_avg, 100 - summary.digital_vitality_30d_avg]}
-                        labels={['Activos', 'Inactivos']}
+                        labels={[t('students.active'), t('students.inactive')]}
                         colors={['#2196F3', '#ff8d7a']}
                     />
                     <DoughnutChart
-                        title="Progreso Reciente (15 días)"
+                        title={`${t('students.recentProgressTitle')} (15 ${t('common.days', { count: 15 })})`}
                         data={[summary.recent_progress_15d_avg, 100 - summary.recent_progress_15d_avg]}
-                        labels={['Con progreso', 'Sin progreso']}
+                        labels={[t('students.withProgress'), t('students.withoutProgress')]}
                         colors={['#8383fd', '#ff8d7a']}
                     />
                 </div>
@@ -102,13 +100,13 @@ const StudentMetrics = () => {
 
             <div className="groups-header-row">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <h3 className="groups-title" style={{ margin: 0 }}>Grupos por Ruta</h3>
+                    <h3 className="groups-title" style={{ margin: 0 }}>{t('students.groupsByRoute')}</h3>
                     <label className="metric-toggle" style={{ margin: 0 }}>
-                        <span className="toggle-label" style={{ fontSize: '0.85rem' }}>Incluir detalle de cursos obligatorios</span>
+                        <span className="toggle-label" style={{ fontSize: '0.85rem' }}>{t('students.includeMandatoryDetail')}</span>
                         <div className={`switch ${showGroupMandatoryCourses ? 'on' : 'off'}`}>
-                            <input 
-                                type="checkbox" 
-                                checked={showGroupMandatoryCourses} 
+                            <input
+                                type="checkbox"
+                                checked={showGroupMandatoryCourses}
                                 onChange={(e) => setShowGroupMandatoryCourses(e.target.checked)}
                             />
                             <span className="slider"></span>
@@ -116,17 +114,17 @@ const StudentMetrics = () => {
                     </label>
                 </div>
                 <div className="view-toggle">
-                    <button 
+                    <button
                         className={`toggle-btn ${studentViewMode === 'cards' ? 'active' : ''}`}
                         onClick={() => setStudentViewMode('cards')}
                     >
-                        🎴 Cards
+                        {t('students.cards')}
                     </button>
-                    <button 
+                    <button
                         className={`toggle-btn ${studentViewMode === 'table' ? 'active' : ''}`}
                         onClick={() => setStudentViewMode('table')}
                     >
-                        📊 Tabla
+                        {t('students.table')}
                     </button>
                 </div>
             </div>

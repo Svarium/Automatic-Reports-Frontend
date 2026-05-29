@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import { useReport } from '../../context/ReportContext';
+import { COMMUNICATION_OPTIONS, normalizeCommunicationKey } from '../../utils/constants';
 import './TeacherMetrics.css';
 
 const TeacherCard = ({ teacher }) => {
@@ -8,14 +9,20 @@ const TeacherCard = ({ teacher }) => {
         updateTeacherSettings,
         deleteTeacher,
         deletePld,
-        togglePldCertification
+        togglePldCertification,
+        t,
     } = useReport();
 
-    const settings = teacherSettings[teacher.name] || {
+    const rawSettings = teacherSettings[teacher.name] || {
         teaching: true,
-        communication: 'Fluida',
+        communication: 'fluid',
         deletedPlds: [],
         isDeleted: false
+    };
+
+    const settings = {
+        ...rawSettings,
+        communication: normalizeCommunicationKey(rawSettings.communication),
     };
 
     if (settings.isDeleted) return null;
@@ -30,14 +37,14 @@ const TeacherCard = ({ teacher }) => {
 
     const handleDeleteTeacher = () => {
         Swal.fire({
-            title: '¿Eliminar docente?',
-            text: `¿Estás seguro de que querés eliminar a ${teacher.name} del reporte?`,
+            title: t('teachers.deleteTeacherTitle'),
+            text: t('teachers.deleteTeacherText', { name: teacher.name }),
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ff8d7a',
             cancelButtonColor: '#cbd5e0',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
+            confirmButtonText: t('teachers.deleteTeacherConfirm'),
+            cancelButtonText: t('teachers.deleteTeacherCancel'),
             reverseButtons: true,
             background: '#ffffff',
             color: '#2d3748'
@@ -50,14 +57,14 @@ const TeacherCard = ({ teacher }) => {
 
     const handleDeletePld = (pldName) => {
         Swal.fire({
-            title: '¿Eliminar PLD?',
-            text: `Se quitará "${pldName}" del reporte para este docente.`,
+            title: t('teachers.deletePldTitle'),
+            text: t('teachers.deletePldText', { name: pldName }),
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#ff8d7a',
             cancelButtonColor: '#cbd5e0',
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Volver',
+            confirmButtonText: t('teachers.deletePldConfirm'),
+            cancelButtonText: t('teachers.deletePldCancel'),
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
@@ -66,7 +73,7 @@ const TeacherCard = ({ teacher }) => {
         });
     };
 
-    const activePlds = teacher.plds.filter(p => !settings.deletedPlds.includes(p.certification_name));
+    const activePlds = teacher.plds.filter(item => !settings.deletedPlds.includes(item.certification_name));
 
     return (
         <div className={`teacher-list-item ${!settings.teaching ? 'not-teaching' : ''}`}>
@@ -74,10 +81,10 @@ const TeacherCard = ({ teacher }) => {
                 <div className="teacher-main-info">
                     <h4 className="teacher-name-list">{teacher.name}</h4>
                     <span className={`teaching-badge ${settings.teaching ? 'active' : 'inactive'}`} onClick={handleToggleTeaching}>
-                        {settings.teaching ? 'Da clases' : 'No da clases'}
+                        {settings.teaching ? t('teachers.teaching') : t('teachers.notTeaching')}
                     </span>
                 </div>
-                <button className="delete-teacher-btn" onClick={handleDeleteTeacher} title="Eliminar docente">
+                <button className="delete-teacher-btn" onClick={handleDeleteTeacher} title={t('teachers.deleteTeacherButton')}>
                     🗑️
                 </button>
             </div>
@@ -97,9 +104,9 @@ const TeacherCard = ({ teacher }) => {
                                 />
                             </div>
                             <span className="pld-percentage">{pld.progress_percent.toFixed(0)}%</span>
-                            {pld.certified && <span className="pld-certified-check">✔</span>}
+                            {pld.certified && <span className="pld-certified-check">✓</span>}
                         </div>
-                        <button className="delete-pld-btn" onClick={() => handleDeletePld(pld.certification_name)} title="Eliminar PLD">
+                        <button className="delete-pld-btn" onClick={() => handleDeletePld(pld.certification_name)} title={t('teachers.deletePldButton')}>
                             ✕
                         </button>
                     </div>
@@ -107,16 +114,16 @@ const TeacherCard = ({ teacher }) => {
             </div>
 
             <div className="teacher-controls-footer">
-                <span className="footer-label">Comunicación:</span>
+                <span className="footer-label">{t('teachers.communication')}</span>
                 <div className="comm-options">
-                    {['Fluida', 'A reforzar', 'Con Dificultades', 'Sin comunicación'].map((status) => (
+                    {COMMUNICATION_OPTIONS.map((status) => (
                         <button
                             key={status}
                             className={`comm-chip ${settings.communication === status ? 'selected' : ''}`}
                             data-status={status}
                             onClick={() => handleCommChange(status)}
                         >
-                            {status}
+                            {t(`communication.${status}`)}
                         </button>
                     ))}
                 </div>
