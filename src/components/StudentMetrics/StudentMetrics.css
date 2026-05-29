@@ -29,9 +29,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: var(--spacing-md);
     margin-bottom: var(--spacing-md);
     padding-bottom: var(--spacing-sm);
     border-bottom: 1px solid #333;
+}
+
+.summary-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px 18px;
 }
 
 .metric-toggle {
@@ -86,11 +94,6 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-lg);
     margin-top: var(--spacing-md);
-}
-
-.charts-grid.two-columns {
-    grid-template-columns: repeat(2, minmax(280px, 1fr));
-    justify-content: center;
 }
 
 .groups-container {

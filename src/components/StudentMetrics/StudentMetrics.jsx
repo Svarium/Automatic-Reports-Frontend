@@ -25,6 +25,10 @@ const StudentMetrics = () => {
         reorderStudentGroups,
         showMandatoryCourseMetric,
         setShowMandatoryCourseMetric,
+        showVitalityMetric,
+        setShowVitalityMetric,
+        showProgressMetric,
+        setShowProgressMetric,
         showGroupMandatoryCourses,
         setShowGroupMandatoryCourses,
         t,
@@ -45,6 +49,7 @@ const StudentMetrics = () => {
 
     const { students } = reportData;
     const { summary, groups } = students;
+    const showSummaryCharts = showMandatoryCourseMetric || showVitalityMetric || showProgressMetric;
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
@@ -62,40 +67,70 @@ const StudentMetrics = () => {
             <div className="metrics-summary">
                 <div className="summary-header">
                     <h3 className="summary-title" style={{ margin: 0 }}>{t('students.summary')}</h3>
-                    <label className="metric-toggle">
-                        <span className="toggle-label">{t('students.showMandatoryRate')}</span>
-                        <div className={`switch ${showMandatoryCourseMetric ? 'on' : 'off'}`}>
-                            <input
-                                type="checkbox"
-                                checked={showMandatoryCourseMetric}
-                                onChange={(e) => setShowMandatoryCourseMetric(e.target.checked)}
+                    <div className="summary-toggles">
+                        <label className="metric-toggle">
+                            <span className="toggle-label">{t('students.showMandatoryRate')}</span>
+                            <div className={`switch ${showMandatoryCourseMetric ? 'on' : 'off'}`}>
+                                <input
+                                    type="checkbox"
+                                    checked={showMandatoryCourseMetric}
+                                    onChange={(e) => setShowMandatoryCourseMetric(e.target.checked)}
+                                />
+                                <span className="slider"></span>
+                            </div>
+                        </label>
+                        <label className="metric-toggle">
+                            <span className="toggle-label">{t('students.showVitalityMetric')}</span>
+                            <div className={`switch ${showVitalityMetric ? 'on' : 'off'}`}>
+                                <input
+                                    type="checkbox"
+                                    checked={showVitalityMetric}
+                                    onChange={(e) => setShowVitalityMetric(e.target.checked)}
+                                />
+                                <span className="slider"></span>
+                            </div>
+                        </label>
+                        <label className="metric-toggle">
+                            <span className="toggle-label">{t('students.showProgressMetric')}</span>
+                            <div className={`switch ${showProgressMetric ? 'on' : 'off'}`}>
+                                <input
+                                    type="checkbox"
+                                    checked={showProgressMetric}
+                                    onChange={(e) => setShowProgressMetric(e.target.checked)}
+                                />
+                                <span className="slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                {showSummaryCharts && (
+                    <div className="charts-grid">
+                        {showMandatoryCourseMetric && (
+                            <DoughnutChart
+                                title={t('students.mandatoryRateTitle')}
+                                data={[summary.mandatory_courses_full_completion_percent || 0, 100 - (summary.mandatory_courses_full_completion_percent || 0)]}
+                                labels={[t('students.certified'), t('students.inProgress')]}
+                                colors={['#00cc7e', '#333']}
                             />
-                            <span className="slider"></span>
-                        </div>
-                    </label>
-                </div>
-                <div className={`charts-grid ${!showMandatoryCourseMetric ? 'two-columns' : ''}`}>
-                    {showMandatoryCourseMetric && (
-                        <DoughnutChart
-                            title={t('students.mandatoryRateTitle')}
-                            data={[summary.mandatory_courses_full_completion_percent || 0, 100 - (summary.mandatory_courses_full_completion_percent || 0)]}
-                            labels={[t('students.certified'), t('students.inProgress')]}
-                            colors={['#00cc7e', '#333']}
-                        />
-                    )}
-                    <DoughnutChart
-                        title={`${t('students.vitalityTitle')} (30 ${t('common.days', { count: 30 })})`}
-                        data={[summary.digital_vitality_30d_avg, 100 - summary.digital_vitality_30d_avg]}
-                        labels={[t('students.active'), t('students.inactive')]}
-                        colors={['#2196F3', '#ff8d7a']}
-                    />
-                    <DoughnutChart
-                        title={`${t('students.recentProgressTitle')} (15 ${t('common.days', { count: 15 })})`}
-                        data={[summary.recent_progress_15d_avg, 100 - summary.recent_progress_15d_avg]}
-                        labels={[t('students.withProgress'), t('students.withoutProgress')]}
-                        colors={['#8383fd', '#ff8d7a']}
-                    />
-                </div>
+                        )}
+                        {showVitalityMetric && (
+                            <DoughnutChart
+                                title={`${t('students.vitalityTitle')} (30 ${t('common.days', { count: 30 })})`}
+                                data={[summary.digital_vitality_30d_avg, 100 - summary.digital_vitality_30d_avg]}
+                                labels={[t('students.active'), t('students.inactive')]}
+                                colors={['#2196F3', '#ff8d7a']}
+                            />
+                        )}
+                        {showProgressMetric && (
+                            <DoughnutChart
+                                title={`${t('students.recentProgressTitle')} (15 ${t('common.days', { count: 15 })})`}
+                                data={[summary.recent_progress_15d_avg, 100 - summary.recent_progress_15d_avg]}
+                                labels={[t('students.withProgress'), t('students.withoutProgress')]}
+                                colors={['#8383fd', '#ff8d7a']}
+                            />
+                        )}
+                    </div>
+                )}
             </div>
 
             <div className="groups-header-row">

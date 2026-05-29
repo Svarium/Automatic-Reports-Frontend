@@ -45,6 +45,8 @@ const PDFTemplate = ({ contentRef }) => {
         includeTeachers,
         studentViewMode,
         showMandatoryCourseMetric,
+        showVitalityMetric,
+        showProgressMetric,
         showGroupMandatoryCourses,
         vitalityTimeWindow,
         progressTimeWindow,
@@ -65,6 +67,8 @@ const PDFTemplate = ({ contentRef }) => {
     const shouldBeInline = isShortObservations && lastChunkSize <= 6;
     const visibleTeachers = includeTeachers ? (teachers_pld?.teachers?.filter(item => !teacherSettings[item.name]?.isDeleted) || []) : [];
     const teacherChunks = chunkArray(visibleTeachers, 12);
+    const studentSummaryMetricCount = [showMandatoryCourseMetric, showVitalityMetric, showProgressMetric].filter(Boolean).length;
+    const showStudentSummaryBlock = studentSummaryMetricCount > 0;
 
     const formatCourseMetric = (value) => {
         if (typeof value !== 'string' || !value.includes(' de ')) return value;
@@ -387,10 +391,10 @@ const PDFTemplate = ({ contentRef }) => {
                 <div key={`students-page-${chunkIdx}`} className="pdf-page-container">
                     <div className="pdf-page" style={{ height: 'auto', minHeight: '297mm', pageBreakInside: 'auto' }}>
                         <div className="pdf-section" style={{ marginTop: '20px' }}>
-                            {chunkIdx === 0 && (
+                            {chunkIdx === 0 && showStudentSummaryBlock && (
                                 <>
                                     <h2 className="pdf-title" style={{ color: '#333', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>{t('students.title')}</h2>
-                                    <div style={{ display: 'grid', gridTemplateColumns: showMandatoryCourseMetric ? '1fr 1fr 1fr' : '1fr 1fr', gap: '15px', margin: '20px 0' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${studentSummaryMetricCount}, 1fr)`, gap: '15px', margin: '20px 0' }}>
                                         {showMandatoryCourseMetric && (
                                             <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #00cc7e', display: 'flex', alignItems: 'center', gap: '15px' }}>
                                                 <div style={{ flex: 1 }}>
@@ -402,24 +406,28 @@ const PDFTemplate = ({ contentRef }) => {
                                                 </div>
                                             </div>
                                         )}
-                                        <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                            <div style={{ flex: 1 }}>
-                                                <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>{t('students.vitalityTitle')} (30 {t('common.days')})</div>
-                                                <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
+                                        {showVitalityMetric && (
+                                            <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #2196F3', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                                <div style={{ flex: 1 }}>
+                                                    <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>{t('students.vitalityTitle')} (30 {t('common.days')})</div>
+                                                    <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{students.summary.digital_vitality_30d_avg.toFixed(1)}%</div>
+                                                </div>
+                                                <div style={{ flex: 1, fontSize: '8px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '8px' }}>
+                                                    {t('students.vitalityDescription', { days: 30 })}
+                                                </div>
                                             </div>
-                                            <div style={{ flex: 1, fontSize: '8px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '8px' }}>
-                                                {t('students.vitalityDescription', { days: 30 })}
+                                        )}
+                                        {showProgressMetric && (
+                                            <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #8383fd', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                                <div style={{ flex: 1 }}>
+                                                    <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>{t('students.recentProgressTitle')} (15 {t('common.days')})</div>
+                                                    <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
+                                                </div>
+                                                <div style={{ flex: 1, fontSize: '8px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '8px' }}>
+                                                    {t('students.recentProgressDescription', { days: 15 })}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div style={{ padding: '15px', backgroundColor: '#f0f4f8', borderRadius: '8px', borderLeft: '4px solid #8383fd', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                            <div style={{ flex: 1 }}>
-                                                <div style={{ fontSize: '11px', color: '#555', fontWeight: 'bold' }}>{t('students.recentProgressTitle')} (15 {t('common.days')})</div>
-                                                <div style={{ fontSize: '20px', fontWeight: '800', color: '#000' }}>{students.summary.recent_progress_15d_avg.toFixed(1)}%</div>
-                                            </div>
-                                            <div style={{ flex: 1, fontSize: '8px', color: '#777', fontStyle: 'italic', lineHeight: '1.2', borderLeft: '1px solid #d1d9e0', paddingLeft: '8px' }}>
-                                                {t('students.recentProgressDescription', { days: 15 })}
-                                            </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </>
                             )}

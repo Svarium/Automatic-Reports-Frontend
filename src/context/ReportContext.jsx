@@ -44,6 +44,8 @@ export const ReportProvider = ({ children }) => {
 
     // Opciones de visualización de métricas
     const [showMandatoryCourseMetric, setShowMandatoryCourseMetric] = useState(true);
+    const [showVitalityMetric, setShowVitalityMetric] = useState(true);
+    const [showProgressMetric, setShowProgressMetric] = useState(true);
     const [showGroupMandatoryCourses, setShowGroupMandatoryCourses] = useState(true);
     const [vitalityTimeWindow, setVitalityTimeWindow] = useState('30d');
     const [progressTimeWindow, setProgressTimeWindow] = useState('15d');
@@ -321,6 +323,8 @@ export const ReportProvider = ({ children }) => {
         setIncludeTeachers(true);
         setStudentViewMode('cards');
         setShowMandatoryCourseMetric(true);
+        setShowVitalityMetric(true);
+        setShowProgressMetric(true);
         setLanguage('es');
     };
 
@@ -430,6 +434,10 @@ export const ReportProvider = ({ children }) => {
         setStudentViewMode,
         showMandatoryCourseMetric,
         setShowMandatoryCourseMetric,
+        showVitalityMetric,
+        setShowVitalityMetric,
+        showProgressMetric,
+        setShowProgressMetric,
         showGroupMandatoryCourses,
         setShowGroupMandatoryCourses,
         vitalityTimeWindow,

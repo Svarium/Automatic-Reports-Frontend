@@ -46,7 +46,7 @@ Frontend web para generar reportes ejecutivos educativos a partir de datos expor
 
 ### Metricas de alumnos
 
-- Resumen general con graficos tipo doughnut.
+- Resumen general con graficos tipo doughnut configurables de forma independiente.
 - Vista de grupos en formato cards o tabla.
 - Reordenamiento de grupos por drag and drop.
 - Semaforo individual por grupo: verde, amarillo, rojo o gris.
@@ -54,10 +54,13 @@ Frontend web para generar reportes ejecutivos educativos a partir de datos expor
 - Feedback obligatorio para grupos en amarillo o rojo.
 - Observaciones generales de alumnos.
 - Configuracion de metricas visibles:
-  - Tasa de cursos obligatorios.
+  - Tasa de cursos obligatorios en el resumen general.
+  - Vitalidad digital en el resumen general.
+  - Progreso reciente en el resumen general.
   - Detalle de cursos obligatorios por grupo.
   - Vitalidad digital con ventana de 15 o 30 dias.
   - Progreso reciente con ventana de 15 o 30 dias.
+- Los tres indicadores generales de alumnos se muestran por defecto y pueden ocultarse uno por uno.
 
 ### Metricas de docentes PLD
 
@@ -75,6 +78,8 @@ Frontend web para generar reportes ejecutivos educativos a partir de datos expor
 - Generacion de PDF desde una plantilla dedicada.
 - Validaciones previas antes de permitir la descarga.
 - Layout adaptado a la vista seleccionada de alumnos.
+- El PDF respeta los indicadores generales de alumnos visibles en la UI.
+- Si se ocultan los tres indicadores generales de alumnos, el PDF omite ese bloque y pasa directo al detalle por ruta.
 - Encabezados y pies institucionales.
 - Banners localizados por idioma.
 - Nombre de archivo localizado.
@@ -172,4 +177,3 @@ La aplicacion puede operar si el reporte trae solo datos de alumnos o solo datos
 - Para cambiar banners institucionales, reemplazar assets en `src/assets/` y revisar `src/i18n/assets.js`.
 - Para ajustar reglas de validacion del reporte, revisar `validateReport` en `src/context/ReportContext.jsx`.
 - Para modificar la exportacion, trabajar sobre `src/components/PDFExport/`.
-
