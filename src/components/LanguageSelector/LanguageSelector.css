@@ -14,13 +14,24 @@
 
 .language-selector-control {
     min-width: 150px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    background: var(--card-bg);
-    color: var(--text-color);
+    border: 1px solid #333;
+    border-radius: var(--border-radius);
+    background: #121212;
+    color: #ffffff;
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     padding: 9px 12px;
+}
+
+.language-selector-control option {
+    background: #121212;
+    color: #ffffff;
+}
+
+.language-selector-control:focus {
+    border-color: #8383fd;
+    outline: 2px solid rgba(131, 131, 253, 0.35);
+    outline-offset: 2px;
 }
 
 @media (max-width: 640px) {
