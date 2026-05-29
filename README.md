@@ -1,105 +1,175 @@
-# 📊 Reporte Automático Educativo - Frontend
+# Reporte Automatico Educativo - Frontend
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
-![jsPDF](https://img.shields.io/badge/jsPDF-white?style=for-the-badge)
+Frontend web para generar reportes ejecutivos educativos a partir de datos exportados desde plataformas de aprendizaje. La aplicacion permite cargar un archivo, revisar metricas de alumnos y docentes, completar observaciones del mentor, ajustar la configuracion del informe y exportar un PDF final.
 
-Una aplicación web profesional diseñada para mentores educativos, que transforma datos crudos de plataformas de aprendizaje en reportes ejecutivos listos para presentar en formato PDF.
+## Stack
 
----
+- React 19
+- Vite 7
+- Chart.js 4 + `react-chartjs-2`
+- `@dnd-kit` para drag and drop
+- `html2canvas` + `jsPDF` para exportacion
+- `sweetalert2` para modales y confirmaciones
+- CSS vanilla con variables globales
+- React Context API para estado global
 
-## 🚀 Propósito de la Aplicación
+## Flujo principal
 
-El objetivo principal es agilizar la comunicación entre los mentores y los directivos escolares. La app automatiza el análisis de métricas complejas y ofrece una interfaz amigable para que el mentor agregue su análisis subjetivo (observaciones, semáforos y motivos de alerta), generando un documento final coherente, estético y profesional.
+1. El usuario sube un archivo CSV o Excel.
+2. El frontend envia el archivo al backend FastAPI en `http://127.0.0.1:8000/analyze-report`.
+3. El backend devuelve un JSON con datos de escuela, alumnos, docentes PLD y metadata del reporte.
+4. El mentor revisa, edita y completa informacion cualitativa.
+5. La aplicacion valida los datos requeridos y genera un PDF con las secciones seleccionadas.
 
----
+## Funcionalidades
 
-## 🔄 Flujo de Información Detallado
+### Carga y procesamiento
 
-1.  **Carga de Datos (Input):** El usuario sube un archivo CSV o Excel exportado de la plataforma educativa.
-2.  **Análisis Automático:** El sistema envía el archivo al backend (FastAPI), el cual procesa los datos basándose en rutas (separando Docentes PLD de Alumnos regulares) y devuelve un JSON con métricas estructuradas:
-    - **Escuela:** Datos generales (total de alumnos, total de grupos).
-    - **Alumnos:** Resúmenes y detalles calculados por grupo/ruta (vitalidad, progreso reciente, cursos obligatorios).
-    - **Docentes (PLD):** Resúmenes y progreso de certificaciones individuales.
-    - **Metadata:** Ventanas de tiempo utilizadas (ej. 15 y 30 días) y fecha de generación.
-3.  **Visualización y Edición (Preview):** 
-    - **Alternancia de Vistas de Alumnos:** Permite elegir entre formato **Cards** (visual) o **Tabla** (ejecutivo y compacto) según la preferencia.
-    - **Reordenamiento Dinámico (Drag & Drop):** Posibilidad de reordenar las tarjetas o filas de grupos de alumnos.
-    - **Toggles de Métricas:** Activar o desactivar métricas específicas (Tasa de obligatorios, Vitalidad, Progreso) para personalizar el reporte.
-    - **Semáforos Individuales:** El mentor asigna un estado (Verde/Amarillo/Rojo/Gris) a cada grupo de alumnos.
-    - **Feedback de Alerta:** Si un grupo está en **Amarillo** o **Rojo**, se despliega un selector de **píldoras interactivas** para marcar motivos predefinidos.
-    - **Semáforo General:** El sistema calcula automáticamente el estado del colegio basado en los semáforos de los grupos.
-    - **Métricas Docentes:** Seguimiento de capacitación y certificación, con posibilidad de alternar el estado manual de cada docente, indicar si dan clases o no, evaluar nivel de comunicación (Fluida, A reforzar, Con Dificultades, Nula), y omitir certificaciones abandonadas.
-    - **Mentorías y Observaciones:** Registro de acompañamiento pedagógico (agendadas vs. concretadas) y espacios de texto libre para análisis cualitativo profundo.    
-4.  **Generación de Reporte (Output):** Exportación a PDF que integra métricas, gráficos y feedback en un layout adaptativo.
+- Carga de archivos CSV o Excel.
+- Estados de carga, error y reinicio del reporte.
+- Validacion de que el archivo contenga datos validos de alumnos o docentes.
 
----
+### Idiomas
 
-## ✨ Características Principales
+- Selector de idioma del reporte.
+- Idiomas disponibles: espanol, ingles y portugues.
+- Traducciones centralizadas en `src/i18n/translations.js`.
+- Banners localizados por idioma desde `src/i18n/assets.js`.
+- El idioma elegido afecta la UI, los textos del PDF, fechas/locales y nombres del archivo exportado.
 
-### 📈 Métricas de Alumnos
-- **Vista Dual:** Switch instantáneo entre modo Tarjetas y modo Tabla.
-- **KPIs Ajustables:** Visualización de **Cursos Obligatorios**, **Vitalidad Digital (15/30 días)** y **Progreso Reciente (15/30 días)** con soporte para ocultar métricas no deseadas.
-- **Sistema de Justificación:** Píldoras interactivas para indicar por qué un grupo requiere atención, visibles solo en estados de alerta.
-- **Reordenamiento:** Capacidad de arrastrar y soltar grupos de alumnos usando `@dnd-kit`.
-- Gráficos comparativos de resumen general (Doughnut charts) usando Chart.js.
+### Configuracion del reporte
 
-### 👩‍🏫 Capacitación Docente
-- Seguimiento visual de progreso de certificación y certificaciones activas/abandonadas.
-- **Interactividad Avanzada:** Posibilidad de corregir manualmente el estado de certificación, evaluar comunicación y gestionar el estado "Dando Clases".
+- Inclusion o exclusion de secciones de alumnos y docentes.
+- Soporte para reportes con solo alumnos, solo docentes o ambos.
+- Nombre editable del colegio antes de exportar.
+- Nombre del mentor responsable requerido para el PDF.
 
-### 📄 Exportación Profesional a PDF
-- **Layout Adaptativo:** El documento final refleja la vista seleccionada (Cards o Tabla), optimizando el espacio disponible.
-- **Paginación Inteligente:** Lógica avanzada de saltos de página que organiza las observaciones del mentor y las listas para evitar cortes de texto indeseados.
-- **Banners Institucionales:** Encabezados y pies de página profesionales.
+### Metricas de alumnos
 
----
+- Resumen general con graficos tipo doughnut.
+- Vista de grupos en formato cards o tabla.
+- Reordenamiento de grupos por drag and drop.
+- Semaforo individual por grupo: verde, amarillo, rojo o gris.
+- Calculo automatico del semaforo general del colegio.
+- Feedback obligatorio para grupos en amarillo o rojo.
+- Observaciones generales de alumnos.
+- Configuracion de metricas visibles:
+  - Tasa de cursos obligatorios.
+  - Detalle de cursos obligatorios por grupo.
+  - Vitalidad digital con ventana de 15 o 30 dias.
+  - Progreso reciente con ventana de 15 o 30 dias.
 
-## 📂 Estructura del Proyecto
+### Metricas de docentes PLD
+
+- Resumen de docentes, certificaciones finalizadas y tasa de certificacion.
+- Listado de docentes con configuracion manual.
+- Edicion del estado de certificacion por PLD.
+- Marcado de docentes que dan clases o no dan clases.
+- Nivel de comunicacion por docente.
+- Eliminacion de docentes o PLDs del reporte final.
+- Mentorias agendadas y concretadas.
+- Observaciones generales de docentes.
+
+### Exportacion PDF
+
+- Generacion de PDF desde una plantilla dedicada.
+- Validaciones previas antes de permitir la descarga.
+- Layout adaptado a la vista seleccionada de alumnos.
+- Encabezados y pies institucionales.
+- Banners localizados por idioma.
+- Nombre de archivo localizado.
+
+## Estructura del proyecto
 
 ```text
 src/
-├── assets/             # Recursos gráficos, logos y banners.
-├── components/         # Componentes modulares de la UI.
-│   ├── Charts/         # Gráficos circulares y de progreso (Chart.js).
-│   ├── Common/         # Componentes reutilizables.
-│   ├── FileUpload/     # Lógica de carga y envío de archivos.
-│   ├── Loading/        # Componentes de estado de carga.
-│   ├── MentoringInput/ # Inputs para mentorías agendadas/realizadas.
-│   ├── ObservationsInput/# Cajas de texto para observaciones cualitativas.
-│   ├── PDFExport/      # Plantilla y lógica de generación de PDF.
-│   ├── SchoolHeader/   # Encabezado con estado general del colegio.
-│   ├── SectionSelector/# Control para incluir/excluir secciones (Alumnos/Docentes).
-│   ├── SemaphoreSelector/# Lógica y UI para los semáforos individuales.
-│   ├── StudentMetrics/ # Detalle de grupos, KPIs, Drag & Drop y Feedback.
-│   └── TeacherMetrics/ # Estado de capacitación, comunicación y certificaciones de docentes.
-├── context/            # ReportContext.jsx: Estado global (Context API).
-├── services/           # api.js: Comunicación con el backend (FastAPI).
-├── utils/              # Lógica de semáforos, traducciones y constantes.
-└── main.jsx / App.jsx  # Punto de entrada y estructura raíz.
+|-- App.jsx                         # Composicion principal de la app.
+|-- App.css                         # Estilos de layout general.
+|-- main.jsx                        # Punto de entrada React.
+|-- index.css                       # Variables y estilos globales.
+|-- assets/                         # Banners, imagenes y recursos estaticos.
+|-- components/
+|   |-- Charts/                     # Graficos reutilizables.
+|   |-- Common/                     # BannerHeader y BannerFooter.
+|   |-- FileUpload/                 # Carga de archivos y envio al backend.
+|   |-- LanguageSelector/           # Selector de idioma del reporte.
+|   |-- Loading/                    # Estado visual de carga.
+|   |-- MentoringInput/             # Mentorias agendadas y concretadas.
+|   |-- ObservationsInput/          # Observaciones cualitativas.
+|   |-- PDFExport/                  # Boton, modal y plantilla de PDF.
+|   |-- SchoolHeader/               # Datos del colegio y semaforo general.
+|   |-- SectionSelector/            # Inclusion de secciones del reporte.
+|   |-- SemaphoreSelector/          # Selector visual de estado.
+|   |-- StudentMetrics/             # KPIs, grupos, tabla, cards y ordenamiento.
+|   `-- TeacherMetrics/             # Docentes, PLDs, comunicacion y certificaciones.
+|-- context/
+|   `-- ReportContext.jsx           # Estado global, acciones y validaciones.
+|-- i18n/
+|   |-- assets.js                   # Mapeo de banners por idioma.
+|   `-- translations.js             # Diccionarios y helpers de traduccion.
+|-- services/
+|   `-- api.js                      # Comunicacion con FastAPI.
+`-- utils/
+    |-- constants.js                # Constantes compartidas.
+    `-- semaphoreLogic.js           # Logica de semaforos.
 ```
 
----
+## Scripts disponibles
 
-## 🛠️ Tecnologías Utilizadas
+```bash
+npm install
+npm run dev
+npm run build
+npm run lint
+npm run preview
+```
 
-- **Frontend:** React 19 + Vite 7.
-- **Gráficos:** Chart.js 4 con `react-chartjs-2`.
-- **Interacción Avanzada:** `@dnd-kit/core` y `@dnd-kit/sortable` para Drag & Drop interactivo.
-- **Exportación:** `html2canvas` + `jsPDF`.
-- **Notificaciones/Modales:** `sweetalert2`.
-- **Estilos:** Vanilla CSS con variables globales para diseño premium.
-- **State Management:** React Context API (`ReportContext.jsx`).
+## Setup local
 
----
+1. Instalar dependencias:
 
-## 📥 Instalación y Setup
+   ```bash
+   npm install
+   ```
 
-1.  **Instalar dependencias:** `npm install`
-2.  **Configurar Backend:** Asegurar que el API (FastAPI) esté en `http://127.0.0.1:8000`.
-3.  **Desarrollo:** `npm run dev`
+2. Levantar el backend FastAPI en:
 
----
+   ```text
+   http://127.0.0.1:8000
+   ```
 
-Desarrollado para optimizar la gestión educativa y facilitar la toma de decisiones basada en datos.
+3. Iniciar el frontend:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Abrir la URL que informa Vite en la terminal.
+
+## Backend esperado
+
+El frontend consume:
+
+```text
+POST http://127.0.0.1:8000/analyze-report
+```
+
+El request se envia como `multipart/form-data` con el archivo en el campo `file`.
+
+La respuesta esperada debe incluir, segun el caso:
+
+- `school`
+- `students.groups`
+- `teachers_pld.teachers`
+- `metadata`
+
+La aplicacion puede operar si el reporte trae solo datos de alumnos o solo datos de docentes, siempre que exista al menos una seccion valida.
+
+## Notas de mantenimiento
+
+- Para agregar un idioma, actualizar `LANGUAGES`, el diccionario correspondiente y los banners en `src/i18n/`.
+- Para modificar textos visibles o del PDF, editar `src/i18n/translations.js`.
+- Para cambiar banners institucionales, reemplazar assets en `src/assets/` y revisar `src/i18n/assets.js`.
+- Para ajustar reglas de validacion del reporte, revisar `validateReport` en `src/context/ReportContext.jsx`.
+- Para modificar la exportacion, trabajar sobre `src/components/PDFExport/`.
+
