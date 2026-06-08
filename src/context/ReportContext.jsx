@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { uploadReport as uploadReportAPI } from '../services/api';
 import { calculateGeneralSemaphore } from '../utils/semaphoreLogic';
+import { getLocale, translate } from '../i18n/translations';
 
 const ReportContext = createContext();
 
@@ -17,6 +18,7 @@ export const ReportProvider = ({ children }) => {
     const [reportData, setReportData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [language, setLanguage] = useState('es');
 
     // Estado manual del mentor
     const [semaphores, setSemaphores] = useState({});
@@ -42,9 +44,13 @@ export const ReportProvider = ({ children }) => {
 
     // Opciones de visualización de métricas
     const [showMandatoryCourseMetric, setShowMandatoryCourseMetric] = useState(true);
+    const [showVitalityMetric, setShowVitalityMetric] = useState(true);
+    const [showProgressMetric, setShowProgressMetric] = useState(true);
     const [showGroupMandatoryCourses, setShowGroupMandatoryCourses] = useState(true);
     const [vitalityTimeWindow, setVitalityTimeWindow] = useState('30d');
     const [progressTimeWindow, setProgressTimeWindow] = useState('15d');
+    const t = (key, params) => translate(language, key, params);
+    const locale = getLocale(language);
 
     // Recalcular semáforo general cuando cambian los individuales
     useEffect(() => {
@@ -117,7 +123,7 @@ export const ReportProvider = ({ children }) => {
             const hasTeachers = data.teachers_pld && data.teachers_pld.teachers && data.teachers_pld.teachers.length > 0;
 
             if (!hasStudents && !hasTeachers) {
-                throw new Error('El archivo no contiene información válida de alumnos ni de docentes.');
+                throw new Error(t('validation.invalidFileData'));
             }
 
             setIncludeStudents(hasStudents);
@@ -144,7 +150,7 @@ export const ReportProvider = ({ children }) => {
                 data.teachers_pld.teachers.forEach(t => {
                     initialSettings[t.name] = {
                         teaching: true,
-                        communication: 'Fluida',
+                        communication: 'fluid',
                         deletedPlds: [],
                         isDeleted: false
                     };
@@ -202,7 +208,7 @@ export const ReportProvider = ({ children }) => {
         setTeacherSettings(prev => {
             const current = prev[teacherName] || {
                 teaching: true,
-                communication: 'Fluida',
+                communication: 'fluid',
                 deletedPlds: [],
                 isDeleted: false
             };
@@ -317,6 +323,9 @@ export const ReportProvider = ({ children }) => {
         setIncludeTeachers(true);
         setStudentViewMode('cards');
         setShowMandatoryCourseMetric(true);
+        setShowVitalityMetric(true);
+        setShowProgressMetric(true);
+        setLanguage('es');
     };
 
     /**
@@ -346,7 +355,7 @@ export const ReportProvider = ({ children }) => {
             );
 
             if (groupsWithoutSemaphore.length > 0) {
-                errors.push(`Faltan definir semáforos para ${groupsWithoutSemaphore.length} grupos.`);
+                errors.push(t('validation.missingSemaphores', { count: groupsWithoutSemaphore.length }));
             }
 
             groups.forEach(g => {
@@ -354,20 +363,20 @@ export const ReportProvider = ({ children }) => {
                 if (color === 'yellow' || color === 'red') {
                     const feedbacks = groupFeedback[g.route_name] || [];
                     if (feedbacks.length === 0) {
-                        errors.push(`El grupo "${g.route_name}" tiene alerta pero no tiene motivos seleccionados.`);
+                        errors.push(t('validation.alertWithoutFeedback', { name: g.route_name }));
                     }
                 }
             });
 
             if (!studentObservations || studentObservations.trim().length === 0) {
-                errors.push('Las observaciones generales de alumnos son obligatorias.');
+                errors.push(t('validation.studentObservationsRequired'));
             }
         }
 
         // 2. Validar Docentes (solo si está incluido)
         if (includeTeachers && reportData?.teachers_pld) {
             if (!teacherObservations || teacherObservations.trim().length === 0) {
-                errors.push('Las observaciones generales de docentes son obligatorias.');
+                errors.push(t('validation.teacherObservationsRequired'));
             }
         }
 
@@ -397,6 +406,9 @@ export const ReportProvider = ({ children }) => {
         schoolName: reportData?.school?.id || '',
         includeStudents,
         includeTeachers,
+        language,
+        locale,
+        t,
 
         // Acciones
         uploadFile,
@@ -417,10 +429,15 @@ export const ReportProvider = ({ children }) => {
         validateReport,
         setIncludeStudents,
         setIncludeTeachers,
+        setLanguage,
         studentViewMode,
         setStudentViewMode,
         showMandatoryCourseMetric,
         setShowMandatoryCourseMetric,
+        showVitalityMetric,
+        setShowVitalityMetric,
+        showProgressMetric,
+        setShowProgressMetric,
         showGroupMandatoryCourses,
         setShowGroupMandatoryCourses,
         vitalityTimeWindow,

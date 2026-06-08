@@ -7,7 +7,8 @@ const SectionSelector = () => {
         includeStudents,
         setIncludeStudents,
         includeTeachers,
-        setIncludeTeachers
+        setIncludeTeachers,
+        t,
     } = useReport();
 
     if (!reportData) return null;
@@ -17,8 +18,8 @@ const SectionSelector = () => {
 
     return (
         <div className="section-selector-container">
-            <h3 className="selector-title">Configuración del Reporte</h3>
-            <p className="selector-subtitle">Seleccioná las secciones que deseás incluir en el informe final</p>
+            <h3 className="selector-title">{t('sectionSelector.title')}</h3>
+            <p className="selector-subtitle">{t('sectionSelector.subtitle')}</p>
 
             <div className="selector-options">
                 <div className={`selector-card ${!hasStudentsData ? 'disabled' : ''} ${includeStudents ? 'active' : ''}`}>
@@ -30,8 +31,8 @@ const SectionSelector = () => {
                             onChange={(e) => setIncludeStudents(e.target.checked)}
                         />
                         <div className="selector-info">
-                            <span className="section-name">📚 Alumnos</span>
-                            {!hasStudentsData && <span className="no-data-hint">(Sin datos disponibles)</span>}
+                            <span className="section-name">{t('sectionSelector.students')}</span>
+                            {!hasStudentsData && <span className="no-data-hint">{t('sectionSelector.noData')}</span>}
                         </div>
                     </label>
                 </div>
@@ -45,8 +46,8 @@ const SectionSelector = () => {
                             onChange={(e) => setIncludeTeachers(e.target.checked)}
                         />
                         <div className="selector-info">
-                            <span className="section-name">👩‍🏫 Docentes</span>
-                            {!hasTeachersData && <span className="no-data-hint">(Sin datos disponibles)</span>}
+                            <span className="section-name">{t('sectionSelector.teachers')}</span>
+                            {!hasTeachersData && <span className="no-data-hint">{t('sectionSelector.noData')}</span>}
                         </div>
                     </label>
                 </div>

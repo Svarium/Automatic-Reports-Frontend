@@ -2,10 +2,11 @@ import { useState, useRef } from 'react';
 import { useReport } from '../../context/ReportContext';
 import Swal from 'sweetalert2';
 import landingIllustration from '../../assets/landing-illustration.png';
+import LanguageSelector from '../LanguageSelector/LanguageSelector';
 import './FileUpload.css';
 
 const FileUpload = () => {
-    const { uploadFile } = useReport();
+    const { uploadFile, t } = useReport();
     const [dragOver, setDragOver] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [validationError, setValidationError] = useState('');
@@ -20,7 +21,7 @@ const FileUpload = () => {
         const isValid = VALID_EXTENSIONS.some(ext => fileName.endsWith(ext));
 
         if (!isValid) {
-            setValidationError('Por favor, seleccioná un archivo CSV o Excel (.csv, .xlsx, .xls)');
+            setValidationError(t('fileUpload.errorExt'));
             return false;
         }
 
@@ -68,37 +69,12 @@ const FileUpload = () => {
 
     const showTutorial = () => {
         Swal.fire({
-            title: '<strong>Guía rápida de uso 🚀</strong>',
+            title: t('fileUpload.tutorialTitle'),
             icon: 'info',
-            html: `
-                <div style="text-align: left; font-size: 0.95em; line-height: 1.6; color: #444;">
-                    <p>Esta herramienta automatiza la creación de reportes ejecutivos a partir de los datos crudos.</p>
-                    
-                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">1. Carga de Datos 📂</h4>
-                    <p style="margin: 0;">Subí tu archivo <strong>.csv</strong> o <strong>.xlsx</strong>. El sistema procesará las métricas automáticamente y detectará si hay información de alumnos, docentes o ambos.</p>
-
-                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">2. Configuración del Reporte ⚙️</h4>
-                    <p style="margin: 0;">Usá el nuevo panel de <strong>Configuración del Reporte</strong> para elegir qué secciones incluir. Si el archivo no contiene datos de alguna sección, esta se deshabilitará automáticamente.</p>
-
-                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">3. Análisis y Semáforos 🚦</h4>
-                    <p style="margin: 0;">Revisá los grupos y asignales un estado. Podés alternar entre la vista de <strong>Cards</strong> o de <strong>Tabla</strong> para trabajar más cómodamente:</p>
-                    <ul style="margin: 5px 0 10px 20px; padding: 0;">
-                        <li><span style="color: #00cc7e; font-weight: bold;">Verde:</span> Todo en orden.</li>
-                        <li><span style="color: #ffd148; font-weight: bold;">Amarillo:</span> Requiere seguimiento.</li>
-                        <li><span style="color: #ff8d7a; font-weight: bold;">Rojo:</span> Alerta crítica.</li>
-                    </ul>
-                    <p style="font-size: 0.9em; font-style: italic;">⚠️ Si marcás Amarillo o Rojo, <strong>es obligatorio</strong> seleccionar los motivos (feedback).</p>
-
-                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">4. Observaciones 📝</h4>
-                    <p style="margin: 0;">Completá los campos de texto. ¡Son fundamentales para dar contexto! El sistema usará una <strong>paginación inteligente</strong> para que nunca se corten tus párrafos en el PDF.</p>
-
-                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">5. Exportación 📄</h4>
-                    <p style="margin: 0;">Al finalizar, generá el PDF. El documento se adaptará automáticamente a la vista que hayas seleccionado (Cards o Tabla) para un diseño profesional y limpio.</p>
-                </div>
-            `,
+            html: t('fileUpload.tutorialHtml'),
             showCloseButton: true,
             focusConfirm: false,
-            confirmButtonText: '¡Entendido!',
+            confirmButtonText: t('fileUpload.tutorialBtnOk'),
             confirmButtonColor: '#00cc7e',
             width: '800px',
             padding: '2em',
@@ -120,19 +96,22 @@ const FileUpload = () => {
                     <img src={landingIllustration} alt="DH Schools Reports Automation" className="landing-img" />
                 </div>
                 <button onClick={showTutorial} className="tutorial-btn">
-                    ℹ️ ¿Cómo funciona? - Guía paso a paso
+                    {t('fileUpload.tutorialBtn')}
                 </button>
             </div>
 
             {/* Right side: Welcome & File Upload */}
             <div className="landing-right">
                 <div className="login-form-box">
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                        <LanguageSelector />
+                    </div>
                     <div className="welcome-header">
                         <div className="app-title-badge">
                             DH Schools Reports Automation
                         </div>
-                        <h2>Te damos la bienvenida</h2>
-                        <p>Subí el archivo para automatizar tus reportes.</p>
+                        <h2>{t('fileUpload.title')}</h2>
+                        <p>{t('fileUpload.subtitle')}</p>
                     </div>
 
 
@@ -145,10 +124,10 @@ const FileUpload = () => {
                     >
                         <div className="upload-icon-premium">🤖</div>
                         <p className="upload-text-premium">
-                            {selectedFile ? selectedFile.name : 'Arrastrá tu archivo o hacé click'}
+                            {selectedFile ? selectedFile.name : t('fileUpload.dragText')}
                         </p>
                         <p className="upload-hint-premium">
-                            Formatos: CSV, Excel (.csv, .xlsx, .xls)
+                            {t('fileUpload.formats')}
                         </p>
 
                         <input
@@ -160,7 +139,7 @@ const FileUpload = () => {
                         />
 
                         <button className="btn-upload-fake">
-                            {selectedFile ? 'Procesando...' : 'Seleccionar Archivo'}
+                            {selectedFile ? t('fileUpload.processing') : t('fileUpload.selectFile')}
                         </button>
                     </div>
 

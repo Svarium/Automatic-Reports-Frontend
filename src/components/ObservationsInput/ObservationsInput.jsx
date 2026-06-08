@@ -6,19 +6,20 @@ const ObservationsInput = ({ type, placeholder }) => {
         studentObservations,
         teacherObservations,
         updateStudentObservations,
-        updateTeacherObservations
+        updateTeacherObservations,
+        t,
     } = useReport();
 
     const value = type === 'students' ? studentObservations : teacherObservations;
     const updateFunction = type === 'students' ? updateStudentObservations : updateTeacherObservations;
 
     const label = type === 'students'
-        ? 'Observaciones Generales - Alumnos'
-        : 'Observaciones Generales - Docentes PLD';
+        ? t('observations.studentsLabel')
+        : t('teachers.observationsLabel');
 
     const defaultPlaceholder = type === 'students'
-        ? 'Agregá observaciones generales sobre el desempeño de los alumnos...'
-        : 'Agregá observaciones generales sobre el desempeño de los docentes...';
+        ? t('observations.studentsPlaceholder')
+        : t('teachers.observationsPlaceholder');
 
     const handleChange = (e) => {
         updateFunction(e.target.value);
@@ -37,7 +38,7 @@ const ObservationsInput = ({ type, placeholder }) => {
             />
             <div className="observations-footer">
                 <span className="char-counter">
-                    {value.length} caracteres
+                    {t('observations.characters', { count: value.length })}
                 </span>
             </div>
         </div>

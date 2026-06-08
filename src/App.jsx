@@ -10,6 +10,7 @@ import PDFExport from './components/PDFExport/PDFExport';
 import SectionSelector from './components/SectionSelector/SectionSelector';
 import BannerHeader from './components/Common/BannerHeader';
 import BannerFooter from './components/Common/BannerFooter';
+import LanguageSelector from './components/LanguageSelector/LanguageSelector';
 import './App.css';
 
 function App() {
@@ -19,7 +20,8 @@ function App() {
     error,
     resetReport,
     includeStudents,
-    includeTeachers
+    includeTeachers,
+    t
   } = useReport();
 
   // Estado de carga
@@ -33,11 +35,11 @@ function App() {
       <div className="app">
         <div className="error-container">
           <div className="error-icon">⚠️</div>
-          <h2 className="error-title">Error al procesar el reporte</h2>
+          <h2 className="error-title">{t('app.processingErrorTitle')}</h2>
           <p className="error-message">{error}</p>
           <div className="error-actions">
             <button className="btn btn-primary" onClick={resetReport}>
-              Intentar nuevamente
+              {t('app.retry')}
             </button>
           </div>
         </div>
@@ -60,6 +62,8 @@ function App() {
       <div className="container">
         {/* Banner Header */}
         <BannerHeader />
+
+        <LanguageSelector />
 
         {/* Encabezado con info del colegio y semáforo general */}
         <SchoolHeader />
@@ -94,7 +98,7 @@ function App() {
         {/* Acciones adicionales */}
         <div className="report-actions">
           <button className="btn btn-secondary" onClick={resetReport}>
-            📤 Subir otro reporte
+            {t('app.uploadAnother')}
           </button>
         </div>
 
