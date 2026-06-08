@@ -8,6 +8,39 @@ const dictionaries = {
     es: {
         common: { days: 'días' },
         language: { label: 'Idioma del reporte' },
+        fileUpload: {
+            title: 'Te damos la bienvenida',
+            subtitle: 'Subí el archivo para automatizar tus reportes.',
+            dragText: 'Arrastrá tu archivo o hacé click',
+            formats: 'Formatos: CSV, Excel (.csv, .xlsx, .xls)',
+            processing: 'Procesando...',
+            selectFile: 'Seleccionar Archivo',
+            errorExt: 'Por favor, seleccioná un archivo CSV o Excel (.csv, .xlsx, .xls)',
+            tutorialBtn: 'ℹ️ ¿Cómo funciona? - Guía paso a paso',
+            tutorialTitle: '<strong>Guía rápida de uso 🚀</strong>',
+            tutorialBtnOk: '¡Entendido!',
+            tutorialHtml: `
+                <div style="text-align: left; font-size: 0.95em; line-height: 1.6; color: #444;">
+                    <p>Esta herramienta automatiza la creación de reportes ejecutivos a partir de los datos crudos.</p>
+                    
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">1. Carga de Datos 📂</h4>
+                    <p style="margin: 0;">Subí tu archivo <strong>.csv</strong> o <strong>.xlsx</strong>. El sistema procesará las métricas automáticamente y detectará si hay información de alumnos, docentes o ambos.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">2. Configuración Dinámica ⚙️</h4>
+                    <p style="margin: 0;">Elegí incluir o excluir las secciones de <strong>Alumnos</strong> o <strong>Docentes</strong> del reporte general.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">3. Gestión de Alumnos y Semáforos 🚦</h4>
+                    <p style="margin: 0;">Revisá los grupos en vista de <strong>Cards</strong> o <strong>Tabla</strong>, ordenalos arrastrándolos, y asignales un estado. Si elegís estado <span style="color: #ffd148; font-weight: bold;">Amarillo</span> o <span style="color: #ff8d7a; font-weight: bold;">Rojo</span>, es obligatorio seleccionar los motivos (feedback).</p>
+                    <p style="margin: 5px 0 0 0;">Además, podés seleccionar si querés mostrar u ocultar la información de <strong>Cursos Obligatorios</strong>, y podés cambiar las ventanas de tiempo de <strong>Vitalidad Digital</strong> y <strong>Progreso Reciente</strong> entre 15 o 30 días según lo necesites.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">4. Gestión de Docentes PLD 👩‍🏫</h4>
+                    <p style="margin: 0;">Editá el estado de certificación manualmente, indicá su nivel de comunicación y registrá mentorías. Podés excluir docentes o certificaciones específicas del reporte final.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">5. Observaciones y Exportación 📄</h4>
+                    <p style="margin: 0;">Completá las observaciones de cada área para dar contexto. Al generar el PDF, este respetará exactamente la configuración visible en pantalla y el idioma seleccionado de forma profesional.</p>
+                </div>
+            `
+        },
         app: {
             retry: 'Intentar nuevamente',
             uploadAnother: '📤 Subir otro reporte',
@@ -178,6 +211,39 @@ const dictionaries = {
     en: {
         common: { days: 'days' },
         language: { label: 'Report language' },
+        fileUpload: {
+            title: 'Welcome',
+            subtitle: 'Upload the file to automate your reports.',
+            dragText: 'Drag your file here or click',
+            formats: 'Formats: CSV, Excel (.csv, .xlsx, .xls)',
+            processing: 'Processing...',
+            selectFile: 'Select File',
+            errorExt: 'Please select a CSV or Excel file (.csv, .xlsx, .xls)',
+            tutorialBtn: 'ℹ️ How it works? - Step by step guide',
+            tutorialTitle: '<strong>Quick Guide 🚀</strong>',
+            tutorialBtnOk: 'Got it!',
+            tutorialHtml: `
+                <div style="text-align: left; font-size: 0.95em; line-height: 1.6; color: #444;">
+                    <p>This tool automates the creation of executive reports from raw data.</p>
+                    
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">1. Data Upload 📂</h4>
+                    <p style="margin: 0;">Upload your <strong>.csv</strong> or <strong>.xlsx</strong> file. The system will automatically process the metrics and detect if there is student, teacher, or both information.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">2. Dynamic Configuration ⚙️</h4>
+                    <p style="margin: 0;">Choose to include or exclude the <strong>Students</strong> or <strong>Teachers</strong> sections from the general report.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">3. Students Management & Semaphores 🚦</h4>
+                    <p style="margin: 0;">Review the groups in <strong>Cards</strong> or <strong>Table</strong> view, order them by dragging, and assign them a status. If you choose <span style="color: #ffd148; font-weight: bold;">Yellow</span> or <span style="color: #ff8d7a; font-weight: bold;">Red</span> status, selecting reasons (feedback) is mandatory.</p>
+                    <p style="margin: 5px 0 0 0;">Additionally, you can choose whether to show or hide the <strong>Mandatory Courses</strong> information, and you can switch the time windows for <strong>Digital Vitality</strong> and <strong>Recent Progress</strong> between 15 or 30 days as needed.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">4. PLD Teachers Management 👩‍🏫</h4>
+                    <p style="margin: 0;">Edit the certification status manually, indicate their communication level, and register mentorings. You can exclude specific teachers or certifications from the final report.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">5. Observations and Export 📄</h4>
+                    <p style="margin: 0;">Complete the observations for each area to provide context. When generating the PDF, it will accurately respect the configuration visible on screen and the selected language in a professional format.</p>
+                </div>
+            `
+        },
         app: {
             retry: 'Try again',
             uploadAnother: '📤 Upload another report',
@@ -348,6 +414,39 @@ const dictionaries = {
     pt: {
         common: { days: 'dias' },
         language: { label: 'Idioma do relatório' },
+        fileUpload: {
+            title: 'Bem-vindo',
+            subtitle: 'Faça o upload do arquivo para automatizar seus relatórios.',
+            dragText: 'Arraste seu arquivo ou clique',
+            formats: 'Formatos: CSV, Excel (.csv, .xlsx, .xls)',
+            processing: 'Processando...',
+            selectFile: 'Selecionar Arquivo',
+            errorExt: 'Por favor, selecione um arquivo CSV ou Excel (.csv, .xlsx, .xls)',
+            tutorialBtn: 'ℹ️ Como funciona? - Guia passo a passo',
+            tutorialTitle: '<strong>Guia Rápido 🚀</strong>',
+            tutorialBtnOk: 'Entendi!',
+            tutorialHtml: `
+                <div style="text-align: left; font-size: 0.95em; line-height: 1.6; color: #444;">
+                    <p>Esta ferramenta automatiza a criação de relatórios executivos a partir de dados brutos.</p>
+                    
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">1. Carregamento de Dados 📂</h4>
+                    <p style="margin: 0;">Faça upload do seu arquivo <strong>.csv</strong> ou <strong>.xlsx</strong>. O sistema processará as métricas automaticamente e detectará se há informações de alunos, professores ou ambos.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">2. Configuração Dinâmica ⚙️</h4>
+                    <p style="margin: 0;">Escolha incluir ou excluir as seções de <strong>Alunos</strong> ou <strong>Professores</strong> do relatório geral.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">3. Gestão de Alunos e Semáforos 🚦</h4>
+                    <p style="margin: 0;">Revise os grupos na exibição de <strong>Cards</strong> ou <strong>Tabela</strong>, ordene-os arrastando e atribua um status. Se escolher o status <span style="color: #ffd148; font-weight: bold;">Amarelo</span> ou <span style="color: #ff8d7a; font-weight: bold;">Vermelho</span>, selecionar os motivos (feedback) é obrigatório.</p>
+                    <p style="margin: 5px 0 0 0;">Além disso, você pode selecionar se deseja mostrar ou ocultar as informações de <strong>Cursos Obrigatórios</strong> e pode alterar as janelas de tempo de <strong>Vitalidade Digital</strong> e <strong>Progresso Recente</strong> entre 15 ou 30 dias conforme sua necessidade.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">4. Gestão de Professores PLD 👩‍🏫</h4>
+                    <p style="margin: 0;">Edite o status de certificação manualmente, indique seu nível de comunicação e registre mentorias. Você pode excluir professores ou certificações específicas do relatório final.</p>
+
+                    <h4 style="color: #2196F3; margin-top: 15px; margin-bottom: 5px;">5. Observações e Exportação 📄</h4>
+                    <p style="margin: 0;">Preencha as observações de cada área para fornecer contexto. Ao gerar o PDF, ele respeitará exatamente a configuração visível na tela e o idioma selecionado de forma profissional.</p>
+                </div>
+            `
+        },
         app: {
             retry: 'Tentar novamente',
             uploadAnother: '📤 Enviar outro relatório',
