@@ -70,11 +70,11 @@ const PDFTemplate = ({ contentRef }) => {
     const studentSummaryMetricCount = [showMandatoryCourseMetric, showVitalityMetric, showProgressMetric].filter(Boolean).length;
     const showStudentSummaryBlock = studentSummaryMetricCount > 0;
 
-    const formatCourseMetric = (value) => {
+    const formatClassMetric = (value) => {
         if (typeof value !== 'string' || !value.includes(' de ')) return value;
         const [percent, rest] = value.split(' de ');
         const total = rest.split(' ')[0];
-        return t('courses.percentOfCourses', { percent: parseFloat(percent) || 0, total });
+        return t('courses.percentOfClasses', { percent: parseFloat(percent) || 0, total });
     };
 
     const parseCoursesStr = (str) => {
@@ -230,7 +230,7 @@ const PDFTemplate = ({ contentRef }) => {
                             </div>
                         )}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px', marginBottom: '8px' }}>
-                            <div style={{ fontSize: '7.5px' }}><strong>{t('students.completedClasses')}</strong><br />{formatCourseMetric(group.metrics.classes_completion_percent)}</div>
+                            <div style={{ fontSize: '7.5px' }}><strong>{t('students.completedClasses')}</strong><br />{formatClassMetric(group.metrics.classes_completion_percent)}</div>
                             <div style={{ fontSize: '7.5px' }}><strong>{t('students.vitalityTitle')}</strong><br />{group.metrics[`digital_vitality_${vitalityTimeWindow}_percent`]?.toFixed(1)}%</div>
                             <div style={{ fontSize: '7.5px' }}><strong>{t('students.recentProgressTitle')}</strong><br />{group.metrics[`recent_progress_${progressTimeWindow}_percent`]?.toFixed(1)}%</div>
                         </div>
@@ -297,7 +297,7 @@ const PDFTemplate = ({ contentRef }) => {
                             <td style={{ padding: '8px', textAlign: 'center' }}>
                                 <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: color, margin: '0 auto' }} />
                             </td>
-                            <td style={{ padding: '8px', textAlign: 'center', fontWeight: '700' }}>{formatCourseMetric(group.metrics.classes_completion_percent)}</td>
+                            <td style={{ padding: '8px', textAlign: 'center', fontWeight: '700' }}>{formatClassMetric(group.metrics.classes_completion_percent)}</td>
                             <td style={{ padding: '8px 10px', textAlign: 'left' }}>
                                 {mandatory && (
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '100%' }}>

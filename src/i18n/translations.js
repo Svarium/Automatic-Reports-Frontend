@@ -205,6 +205,7 @@ const dictionaries = {
         },
         courses: {
             percentOfCourses: '{percent}% de {total} cursos',
+            percentOfClasses: '{percent}% de {total} clases',
             ofTotal: 'de {total}',
         },
     },
@@ -408,6 +409,7 @@ const dictionaries = {
         },
         courses: {
             percentOfCourses: '{percent}% of {total} courses',
+            percentOfClasses: '{percent}% of {total} classes',
             ofTotal: 'of {total}',
         },
     },
@@ -611,6 +613,7 @@ const dictionaries = {
         },
         courses: {
             percentOfCourses: '{percent}% de {total} cursos',
+            percentOfClasses: '{percent}% de {total} aulas',
             ofTotal: 'de {total}',
         },
     },
