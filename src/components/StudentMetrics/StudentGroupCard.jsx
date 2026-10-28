@@ -1,4 +1,4 @@
-import { useReport } from '../../context/ReportContext';
+﻿import { useReport } from '../../context/ReportContext';
 import SemaphoreSelector from '../SemaphoreSelector/SemaphoreSelector';
 import { GROUP_FEEDBACK_OPTIONS, normalizeFeedbackKey } from '../../utils/constants';
 import './StudentMetrics.css';
@@ -54,7 +54,9 @@ const StudentGroupCard = ({ group }) => {
         const current = parseFloat(parts[0]) || 0;
         const totalPart = parts[1].split(' ')[0];
         const total = parseFloat(totalPart) || 1;
-        const percent = Math.min(100, Math.max(0, current));
+        const percent = total === 1
+            ? Math.min(100, Math.max(0, (current / total) * 100))  // caso especial Senior Track: "1.0 de 1" → 100%
+            : Math.min(100, Math.max(0, current));                  // caso normal: el numerador ya es el porcentaje
         return { current, total, percent, label: t('courses.percentOfCourses', { percent: current, total }) };
     };
 
@@ -95,7 +97,7 @@ const StudentGroupCard = ({ group }) => {
                             onClick={() => setVitalityTimeWindow(prev => prev === '30d' ? '15d' : '30d')}
                             title={t('students.changeDays', { days: vitalityTimeWindow === '30d' ? '15' : '30' })}
                         >
-                            📅
+                            ðŸ“…
                         </span>
                     </div>
                     <div className="metric-value">
@@ -110,7 +112,7 @@ const StudentGroupCard = ({ group }) => {
                             onClick={() => setProgressTimeWindow(prev => prev === '15d' ? '30d' : '15d')}
                             title={t('students.changeDays', { days: progressTimeWindow === '15d' ? '30' : '15' })}
                         >
-                            📅
+                            ðŸ“…
                         </span>
                     </div>
                     <div className="metric-value">
@@ -175,3 +177,4 @@ const StudentGroupCard = ({ group }) => {
 };
 
 export default StudentGroupCard;
+

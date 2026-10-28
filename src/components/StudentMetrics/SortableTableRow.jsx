@@ -1,4 +1,4 @@
-import { useSortable } from '@dnd-kit/sortable';
+﻿import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import SemaphoreSelector from '../SemaphoreSelector/SemaphoreSelector';
 import { GROUP_FEEDBACK_OPTIONS, normalizeFeedbackKey } from '../../utils/constants';
@@ -35,7 +35,9 @@ const SortableTableRow = ({ group, toggleFeedback, renderStylizedMetric, showGro
         const current = parseFloat(parts[0]) || 0;
         const totalPart = parts[1].split(' ')[0];
         const total = parseFloat(totalPart) || 1;
-        const percent = Math.min(100, Math.max(0, current));
+        const percent = total === 1
+            ? Math.min(100, Math.max(0, (current / total) * 100))  // caso especial Senior Track: "1.0 de 1" → 100%
+            : Math.min(100, Math.max(0, current));                  // caso normal: el numerador ya es el porcentaje
         return { current, total, percent, label: t('courses.percentOfCourses', { percent: current, total }) };
     };
 
@@ -157,3 +159,4 @@ const SortableTableRow = ({ group, toggleFeedback, renderStylizedMetric, showGro
 };
 
 export default SortableTableRow;
+
